@@ -1,0 +1,2719 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+   <title>Nouveau ticket - GLPI</title>
+
+   <meta charset="utf-8">
+
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+
+      <meta name="robots" content="noindex, nofollow">
+
+   <meta property="glpi:csrf_token" content="244ddb99394b2e9adc5d157611bd05cafc8140a8da8a71764f7d5adaf0fd516f">
+
+         <link rel="stylesheet" type="text/css" href="ticketGLPI_fichiers/base.min.css">
+         <link rel="stylesheet" type="text/css" href="ticketGLPI_fichiers/leaflet.min.css">
+         <link rel="stylesheet" type="text/css" href="ticketGLPI_fichiers/flatpickr.min.css">
+         <link rel="stylesheet" type="text/css" href="ticketGLPI_fichiers/dark.min.css">
+         <link rel="stylesheet" type="text/css" href="ticketGLPI_fichiers/photoswipe.min.css">
+         <link rel="stylesheet" type="text/css" href="ticketGLPI_fichiers/gridstack.min.css">
+         <link rel="stylesheet" type="text/css" href="ticketGLPI_fichiers/css_standalone_gridstack-grids.min.css">
+         <link rel="stylesheet" type="text/css" href="ticketGLPI_fichiers/chartist.min.css">
+         <link rel="stylesheet" type="text/css" href="ticketGLPI_fichiers/css_standalone_chartist.min.css">
+         <link rel="stylesheet" type="text/css" href="ticketGLPI_fichiers/jquery.rateit.min.css">
+         <link rel="stylesheet" type="text/css" href="ticketGLPI_fichiers/css_palettes_auror.min.css">
+   
+   
+
+   <link rel="shortcut icon" type="images/x-icon" href="https://glpi.fontenay-aux-roses.fr/pics/favicon.ico">
+
+         <script type="text/javascript" src="ticketGLPI_fichiers/base.min.js"></script>
+         <script type="text/javascript" src="ticketGLPI_fichiers/webkit_fix.min.js"></script>
+         <script type="text/javascript" src="ticketGLPI_fichiers/common.min.js"></script>
+   
+         <script type="module" src="ticketGLPI_fichiers/ResultsView.min.js"></script>
+         <script type="module" src="ticketGLPI_fichiers/Table.min.js"></script>
+   
+   <script type="text/javascript">
+//<![CDATA[
+
+         $(function() {
+            i18n.setLocale('fr_FR');
+         });            $(function() {
+               $.ajax({
+                  type: 'GET',
+                  url: '/front/locale.php?domain=glpi&v=06363bd5d4cbd11a2b1bdfef4343bf28309c3c1b',
+                  success: function(json) {
+                     i18n.loadJSON(json, 'glpi');
+                  }
+               });
+            });            $(function() {
+               $.ajax({
+                  type: 'GET',
+                  url: '/front/locale.php?domain=oauthimap&v=292f2d3992bd9936a7df885a6ad775c21b6f3367',
+                  success: function(json) {
+                     i18n.loadJSON(json, 'oauthimap');
+                  }
+               });
+            });
+
+//]]>
+</script>
+<style type="text/css"></style><link rel="stylesheet" type="text/css" id="mce-u0" href="ticketGLPI_fichiers/skin.min.css"></head>
+
+
+
+<body class=" vertical-layout ">
+      
+
+   
+
+
+    <div class="toast-container bottom-0 end-0 p-3 messages_after_redirect" id="messages_after_redirect">
+            
+
+        <script type="text/javascript">
+        var initMessagesAfterRedirectToasts = function() {
+            var toastElList = [].slice.call(document.querySelectorAll('#messages_after_redirect .toast:not(.show)'));
+            var toastList = toastElList.map(function (toastEl) {
+                var toast = new bootstrap.Toast(toastEl, {
+                    delay: 10000,
+                })
+                toast.show()
+
+                $(toastEl).on('hidden.bs.toast', function () {
+                    $(toastEl).remove();
+                });
+
+                return toast;
+            });
+        }
+        $(function() {
+            initMessagesAfterRedirectToasts();
+        });
+        </script>
+    </div>
+
+
+   <div class="page">
+
+            <aside class="navbar navbar-vertical navbar-expand-lg sticky-lg-top sidebar">
+         <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
+               <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <a href="https://glpi.fontenay-aux-roses.fr/front/helpdesk.public.php" accesskey="1" title="Accueil" class="navbar-brand">
+               <span class="glpi-logo"></span>
+            </a>
+
+                           <span class="d-none d-lg-inline-block">
+                   
+
+               </span>
+            
+                                          <div class="d-lg-none">
+                  
+
+<div class="btn-group">
+         <div class="navbar-nav flex-row order-md-last user-menu">
+         <div class="nav-item dropdown">
+            <a href="#" class="nav-link d-flex lh-1 text-reset p-1 dropdown-toggle user-menu-dropdown-toggle " data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                                 <div class="pe-2 d-none d-xl-block">
+                     <div>Utilisateurs</div>
+                                          <div class="mt-1 small text-muted" title="" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="GLPI &gt; Mairie de Fontenay-aux-Roses (structure complète)">
+                        ...aux-Roses (structure complète)
+                     </div>
+                  </div>
+
+                  
+
+
+<span class="avatar  rounded" style=" background-color: #e0b652">
+            LD
+   </span>
+
+
+                           </a>
+            <div class="dropdown-menu dropdown-menu-end mt-1 dropdown-menu-arrow animate__animated animate__fadeInRight">
+               <h6 class="dropdown-header">Luca DA-SILVA</h6>
+
+                                 
+
+<div class="dropdown dropstart">
+   <button class="dropdown-item dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <i class="ti ti-user-check"></i>
+      Utilisateurs
+   </button>
+   <div class="dropdown-menu" data-bs-popper="none">
+      <span class="dropdown-header">Profils</span>
+            <a class="dropdown-item active" href="https://glpi.fontenay-aux-roses.fr/front/helpdesk.public.php?newprofile=12">
+         <i class="ti ti-user-check"></i>Utilisateurs
+      </a>
+         </div>
+</div>
+
+   
+      <div class="dropdown dropstart">
+      <a href="#" class="dropdown-item dropdown-toggle entity-dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" title="GLPI &gt; Mairie de Fontenay-aux-Roses (structure complète)">
+         <i class="fa-fw ti ti-stack"></i>
+         ... &gt; Mairie de Fontenay-aux-Ros...
+      </a>
+      <div class="dropdown-menu p-3">
+         <h3>Sélectionnez l'entité souhaitée</h3>
+
+         <div class="alert alert-info" role="alert">
+                                    Astuce : vous pouvez appelez cette fenêtre modale avec la combinaison de touches <kbd>Ctrl + Alt + E</kbd>
+         </div>
+         <div class="alert alert-info" role="alert">
+            <i class="fas fa-info-circle"></i>
+            <span class="ms-2">
+                              Cliquez sur l'icone                   <i class="fas fa-angle-double-down" title="+ ses sous-entités"></i>
+                pour charger les éléments de l'entité sélectionnée ainsi que de ses sous-entités.
+            </span>
+         </div>
+
+         <form id="entsearchform33480646">
+            <div class="input-group">
+               <input type="text" class="form-control" name="entsearchtext" id="entsearchtext33480646" placeholder="Chercher une entité" autocomplete="off">
+               <button type="submit" class="btn btn-icon btn-primary" title="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Rechercher">
+                  <i class="ti ti-search"></i>
+               </button>
+               <a class="btn btn-icon btn-outline-secondary" href="#" id="entsearchtext33480646_clear" title="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Effacer la recherche">
+                     <i class="ti ti-x"></i>
+               </a>
+               <a href="https://glpi.fontenay-aux-roses.fr/front/helpdesk.public.php?active_entity=all" class="btn btn-secondary" title="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Sélectionner tout">
+                  <i class="ti ti-eye"></i>
+               </a>
+            </div>
+         </form>
+
+         <div class="fancytree-grid-container flexbox-item-grow entity_tree">
+            <table id="tree_entity33480646" class="fancytree-container fancytree-ext-grid fancytree-ext-table fancytree-ext-glyph" tabindex="0" role="treegrid" aria-multiselectable="true" aria-readonly="true">
+               <colgroup>
+                  <col>
+               </colgroup>
+               <thead>
+                  <tr>
+                     <th class="parent-path"></th>
+                  </tr>
+               </thead>
+               <tbody><tr role="row" aria-selected="true" class="fancytree-lastsib fancytree-selected fancytree-exp-nl fancytree-ico-c"><td role="gridcell"><span class="fancytree-node" style="padding-left: 0px;"><span class="fancytree-expander  "></span><span role="presentation" class="fancytree-icon  far fa-file"></span><span class="fancytree-title"><a href="https://glpi.fontenay-aux-roses.fr/front/helpdesk.public.php?active_entity=2">Mairie de Fontenay-aux-Roses</a></span></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr></tbody>
+            </table>
+            <div id="verticalScrollbar-33480646" style="height:100%;" data-enabled="true" data-scrollable="false" data-visible="true" class="plain-scrollbar scrollbar-vertical has-arrows"><div class="arrow-up"><span></span></div><div class="arrow-down"><span></span></div><div class="slider-area"><div class="slider" style="top: 0px; height: 20px;"></div></div></div>
+         </div>
+      </div>
+   </div>
+
+   <script type="text/javascript">
+   $(function() {
+      $('#tree_entity33480646').fancytree({
+         // load plugins
+         extensions: ['filter', 'glyph', 'grid'],
+
+         // Scroll node into visible area, when focused by keyboard
+         autoScroll: true,
+
+         // enable font-awesome icons
+         glyph: {
+            preset: "awesome5",
+            map: {}
+         },
+
+         // enable virtual dom, it requires the grid (table extension) plugin
+         table: {
+            indentation: 20,       // indent 20px per node level
+            nodeColumnIdx: 0,      // render the node title into the 1st column
+            mergeStatusColumns: false,
+         },
+         grid: {
+            mergeStatusColumns: false,
+         },
+         viewport: {
+            enabled: true,
+            count: 15, // number of items to display at once
+         },
+
+         // load data by ajax
+         source: {
+            url:  '/ajax/entitytreesons.php',
+            cache: false
+         },
+
+         // filter plugin options
+         filter: {
+            mode: "hide", // remove unmatched nodes
+            autoExpand: true, // if results found in children, auto-expand parent
+            nodata: 'Aucune entité trouvée', // message when no data found
+            highlight: false, // do not highlight matches by wrapping inside tags (when true, this strip the a tag)
+            counter: false, // do not show counters when filtering entity tree
+         },
+
+         // load 3rd party scrollbar extension for viewport mode
+         preInit: function(event, data) {
+            var tree = data.tree;
+
+            tree.verticalScrollbar = new PlainScrollbar({
+               alwaysVisible: true,
+               arrows: true,
+               orientation: "vertical",
+               onSet: function(numberOfItems) {
+                  tree.setViewport({
+                     start: Math.round(numberOfItems.start),
+                  });
+               },
+               scrollbarElement: document.getElementById("verticalScrollbar-33480646"),
+            });
+         },
+
+         // update scrollbar when viewport is updated
+         updateViewport: function(event, data) {
+            var tree = data.tree;
+
+            tree.verticalScrollbar.set({
+               start: tree.viewport.start,
+               total: tree.visibleNodeList.length,
+               visible: tree.viewport.count,
+            }, true);  // do not trigger `onSet`
+
+            initTooltips();
+         },
+
+        // update toolips on node expand
+        expand: function(event, data) {
+            initTooltips();
+        },
+      });
+
+      var searchTree = function() {
+         var search_text = $("#entsearchtext33480646").val();
+         $.ui.fancytree.getTree("#tree_entity33480646").filterBranches(search_text);
+      }
+
+      $('#entsearchform33480646').submit(function(event) {
+         // cancel submit of entity search form
+         event.preventDefault();
+
+         searchTree();
+      });
+
+      $('#entsearchtext33480646').keyup(function () {
+         var inputsearch = $(this);
+         typewatch(function () {
+            if (inputsearch.val().length >= 3) {
+               searchTree();
+            }
+         }, 500);
+      }).focus();
+
+      $('#entsearchtext33480646_clear').click(function () {
+         $('#entsearchtext33480646').val('');
+         searchTree();
+      });
+
+      // when the shortcut for entity form is called
+      hotkeys('ctrl+alt+e, option+command+e', async function(e) {
+         e.stopPropagation();
+         e.preventDefault();
+         $('.user-menu-dropdown-toggle').dropdown('show');
+         await new Promise(r => setTimeout(r, 100));
+         $('.entity-dropdown-toggle').dropdown('show');
+         $('input[name=entsearchtext]').filter(":visible")[0].focus();
+      });
+   });
+   </script>
+
+
+                  <div class="dropdown-divider"></div>
+
+                                 
+               
+               <div class="dropdown-item">
+                  <i class="ti fa-fw ti-language"></i>
+                  <form method="post" name="switchlang" action="/front/user.form.php" autocomplete="off"><select name="language" id="dropdown_language903673610" class="form-select select2-hidden-accessible" onchange="this.form.submit()" size="1" data-select2-id="dropdown_language903673610" tabindex="-1" aria-hidden="true"><option value="ar_SA">العَرَبِيَّةُ</option><option value="bg_BG">Български</option><option value="id_ID">Bahasa Indonesia</option><option value="ms_MY">Bahasa Melayu</option><option value="ca_ES">Català</option><option value="cs_CZ">Čeština</option><option value="de_DE">Deutsch</option><option value="da_DK">Dansk</option><option value="et_EE">Eesti</option><option value="en_GB">English</option><option value="en_US">English (US)</option><option value="es_AR">Español (Argentina)</option><option value="es_EC">Español (Ecuador)</option><option value="es_CO">Español (Colombia)</option><option value="es_ES">Español (España)</option><option value="es_419">Español (América Latina)</option><option value="es_MX">Español (Mexico)</option><option value="es_VE">Español (Venezuela)</option><option value="eu_ES">Euskara</option><option value="fr_FR" selected="selected" data-select2-id="2">Français</option><option value="fr_CA">Français (Canada)</option><option value="fr_BE">Français (Belgique)</option><option value="gl_ES">Galego</option><option value="el_GR">Ελληνικά</option><option value="he_IL">עברית</option><option value="hi_IN">हिन्दी</option><option value="hr_HR">Hrvatski</option><option value="hu_HU">Magyar</option><option value="it_IT">Italiano</option><option value="kn">ಕನ್ನಡ</option><option value="lv_LV">Latviešu</option><option value="lt_LT">Lietuvių</option><option value="mn_MN">Монгол хэл</option><option value="nl_NL">Nederlands</option><option value="nl_BE">Flemish</option><option value="nb_NO">Norsk (Bokmål)</option><option value="nn_NO">Norsk (Nynorsk)</option><option value="fa_IR">فارسی</option><option value="pl_PL">Polski</option><option value="pt_PT">Português</option><option value="pt_BR">Português do Brasil</option><option value="ro_RO">Română</option><option value="ru_RU">Русский</option><option value="sk_SK">Slovenčina</option><option value="sl_SI">Slovenščina</option><option value="sr_RS">Srpski</option><option value="fi_FI">Suomi</option><option value="sv_SE">Svenska</option><option value="vi_VN">Tiếng Việt</option><option value="th_TH">ภาษาไทย</option><option value="tr_TR">Türkçe</option><option value="uk_UA">Українська</option><option value="ja_JP">日本語</option><option value="zh_CN">简体中文</option><option value="zh_TW">繁體中文</option><option value="ko_KR">한국/韓國</option><option value="zh_HK">香港</option><option value="be_BY">Belarussian</option><option value="is_IS">íslenska</option><option value="eo">Esperanto</option></select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="1"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-dropdown_language903673610-container"><span class="select2-selection__rendered" id="select2-dropdown_language903673610-container" role="textbox" aria-readonly="true" title="Français"><span>Français</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span><script type="text/javascript">
+//<![CDATA[
+
+$(function() {
+         const select2_el = $('#dropdown_language903673610').select2({
+            
+            width: '',
+            dropdownAutoWidth: true,
+            dropdownParent: $('#dropdown_language903673610').closest('div.modal, div.dropdown-menu, body'),
+            quietMillis: 100,
+            minimumResultsForSearch: 50,
+            matcher: function(params, data) {
+               // store last search in the global var
+               query = params;
+
+               // If there are no search terms, return all of the data
+               if ($.trim(params.term) === '') {
+                  return data;
+               }
+
+               var searched_term = getTextWithoutDiacriticalMarks(params.term);
+               var data_text = typeof(data.text) === 'string'
+                  ? getTextWithoutDiacriticalMarks(data.text)
+                  : '';
+               var select2_fuzzy_opts = {
+                  pre: '<span class="select2-rendered__match">',
+                  post: '</span>',
+               };
+
+               if (data_text.indexOf('>') !== -1 || data_text.indexOf('<') !== -1) {
+                  // escape text, if it contains chevrons (can already be escaped prior to this point :/)
+                  data_text = jQuery.fn.select2.defaults.defaults.escapeMarkup(data_text);
+               }
+
+               // Skip if there is no 'children' property
+               if (typeof data.children === 'undefined') {
+                  var match  = fuzzy.match(searched_term, data_text, select2_fuzzy_opts);
+                  if (match == null) {
+                     return false;
+                  }
+                  data.rendered_text = match.rendered_text;
+                  data.score = match.score;
+                  return data;
+               }
+
+               // `data.children` contains the actual options that we are matching against
+               // also check in `data.text` (optgroup title)
+               var filteredChildren = [];
+
+               $.each(data.children, function (idx, child) {
+                  var child_text = typeof(child.text) === 'string'
+                     ? getTextWithoutDiacriticalMarks(child.text)
+                     : '';
+
+                  if (child_text.indexOf('>') !== -1 || child_text.indexOf('<') !== -1) {
+                     // escape text, if it contains chevrons (can already be escaped prior to this point :/)
+                     child_text = jQuery.fn.select2.defaults.defaults.escapeMarkup(child_text);
+                  }
+
+                  var match_child = fuzzy.match(searched_term, child_text, select2_fuzzy_opts);
+                  var match_text  = fuzzy.match(searched_term, data_text, select2_fuzzy_opts);
+                  if (match_child !== null || match_text !== null) {
+                     if (match_text !== null) {
+                        data.score         = match_text.score;
+                        data.rendered_text = match_text.rendered;
+                     }
+
+                     if (match_child !== null) {
+                        child.score         = match_child.score;
+                        child.rendered_text = match_child.rendered;
+                     }
+                     filteredChildren.push(child);
+                  }
+               });
+
+               // If we matched any of the group's children, then set the matched children on the group
+               // and return the group object
+               if (filteredChildren.length) {
+                  var modifiedData = $.extend({}, data, true);
+                  modifiedData.children = filteredChildren;
+
+                  // You can return modified objects from here
+                  // This includes matching the `children` how you want in nested data sets
+                  return modifiedData;
+               }
+
+               // Return `null` if the term should not be displayed
+               return null;
+            },
+            templateResult: templateResult,
+            templateSelection: templateSelection,
+         })
+         .bind('setValue', function(e, value) {
+            $('#dropdown_language903673610').val(value).trigger('change');
+         })
+         $('label[for=dropdown_language903673610]').on('click', function(){ $('#dropdown_language903673610').select2('open'); });
+         $('#dropdown_language903673610').on('select2:open', function(e){
+            const search_input = document.querySelector(`.select2-search__field[aria-controls='select2-${e.target.id}-results']`);
+            if (search_input) {
+               search_input.focus();
+            }
+         });
+      });
+
+//]]>
+</script><input type="hidden" name="_glpi_csrf_token" value="7172c850b3000bdd2aa7138dd6e9f853938d6a330eeeacabc5107cb77f26c391"></form>
+               </div>
+
+               <div class="dropdown-divider"></div>
+
+               <a href="http://glpi-project.org/documentation" class="dropdown-item" title="Aide">
+                  <i class="ti fa-fw ti-help"></i>
+                  Aide
+               </a>
+
+               <a href="#" class="dropdown-item" title="À propos" id="show_about_modal_965422320">
+                  <i class="ti fa-fw ti-info-circle"></i>
+                  À propos
+                                       <span class="badge bg-info text-dark ms-2">
+                        1
+                     </span>
+                                 </a>
+
+               <div class="dropdown-divider"></div>
+
+               <a href="https://glpi.fontenay-aux-roses.fr/front/preference.php" class="dropdown-item" title="Mes préférences">
+                  <i class="ti fa-fw ti-adjustments-alt"></i>
+                  Mes préférences
+               </a>
+               <a href="https://glpi.fontenay-aux-roses.fr/front/logout.php?noAUTO=1" class="dropdown-item" title="Déconnexion">
+                  <i class="ti fa-fw ti-logout"></i>
+                  Déconnexion
+               </a>
+            </div>
+         </div>
+      </div>
+
+      <div class="modal fade" id="about_modal_965422320" role="dialog">
+         <div class="modal-dialog">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h4 class="modal-title">À propos</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+               </div>
+               <div class="modal-body">
+                  <p><a href="http://glpi-project.org/" title="Powered by Teclib and contributors" class="copyright">
+                     GLPI 10.0.10
+                     Copyright (C) 2015-2023 Teclib' and contributors
+                  </a></p>
+                                       <p>
+                        <a href="http://www.glpi-project.org/" target="_blank" title="Vous la trouverez sur le site GLPI-PROJECT.org.">
+                           Une nouvelle version est disponible : 11.0.5
+                           <span class="badge bg-info text-dark">
+                              1
+                           </span>
+                        </a>
+                     </p>
+                                 </div>
+            </div>
+         </div>
+      </div>
+
+   </div>
+
+<script type="text/javascript">
+$(function() {
+   $("#show_about_modal_965422320").click(function(e) {
+      e.preventDefault();
+      $("#about_modal_965422320").remove().modal("show");
+   });
+});
+</script>
+
+               </div>
+            
+                           <div class="collapse navbar-collapse" id="navbar-menu">
+                   <span class="d-inline-block d-lg-none ms-2">
+                       
+
+                   </span>
+                   
+
+<ul class="navbar-nav" id="menu_927322227">
+                     <li class="nav-item dropdown " data-bs-toggle="tooltip" title="" data-bs-original-title="Accueil">
+         <a class="nav-link" href="https://glpi.fontenay-aux-roses.fr/front/helpdesk.public.php">
+            <i class="fa-fw fas fa-home"></i>
+            <span class="menu-label">Accueil</span>
+         </a>
+      </li><li>
+                        </li><li class="nav-item dropdown active" data-bs-toggle="tooltip" title="" data-bs-original-title="Créer un ticket">
+         <a class="nav-link" href="https://glpi.fontenay-aux-roses.fr/front/helpdesk.public.php?create_ticket=1">
+            <i class="fa-fw ti ti-plus"></i>
+            <span class="menu-label">Créer un ticket</span>
+         </a>
+      </li><li>
+                                                      </li><li class="nav-item dropdown " data-bs-toggle="tooltip" title="" data-bs-original-title="Tickets">
+         <a class="nav-link" href="https://glpi.fontenay-aux-roses.fr/front/ticket.php">
+            <i class="fa-fw ti ti-alert-circle"></i>
+            <span class="menu-label">Tickets</span>
+         </a>
+      </li><li>
+   </li></ul>
+
+<script type="text/javascript">
+$(function() {
+   // below, some modifications of dropdowns menu behavior
+   document.querySelectorAll('#menu_927322227 > .dropdown').forEach(function(menuDropdown) {
+      // prevent menu closes
+      menuDropdown.addEventListener('hide.bs.dropdown', function (event) {
+         var orig_event = event.clickEvent;
+         if (typeof orig_event != "undefined"
+             && typeof orig_event.target != "undefined") {
+            // prevent body clicking to hide menu
+            if (!document.getElementById('menu_927322227').contains(orig_event.target)) {
+               event.preventDefault();
+               return;
+            }
+
+            // prevent menu links to close menu (waiting the page redirection)
+            if (orig_event.target.className.indexOf('dropdown-item') !== false) {
+               for (var item of document.querySelectorAll('#menu_927322227 .dropdown-item')) {
+                  item.classList.remove('active');
+               }
+               orig_event.target.classList.add('active');
+               event.preventDefault();
+            }
+         }
+      });
+
+      // opening a sub menu close others
+      menuDropdown.addEventListener('show.bs.dropdown', function (event) {
+         $('#menu_927322227 .nav-link').removeClass('show active');
+         $('#menu_927322227 .nav-item').removeClass('active');
+         $('#menu_927322227 .dropdown-menu').removeClass('show');
+      })
+   });
+
+});
+</script>
+
+
+
+                  <p class="text-start">
+                     <button class="btn btn-sm btn-ghost-secondary  mb-2 reduce-menu d-none d-md-block">
+                        <span class="menu-label">Réduire le menu</span>
+                     </button>
+                  </p>
+               </div>
+                     </div>
+      </aside>
+      
+      <header class="navbar d-print-none sticky-lg-top shadow-sm navbar-light navbar-expand-md">
+         <div class="container-fluid flex-xl-nowrap pe-xl-0">
+                           
+<ol class="breadcrumb breadcrumb-alternate pe-1 pe-sm-3" aria-label="breadcrumbs">
+   <li class="breadcrumb-item text-truncate">
+      <a href="https://glpi.fontenay-aux-roses.fr/front/helpdesk.public.php" title="Accueil">
+         <i class="ti ti-home-2"></i>
+         Accueil
+      </a>
+   </li>
+
+      <li class="breadcrumb-item text-truncate">
+      <a href="https://glpi.fontenay-aux-roses.fr/front/helpdesk.public.php?create_ticket=1" title="Créer un ticket">
+         <i class="ti ti-plus"></i>
+         Créer un ticket
+      </a>
+   </li>
+   
+      </ol>
+
+
+
+                                 <div class="ms-lg-auto d-none d-lg-block flex-grow-1 flex-lg-grow-0">
+                     
+
+                  </div>
+               
+            
+            <div class="ms-md-4 d-none d-lg-block">
+               
+
+<div class="btn-group">
+         <div class="navbar-nav flex-row order-md-last user-menu">
+         <div class="nav-item dropdown">
+            <a href="#" class="nav-link d-flex lh-1 text-reset p-1 dropdown-toggle user-menu-dropdown-toggle " data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                                 <div class="pe-2 d-none d-xl-block">
+                     <div>Utilisateurs</div>
+                                          <div class="mt-1 small text-muted" title="" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="GLPI &gt; Mairie de Fontenay-aux-Roses (structure complète)">
+                        ...aux-Roses (structure complète)
+                     </div>
+                  </div>
+
+                  
+
+
+<span class="avatar  rounded" style=" background-color: #e0b652">
+            LD
+   </span>
+
+
+                           </a>
+            <div class="dropdown-menu dropdown-menu-end mt-1 dropdown-menu-arrow animate__animated animate__fadeInRight">
+               <h6 class="dropdown-header">Luca DA-SILVA</h6>
+
+                                 
+
+<div class="dropdown dropstart">
+   <button class="dropdown-item dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <i class="ti ti-user-check"></i>
+      Utilisateurs
+   </button>
+   <div class="dropdown-menu" data-bs-popper="none">
+      <span class="dropdown-header">Profils</span>
+            <a class="dropdown-item active" href="https://glpi.fontenay-aux-roses.fr/front/helpdesk.public.php?newprofile=12">
+         <i class="ti ti-user-check"></i>Utilisateurs
+      </a>
+         </div>
+</div>
+
+   
+      <div class="dropdown dropstart">
+      <a href="#" class="dropdown-item dropdown-toggle entity-dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" title="GLPI &gt; Mairie de Fontenay-aux-Roses (structure complète)">
+         <i class="fa-fw ti ti-stack"></i>
+         ... &gt; Mairie de Fontenay-aux-Ros...
+      </a>
+      <div class="dropdown-menu p-3">
+         <h3>Sélectionnez l'entité souhaitée</h3>
+
+         <div class="alert alert-info" role="alert">
+                                    Astuce : vous pouvez appelez cette fenêtre modale avec la combinaison de touches <kbd>Ctrl + Alt + E</kbd>
+         </div>
+         <div class="alert alert-info" role="alert">
+            <i class="fas fa-info-circle"></i>
+            <span class="ms-2">
+                              Cliquez sur l'icone                   <i class="fas fa-angle-double-down" title="+ ses sous-entités"></i>
+                pour charger les éléments de l'entité sélectionnée ainsi que de ses sous-entités.
+            </span>
+         </div>
+
+         <form id="entsearchform1994578315">
+            <div class="input-group">
+               <input type="text" class="form-control" name="entsearchtext" id="entsearchtext1994578315" placeholder="Chercher une entité" autocomplete="off">
+               <button type="submit" class="btn btn-icon btn-primary" title="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Rechercher">
+                  <i class="ti ti-search"></i>
+               </button>
+               <a class="btn btn-icon btn-outline-secondary" href="#" id="entsearchtext1994578315_clear" title="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Effacer la recherche">
+                     <i class="ti ti-x"></i>
+               </a>
+               <a href="https://glpi.fontenay-aux-roses.fr/front/helpdesk.public.php?active_entity=all" class="btn btn-secondary" title="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Sélectionner tout">
+                  <i class="ti ti-eye"></i>
+               </a>
+            </div>
+         </form>
+
+         <div class="fancytree-grid-container flexbox-item-grow entity_tree">
+            <table id="tree_entity1994578315" class="fancytree-container fancytree-ext-grid fancytree-ext-table fancytree-ext-glyph" tabindex="0" role="treegrid" aria-multiselectable="true" aria-readonly="true">
+               <colgroup>
+                  <col>
+               </colgroup>
+               <thead>
+                  <tr>
+                     <th class="parent-path"></th>
+                  </tr>
+               </thead>
+               <tbody><tr role="row" aria-selected="true" class="fancytree-lastsib fancytree-selected fancytree-exp-nl fancytree-ico-c"><td role="gridcell"><span class="fancytree-node" style="padding-left: 0px;"><span class="fancytree-expander  "></span><span role="presentation" class="fancytree-icon  far fa-file"></span><span class="fancytree-title"><a href="https://glpi.fontenay-aux-roses.fr/front/helpdesk.public.php?active_entity=2">Mairie de Fontenay-aux-Roses</a></span></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr><tr role="row"><td role="gridcell"><span class="fancytree-node"></span></td></tr></tbody>
+            </table>
+            <div id="verticalScrollbar-1994578315" style="height:100%;" data-enabled="true" data-scrollable="false" data-visible="true" class="plain-scrollbar scrollbar-vertical has-arrows"><div class="arrow-up"><span></span></div><div class="arrow-down"><span></span></div><div class="slider-area"><div class="slider" style="top: 0px; height: 20px;"></div></div></div>
+         </div>
+      </div>
+   </div>
+
+   <script type="text/javascript">
+   $(function() {
+      $('#tree_entity1994578315').fancytree({
+         // load plugins
+         extensions: ['filter', 'glyph', 'grid'],
+
+         // Scroll node into visible area, when focused by keyboard
+         autoScroll: true,
+
+         // enable font-awesome icons
+         glyph: {
+            preset: "awesome5",
+            map: {}
+         },
+
+         // enable virtual dom, it requires the grid (table extension) plugin
+         table: {
+            indentation: 20,       // indent 20px per node level
+            nodeColumnIdx: 0,      // render the node title into the 1st column
+            mergeStatusColumns: false,
+         },
+         grid: {
+            mergeStatusColumns: false,
+         },
+         viewport: {
+            enabled: true,
+            count: 15, // number of items to display at once
+         },
+
+         // load data by ajax
+         source: {
+            url:  '/ajax/entitytreesons.php',
+            cache: false
+         },
+
+         // filter plugin options
+         filter: {
+            mode: "hide", // remove unmatched nodes
+            autoExpand: true, // if results found in children, auto-expand parent
+            nodata: 'Aucune entité trouvée', // message when no data found
+            highlight: false, // do not highlight matches by wrapping inside tags (when true, this strip the a tag)
+            counter: false, // do not show counters when filtering entity tree
+         },
+
+         // load 3rd party scrollbar extension for viewport mode
+         preInit: function(event, data) {
+            var tree = data.tree;
+
+            tree.verticalScrollbar = new PlainScrollbar({
+               alwaysVisible: true,
+               arrows: true,
+               orientation: "vertical",
+               onSet: function(numberOfItems) {
+                  tree.setViewport({
+                     start: Math.round(numberOfItems.start),
+                  });
+               },
+               scrollbarElement: document.getElementById("verticalScrollbar-1994578315"),
+            });
+         },
+
+         // update scrollbar when viewport is updated
+         updateViewport: function(event, data) {
+            var tree = data.tree;
+
+            tree.verticalScrollbar.set({
+               start: tree.viewport.start,
+               total: tree.visibleNodeList.length,
+               visible: tree.viewport.count,
+            }, true);  // do not trigger `onSet`
+
+            initTooltips();
+         },
+
+        // update toolips on node expand
+        expand: function(event, data) {
+            initTooltips();
+        },
+      });
+
+      var searchTree = function() {
+         var search_text = $("#entsearchtext1994578315").val();
+         $.ui.fancytree.getTree("#tree_entity1994578315").filterBranches(search_text);
+      }
+
+      $('#entsearchform1994578315').submit(function(event) {
+         // cancel submit of entity search form
+         event.preventDefault();
+
+         searchTree();
+      });
+
+      $('#entsearchtext1994578315').keyup(function () {
+         var inputsearch = $(this);
+         typewatch(function () {
+            if (inputsearch.val().length >= 3) {
+               searchTree();
+            }
+         }, 500);
+      }).focus();
+
+      $('#entsearchtext1994578315_clear').click(function () {
+         $('#entsearchtext1994578315').val('');
+         searchTree();
+      });
+
+      // when the shortcut for entity form is called
+      hotkeys('ctrl+alt+e, option+command+e', async function(e) {
+         e.stopPropagation();
+         e.preventDefault();
+         $('.user-menu-dropdown-toggle').dropdown('show');
+         await new Promise(r => setTimeout(r, 100));
+         $('.entity-dropdown-toggle').dropdown('show');
+         $('input[name=entsearchtext]').filter(":visible")[0].focus();
+      });
+   });
+   </script>
+
+
+                  <div class="dropdown-divider"></div>
+
+                                 
+               
+               <div class="dropdown-item">
+                  <i class="ti fa-fw ti-language"></i>
+                  <form method="post" name="switchlang" action="/front/user.form.php" autocomplete="off"><select name="language" id="dropdown_language673498350" class="form-select select2-hidden-accessible" onchange="this.form.submit()" size="1" data-select2-id="dropdown_language673498350" tabindex="-1" aria-hidden="true"><option value="ar_SA">العَرَبِيَّةُ</option><option value="bg_BG">Български</option><option value="id_ID">Bahasa Indonesia</option><option value="ms_MY">Bahasa Melayu</option><option value="ca_ES">Català</option><option value="cs_CZ">Čeština</option><option value="de_DE">Deutsch</option><option value="da_DK">Dansk</option><option value="et_EE">Eesti</option><option value="en_GB">English</option><option value="en_US">English (US)</option><option value="es_AR">Español (Argentina)</option><option value="es_EC">Español (Ecuador)</option><option value="es_CO">Español (Colombia)</option><option value="es_ES">Español (España)</option><option value="es_419">Español (América Latina)</option><option value="es_MX">Español (Mexico)</option><option value="es_VE">Español (Venezuela)</option><option value="eu_ES">Euskara</option><option value="fr_FR" selected="selected" data-select2-id="4">Français</option><option value="fr_CA">Français (Canada)</option><option value="fr_BE">Français (Belgique)</option><option value="gl_ES">Galego</option><option value="el_GR">Ελληνικά</option><option value="he_IL">עברית</option><option value="hi_IN">हिन्दी</option><option value="hr_HR">Hrvatski</option><option value="hu_HU">Magyar</option><option value="it_IT">Italiano</option><option value="kn">ಕನ್ನಡ</option><option value="lv_LV">Latviešu</option><option value="lt_LT">Lietuvių</option><option value="mn_MN">Монгол хэл</option><option value="nl_NL">Nederlands</option><option value="nl_BE">Flemish</option><option value="nb_NO">Norsk (Bokmål)</option><option value="nn_NO">Norsk (Nynorsk)</option><option value="fa_IR">فارسی</option><option value="pl_PL">Polski</option><option value="pt_PT">Português</option><option value="pt_BR">Português do Brasil</option><option value="ro_RO">Română</option><option value="ru_RU">Русский</option><option value="sk_SK">Slovenčina</option><option value="sl_SI">Slovenščina</option><option value="sr_RS">Srpski</option><option value="fi_FI">Suomi</option><option value="sv_SE">Svenska</option><option value="vi_VN">Tiếng Việt</option><option value="th_TH">ภาษาไทย</option><option value="tr_TR">Türkçe</option><option value="uk_UA">Українська</option><option value="ja_JP">日本語</option><option value="zh_CN">简体中文</option><option value="zh_TW">繁體中文</option><option value="ko_KR">한국/韓國</option><option value="zh_HK">香港</option><option value="be_BY">Belarussian</option><option value="is_IS">íslenska</option><option value="eo">Esperanto</option></select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="3"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-dropdown_language673498350-container"><span class="select2-selection__rendered" id="select2-dropdown_language673498350-container" role="textbox" aria-readonly="true" title="Français"><span>Français</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span><script type="text/javascript">
+//<![CDATA[
+
+$(function() {
+         const select2_el = $('#dropdown_language673498350').select2({
+            
+            width: '',
+            dropdownAutoWidth: true,
+            dropdownParent: $('#dropdown_language673498350').closest('div.modal, div.dropdown-menu, body'),
+            quietMillis: 100,
+            minimumResultsForSearch: 50,
+            matcher: function(params, data) {
+               // store last search in the global var
+               query = params;
+
+               // If there are no search terms, return all of the data
+               if ($.trim(params.term) === '') {
+                  return data;
+               }
+
+               var searched_term = getTextWithoutDiacriticalMarks(params.term);
+               var data_text = typeof(data.text) === 'string'
+                  ? getTextWithoutDiacriticalMarks(data.text)
+                  : '';
+               var select2_fuzzy_opts = {
+                  pre: '<span class="select2-rendered__match">',
+                  post: '</span>',
+               };
+
+               if (data_text.indexOf('>') !== -1 || data_text.indexOf('<') !== -1) {
+                  // escape text, if it contains chevrons (can already be escaped prior to this point :/)
+                  data_text = jQuery.fn.select2.defaults.defaults.escapeMarkup(data_text);
+               }
+
+               // Skip if there is no 'children' property
+               if (typeof data.children === 'undefined') {
+                  var match  = fuzzy.match(searched_term, data_text, select2_fuzzy_opts);
+                  if (match == null) {
+                     return false;
+                  }
+                  data.rendered_text = match.rendered_text;
+                  data.score = match.score;
+                  return data;
+               }
+
+               // `data.children` contains the actual options that we are matching against
+               // also check in `data.text` (optgroup title)
+               var filteredChildren = [];
+
+               $.each(data.children, function (idx, child) {
+                  var child_text = typeof(child.text) === 'string'
+                     ? getTextWithoutDiacriticalMarks(child.text)
+                     : '';
+
+                  if (child_text.indexOf('>') !== -1 || child_text.indexOf('<') !== -1) {
+                     // escape text, if it contains chevrons (can already be escaped prior to this point :/)
+                     child_text = jQuery.fn.select2.defaults.defaults.escapeMarkup(child_text);
+                  }
+
+                  var match_child = fuzzy.match(searched_term, child_text, select2_fuzzy_opts);
+                  var match_text  = fuzzy.match(searched_term, data_text, select2_fuzzy_opts);
+                  if (match_child !== null || match_text !== null) {
+                     if (match_text !== null) {
+                        data.score         = match_text.score;
+                        data.rendered_text = match_text.rendered;
+                     }
+
+                     if (match_child !== null) {
+                        child.score         = match_child.score;
+                        child.rendered_text = match_child.rendered;
+                     }
+                     filteredChildren.push(child);
+                  }
+               });
+
+               // If we matched any of the group's children, then set the matched children on the group
+               // and return the group object
+               if (filteredChildren.length) {
+                  var modifiedData = $.extend({}, data, true);
+                  modifiedData.children = filteredChildren;
+
+                  // You can return modified objects from here
+                  // This includes matching the `children` how you want in nested data sets
+                  return modifiedData;
+               }
+
+               // Return `null` if the term should not be displayed
+               return null;
+            },
+            templateResult: templateResult,
+            templateSelection: templateSelection,
+         })
+         .bind('setValue', function(e, value) {
+            $('#dropdown_language673498350').val(value).trigger('change');
+         })
+         $('label[for=dropdown_language673498350]').on('click', function(){ $('#dropdown_language673498350').select2('open'); });
+         $('#dropdown_language673498350').on('select2:open', function(e){
+            const search_input = document.querySelector(`.select2-search__field[aria-controls='select2-${e.target.id}-results']`);
+            if (search_input) {
+               search_input.focus();
+            }
+         });
+      });
+
+//]]>
+</script><input type="hidden" name="_glpi_csrf_token" value="7172c850b3000bdd2aa7138dd6e9f853938d6a330eeeacabc5107cb77f26c391"></form>
+               </div>
+
+               <div class="dropdown-divider"></div>
+
+               <a href="http://glpi-project.org/documentation" class="dropdown-item" title="Aide">
+                  <i class="ti fa-fw ti-help"></i>
+                  Aide
+               </a>
+
+               <a href="#" class="dropdown-item" title="À propos" id="show_about_modal_1590210379">
+                  <i class="ti fa-fw ti-info-circle"></i>
+                  À propos
+                                       <span class="badge bg-info text-dark ms-2">
+                        1
+                     </span>
+                                 </a>
+
+               <div class="dropdown-divider"></div>
+
+               <a href="https://glpi.fontenay-aux-roses.fr/front/preference.php" class="dropdown-item" title="Mes préférences">
+                  <i class="ti fa-fw ti-adjustments-alt"></i>
+                  Mes préférences
+               </a>
+               <a href="https://glpi.fontenay-aux-roses.fr/front/logout.php?noAUTO=1" class="dropdown-item" title="Déconnexion">
+                  <i class="ti fa-fw ti-logout"></i>
+                  Déconnexion
+               </a>
+            </div>
+         </div>
+      </div>
+
+      <div class="modal fade" id="about_modal_1590210379" role="dialog">
+         <div class="modal-dialog">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h4 class="modal-title">À propos</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+               </div>
+               <div class="modal-body">
+                  <p><a href="http://glpi-project.org/" title="Powered by Teclib and contributors" class="copyright">
+                     GLPI 10.0.10
+                     Copyright (C) 2015-2023 Teclib' and contributors
+                  </a></p>
+                                       <p>
+                        <a href="http://www.glpi-project.org/" target="_blank" title="Vous la trouverez sur le site GLPI-PROJECT.org.">
+                           Une nouvelle version est disponible : 11.0.5
+                           <span class="badge bg-info text-dark">
+                              1
+                           </span>
+                        </a>
+                     </p>
+                                 </div>
+            </div>
+         </div>
+      </div>
+
+   </div>
+
+<script type="text/javascript">
+$(function() {
+   $("#show_about_modal_1590210379").click(function(e) {
+      e.preventDefault();
+      $("#about_modal_1590210379").remove().modal("show");
+   });
+});
+</script>
+
+            </div>
+         </div>
+      </header>
+
+      
+      <div class="page-wrapper mb-0">
+         <div class="page-body container-fluid">
+            <main role="main" id="page" class="legacy">
+<div style="background-image: url('/front/cron.php');"></div>
+
+
+<div class="container-lg">
+
+    
+   
+
+
+   
+   
+<form method="POST" action="/front/tracking.injector.php" enctype="multipart/form-data" data-track-changes="false" id="itil-form" class="new-itil-object" data-submit-once="">
+   <input type="hidden" name="id" value="0">
+   <input type="hidden" name="_glpi_csrf_token" value="7172c850b3000bdd2aa7138dd6e9f853938d6a330eeeacabc5107cb77f26c391">
+   <input type="hidden" name="_skip_default_actor" value="1">
+
+         <input type="hidden" name="_tickettemplate" value="1">
+            <input type="hidden" name="_predefined_fields" value="W10=">
+   
+         <input type="hidden" name="_from_helpdesk" value="1">
+         
+   
+   
+   
+         
+      
+   
+   
+
+   
+
+   <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">
+                Description de la demande ou de l'incident
+            </h3>
+        </div>
+
+        <div class="card-body bg-secondary-lt pt-0">
+                            <input type="hidden" name="_users_id_requester" value="1872">
+                    </div>
+        <div class="card-body row mx-0">
+            <div class="offset-md-1 col-md-8 col-xxl-6">
+                  
+   
+                     
+                              
+         
+         
+   
+            
+            
+   <div class="form-field row col-12  mb-2">
+          
+      
+      
+      
+   <label class="col-form-label col-lg-3 text-xxl-end" for="type_1320264529">
+      Type
+      
+      
+      
+   </label>
+
+            <div class="col-lg-9  field-container">
+         <select name="type" id="dropdown_type1320264529" class="form-select select2-hidden-accessible" onchange="this.form.submit()" size="1" data-select2-id="dropdown_type1320264529" tabindex="-1" aria-hidden="true"><option value="1">Incident</option><option value="2" selected="selected" data-select2-id="6">Demande</option></select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="5" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-dropdown_type1320264529-container"><span class="select2-selection__rendered" id="select2-dropdown_type1320264529-container" role="textbox" aria-readonly="true" title="Demande"><span>Demande</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span><script type="text/javascript">
+//<![CDATA[
+
+$(function() {
+         const select2_el = $('#dropdown_type1320264529').select2({
+            
+            width: '100%',
+            dropdownAutoWidth: true,
+            dropdownParent: $('#dropdown_type1320264529').closest('div.modal, div.dropdown-menu, body'),
+            quietMillis: 100,
+            minimumResultsForSearch: 50,
+            matcher: function(params, data) {
+               // store last search in the global var
+               query = params;
+
+               // If there are no search terms, return all of the data
+               if ($.trim(params.term) === '') {
+                  return data;
+               }
+
+               var searched_term = getTextWithoutDiacriticalMarks(params.term);
+               var data_text = typeof(data.text) === 'string'
+                  ? getTextWithoutDiacriticalMarks(data.text)
+                  : '';
+               var select2_fuzzy_opts = {
+                  pre: '<span class="select2-rendered__match">',
+                  post: '</span>',
+               };
+
+               if (data_text.indexOf('>') !== -1 || data_text.indexOf('<') !== -1) {
+                  // escape text, if it contains chevrons (can already be escaped prior to this point :/)
+                  data_text = jQuery.fn.select2.defaults.defaults.escapeMarkup(data_text);
+               }
+
+               // Skip if there is no 'children' property
+               if (typeof data.children === 'undefined') {
+                  var match  = fuzzy.match(searched_term, data_text, select2_fuzzy_opts);
+                  if (match == null) {
+                     return false;
+                  }
+                  data.rendered_text = match.rendered_text;
+                  data.score = match.score;
+                  return data;
+               }
+
+               // `data.children` contains the actual options that we are matching against
+               // also check in `data.text` (optgroup title)
+               var filteredChildren = [];
+
+               $.each(data.children, function (idx, child) {
+                  var child_text = typeof(child.text) === 'string'
+                     ? getTextWithoutDiacriticalMarks(child.text)
+                     : '';
+
+                  if (child_text.indexOf('>') !== -1 || child_text.indexOf('<') !== -1) {
+                     // escape text, if it contains chevrons (can already be escaped prior to this point :/)
+                     child_text = jQuery.fn.select2.defaults.defaults.escapeMarkup(child_text);
+                  }
+
+                  var match_child = fuzzy.match(searched_term, child_text, select2_fuzzy_opts);
+                  var match_text  = fuzzy.match(searched_term, data_text, select2_fuzzy_opts);
+                  if (match_child !== null || match_text !== null) {
+                     if (match_text !== null) {
+                        data.score         = match_text.score;
+                        data.rendered_text = match_text.rendered;
+                     }
+
+                     if (match_child !== null) {
+                        child.score         = match_child.score;
+                        child.rendered_text = match_child.rendered;
+                     }
+                     filteredChildren.push(child);
+                  }
+               });
+
+               // If we matched any of the group's children, then set the matched children on the group
+               // and return the group object
+               if (filteredChildren.length) {
+                  var modifiedData = $.extend({}, data, true);
+                  modifiedData.children = filteredChildren;
+
+                  // You can return modified objects from here
+                  // This includes matching the `children` how you want in nested data sets
+                  return modifiedData;
+               }
+
+               // Return `null` if the term should not be displayed
+               return null;
+            },
+            templateResult: templateResult,
+            templateSelection: templateSelection,
+         })
+         .bind('setValue', function(e, value) {
+            $('#dropdown_type1320264529').val(value).trigger('change');
+         })
+         $('label[for=dropdown_type1320264529]').on('click', function(){ $('#dropdown_type1320264529').select2('open'); });
+         $('#dropdown_type1320264529').on('select2:open', function(e){
+            const search_input = document.querySelector(`.select2-search__field[aria-controls='select2-${e.target.id}-results']`);
+            if (search_input) {
+               search_input.focus();
+            }
+         });
+      });
+
+//]]>
+</script>
+         
+      </div>
+   </div>
+
+                  
+
+                                                                                                                
+   
+   
+            
+   
+                     
+                              
+         
+         
+   
+            
+            
+   <div class="form-field row col-12  mb-2">
+          
+               
+      
+      
+   <label class="col-form-label col-lg-3 text-xxl-end" for="dropdown_itilcategories_id_1320264529">
+      Catégorie
+      
+      <span class="required">*</span>
+      
+   </label>
+
+            <div class="col-lg-9  field-container">
+               <div class="btn-group btn-group-sm" role="group" style="width: 100%"><script type="text/javascript">
+//<![CDATA[
+
+$(function() {
+         var params_dropdown_itilcategories_id1320264529 = {multiple: 0,
+values: [],
+valuesnames: [],
+display_emptychoice: 1,
+specific_tags: {"required":true},
+itemtype: "ITILCategory",
+displaywith: [],
+emptylabel: "-----",
+condition: "e259600b28bd099a0ffcd398a04dd24514e08a9d",
+used: [],
+toadd: [],
+entity_restrict: -1,
+permit_select_parent: 0,
+class: "form-select",
+_idor_token: "60510adf0bd0b3994eec35c68959475d4bfa31d6e880c43ec1e0cf4eaa02bbc3",
+order: null,
+};
+
+         const select2_el = $('#dropdown_itilcategories_id1320264529').select2({
+            width: 'calc(100% - ((1 * 0.9em) + (18px * 1)))',
+            multiple: '',
+            placeholder: "",
+            allowClear: false,
+            minimumInputLength: 0,
+            quietMillis: 100,
+            dropdownAutoWidth: true,
+            dropdownParent: $('#dropdown_itilcategories_id1320264529').closest('div.modal, div.dropdown-menu, body'),
+            minimumResultsForSearch: 50,
+            ajax: {
+               url: '/ajax/getDropdownValue.php',
+               dataType: 'json',
+               type: 'POST',
+               data: function (params) {
+                  query = params;
+                  return $.extend({}, params_dropdown_itilcategories_id1320264529, {
+                     searchText: params.term,
+                     page_limit: 100, // page size
+                     page: params.page || 1, // page number
+                  });
+               },
+               processResults: function (data, params) {
+                  params.page = params.page || 1;
+                  var more = (data.count >= 100);
+
+                  return {
+                     results: data.results,
+                     pagination: {
+                           more: more
+                     }
+                  };
+               }
+            },
+            templateResult: templateResult,
+            templateSelection: templateSelection
+         })
+         .bind('setValue', function(e, value) {
+            $.ajax('/ajax/getDropdownValue.php', {
+               data: $.extend({}, params_dropdown_itilcategories_id1320264529, {
+                  _one_id: value,
+               }),
+               dataType: 'json',
+               type: 'POST',
+            }).done(function(data) {
+
+               var iterate_options = function(options, value) {
+                  var to_return = false;
+                  $.each(options, function(index, option) {
+                     if (option.hasOwnProperty('id')
+                         && option.id == value) {
+                        to_return = option;
+                        return false; // act as break;
+                     }
+
+                     if (option.hasOwnProperty('children')) {
+                        to_return = iterate_options(option.children, value);
+                     }
+                  });
+
+                  return to_return;
+               };
+
+               var option = iterate_options(data.results, value);
+               if (option !== false) {
+                  var newOption = new Option(option.text, option.id, true, true);
+                   $('#dropdown_itilcategories_id1320264529').append(newOption).trigger('change');
+               }
+            });
+         });
+          $('#dropdown_itilcategories_id1320264529').on('change', function(e) {this.form.submit()}); $('label[for=dropdown_itilcategories_id1320264529]').on('click', function(){ $('#dropdown_itilcategories_id1320264529').select2('open'); }); $('#dropdown_itilcategories_id1320264529').on('select2:open', function(e){    const search_input = document.querySelector(`.select2-search__field[aria-controls='select2-${e.target.id}-results']`);    if (search_input) {       search_input.focus();    } });});
+
+//]]>
+</script><select name="itilcategories_id" id="dropdown_itilcategories_id1320264529" required="1" class="form-select select2-hidden-accessible" data-select2-id="dropdown_itilcategories_id1320264529" tabindex="-1" aria-hidden="true"><option value="0" data-select2-id="8" selected="selected">-----</option></select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="7" style="width: calc(100% - 0.9em - 18px);"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-dropdown_itilcategories_id1320264529-container"><span class="select2-selection__rendered" id="select2-dropdown_itilcategories_id1320264529-container" role="textbox" aria-readonly="true" title="-----"><span>-----</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span> <script type="text/javascript">$(function() {$('#dropdown_itilcategories_id1320264529').on(
+               'change',
+               function(event) {$('#comment_itilcategories_id1320264529').load('/ajax/comments.php'
+)
+});
+});</script><span id="tooltip1932468387" class="fas btn btn-outline-secondary fa-info fa-fw" data-hasqtip="0"></span><div id="comment_itilcategories_id1320264529" class="tooltip-invisible">Montrer Catégories ITIL</div><script type="text/javascript">
+//<![CDATA[
+
+$(function(){$('#tooltip1932468387').qtip({
+         position: { viewport: $(window) },
+         content: {text: $('#comment_itilcategories_id1320264529')}, style: { classes: 'qtip-shadow qtip-bootstrap'}, hide: {
+                  fixed: true,
+                  delay: 200,
+                  leave: false,
+                  when: { event: 'unfocus' }
+                }});});
+
+//]]>
+</script></div>
+   
+         
+      </div>
+   </div>
+
+                  
+   
+
+                  
+   
+                     
+                              
+         
+         
+   
+            
+            
+   <div class="form-field row col-12  mb-2">
+          
+      
+      
+      
+   <label class="col-form-label col-lg-3 text-xxl-end" for="urgency_1320264529">
+      Urgence
+      
+      
+      
+   </label>
+
+            <div class="col-lg-9  field-container">
+         <select name="urgency" id="dropdown_urgency931822500" class="form-select select2-hidden-accessible" size="1" data-select2-id="dropdown_urgency931822500" tabindex="-1" aria-hidden="true"><option value="5">Très haute</option><option value="4">Haute</option><option value="3" selected="selected" data-select2-id="10">Moyenne</option><option value="2">Basse</option><option value="1">Très basse</option></select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="9" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-dropdown_urgency931822500-container"><span class="select2-selection__rendered" id="select2-dropdown_urgency931822500-container" role="textbox" aria-readonly="true" title="Moyenne"><span>Moyenne</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span><script type="text/javascript">
+//<![CDATA[
+
+$(function() {
+         const select2_el = $('#dropdown_urgency931822500').select2({
+            
+            width: '100%',
+            dropdownAutoWidth: true,
+            dropdownParent: $('#dropdown_urgency931822500').closest('div.modal, div.dropdown-menu, body'),
+            quietMillis: 100,
+            minimumResultsForSearch: 50,
+            matcher: function(params, data) {
+               // store last search in the global var
+               query = params;
+
+               // If there are no search terms, return all of the data
+               if ($.trim(params.term) === '') {
+                  return data;
+               }
+
+               var searched_term = getTextWithoutDiacriticalMarks(params.term);
+               var data_text = typeof(data.text) === 'string'
+                  ? getTextWithoutDiacriticalMarks(data.text)
+                  : '';
+               var select2_fuzzy_opts = {
+                  pre: '<span class="select2-rendered__match">',
+                  post: '</span>',
+               };
+
+               if (data_text.indexOf('>') !== -1 || data_text.indexOf('<') !== -1) {
+                  // escape text, if it contains chevrons (can already be escaped prior to this point :/)
+                  data_text = jQuery.fn.select2.defaults.defaults.escapeMarkup(data_text);
+               }
+
+               // Skip if there is no 'children' property
+               if (typeof data.children === 'undefined') {
+                  var match  = fuzzy.match(searched_term, data_text, select2_fuzzy_opts);
+                  if (match == null) {
+                     return false;
+                  }
+                  data.rendered_text = match.rendered_text;
+                  data.score = match.score;
+                  return data;
+               }
+
+               // `data.children` contains the actual options that we are matching against
+               // also check in `data.text` (optgroup title)
+               var filteredChildren = [];
+
+               $.each(data.children, function (idx, child) {
+                  var child_text = typeof(child.text) === 'string'
+                     ? getTextWithoutDiacriticalMarks(child.text)
+                     : '';
+
+                  if (child_text.indexOf('>') !== -1 || child_text.indexOf('<') !== -1) {
+                     // escape text, if it contains chevrons (can already be escaped prior to this point :/)
+                     child_text = jQuery.fn.select2.defaults.defaults.escapeMarkup(child_text);
+                  }
+
+                  var match_child = fuzzy.match(searched_term, child_text, select2_fuzzy_opts);
+                  var match_text  = fuzzy.match(searched_term, data_text, select2_fuzzy_opts);
+                  if (match_child !== null || match_text !== null) {
+                     if (match_text !== null) {
+                        data.score         = match_text.score;
+                        data.rendered_text = match_text.rendered;
+                     }
+
+                     if (match_child !== null) {
+                        child.score         = match_child.score;
+                        child.rendered_text = match_child.rendered;
+                     }
+                     filteredChildren.push(child);
+                  }
+               });
+
+               // If we matched any of the group's children, then set the matched children on the group
+               // and return the group object
+               if (filteredChildren.length) {
+                  var modifiedData = $.extend({}, data, true);
+                  modifiedData.children = filteredChildren;
+
+                  // You can return modified objects from here
+                  // This includes matching the `children` how you want in nested data sets
+                  return modifiedData;
+               }
+
+               // Return `null` if the term should not be displayed
+               return null;
+            },
+            templateResult: templateResult,
+            templateSelection: templateSelection,
+         })
+         .bind('setValue', function(e, value) {
+            $('#dropdown_urgency931822500').val(value).trigger('change');
+         })
+         $('label[for=dropdown_urgency931822500]').on('click', function(){ $('#dropdown_urgency931822500').select2('open'); });
+         $('#dropdown_urgency931822500').on('select2:open', function(e){
+            const search_input = document.querySelector(`.select2-search__field[aria-controls='select2-${e.target.id}-results']`);
+            if (search_input) {
+               search_input.focus();
+            }
+         });
+      });
+
+//]]>
+</script>
+         
+      </div>
+   </div>
+
+                  
+
+                                 
+                     
+   
+                     
+                              
+         
+         
+   
+            
+            
+   <div class="form-field row col-12  mb-2">
+          
+      
+      
+      
+   <label class="col-form-label col-lg-3 text-xxl-end" for="items_id_1320264529">
+      Éléments associés
+      
+      
+      
+   </label>
+
+            <div class="col-lg-9  field-container">
+                              <a class="btn btn-sm btn-ghost-secondary mt-2" role="button" id="btn-collapse-items1320264529" aria-expanded="false" aria-controls="collapse-items1320264529" data-bs-toggle="collapse" href="#collapse-items1320264529">
+                        <i class="fas fa-plus"></i>
+                     </a>
+                     <div class="collapse" id="collapse-items1320264529">
+                        
+<div id="itemAddForm773091463">
+         <div id="tracking_my_devices" class="input-group mb-1"><span class="input-group-text">Mes éléments</span><select name="my_items" id="dropdown_my_items773091463" class="form-select select2-hidden-accessible" size="1" data-select2-id="dropdown_my_items773091463" tabindex="-1" aria-hidden="true"><option value="" selected="selected" data-select2-id="12">-----</option></select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="11"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-dropdown_my_items773091463-container"><span class="select2-selection__rendered" id="select2-dropdown_my_items773091463-container" role="textbox" aria-readonly="true" title="-----"><span>-----</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span><script type="text/javascript">
+//<![CDATA[
+
+$(function() {
+         const select2_el = $('#dropdown_my_items773091463').select2({
+            
+            width: '',
+            dropdownAutoWidth: true,
+            dropdownParent: $('#dropdown_my_items773091463').closest('div.modal, div.dropdown-menu, body'),
+            quietMillis: 100,
+            minimumResultsForSearch: 50,
+            matcher: function(params, data) {
+               // store last search in the global var
+               query = params;
+
+               // If there are no search terms, return all of the data
+               if ($.trim(params.term) === '') {
+                  return data;
+               }
+
+               var searched_term = getTextWithoutDiacriticalMarks(params.term);
+               var data_text = typeof(data.text) === 'string'
+                  ? getTextWithoutDiacriticalMarks(data.text)
+                  : '';
+               var select2_fuzzy_opts = {
+                  pre: '<span class="select2-rendered__match">',
+                  post: '</span>',
+               };
+
+               if (data_text.indexOf('>') !== -1 || data_text.indexOf('<') !== -1) {
+                  // escape text, if it contains chevrons (can already be escaped prior to this point :/)
+                  data_text = jQuery.fn.select2.defaults.defaults.escapeMarkup(data_text);
+               }
+
+               // Skip if there is no 'children' property
+               if (typeof data.children === 'undefined') {
+                  var match  = fuzzy.match(searched_term, data_text, select2_fuzzy_opts);
+                  if (match == null) {
+                     return false;
+                  }
+                  data.rendered_text = match.rendered_text;
+                  data.score = match.score;
+                  return data;
+               }
+
+               // `data.children` contains the actual options that we are matching against
+               // also check in `data.text` (optgroup title)
+               var filteredChildren = [];
+
+               $.each(data.children, function (idx, child) {
+                  var child_text = typeof(child.text) === 'string'
+                     ? getTextWithoutDiacriticalMarks(child.text)
+                     : '';
+
+                  if (child_text.indexOf('>') !== -1 || child_text.indexOf('<') !== -1) {
+                     // escape text, if it contains chevrons (can already be escaped prior to this point :/)
+                     child_text = jQuery.fn.select2.defaults.defaults.escapeMarkup(child_text);
+                  }
+
+                  var match_child = fuzzy.match(searched_term, child_text, select2_fuzzy_opts);
+                  var match_text  = fuzzy.match(searched_term, data_text, select2_fuzzy_opts);
+                  if (match_child !== null || match_text !== null) {
+                     if (match_text !== null) {
+                        data.score         = match_text.score;
+                        data.rendered_text = match_text.rendered;
+                     }
+
+                     if (match_child !== null) {
+                        child.score         = match_child.score;
+                        child.rendered_text = match_child.rendered;
+                     }
+                     filteredChildren.push(child);
+                  }
+               });
+
+               // If we matched any of the group's children, then set the matched children on the group
+               // and return the group object
+               if (filteredChildren.length) {
+                  var modifiedData = $.extend({}, data, true);
+                  modifiedData.children = filteredChildren;
+
+                  // You can return modified objects from here
+                  // This includes matching the `children` how you want in nested data sets
+                  return modifiedData;
+               }
+
+               // Return `null` if the term should not be displayed
+               return null;
+            },
+            templateResult: templateResult,
+            templateSelection: templateSelection,
+         })
+         .bind('setValue', function(e, value) {
+            $('#dropdown_my_items773091463').val(value).trigger('change');
+         })
+         $('label[for=dropdown_my_items773091463]').on('click', function(){ $('#dropdown_my_items773091463').select2('open'); });
+         $('#dropdown_my_items773091463').on('select2:open', function(e){
+            const search_input = document.querySelector(`.select2-search__field[aria-controls='select2-${e.target.id}-results']`);
+            if (search_input) {
+               search_input.focus();
+            }
+         });
+      });
+
+//]]>
+</script><span id="item_ticket_selection_information773091463" class="ms-1"></span></div><script type="text/javascript">$(function() {$('#dropdown_my_items773091463').on(
+               'change',
+               function(event) {$('#item_ticket_selection_information773091463').load('/ajax/ticketiteminformation.php'
+,{my_items:$('#dropdown_my_items773091463').val()}
+)
+});
+});</script>
+      <div id="tracking_all_devices773091463" class="input-group mb-1"></div>
+      <a href="javascript:itemAction773091463('add');" class="btn btn-sm btn-outline-secondary">
+         <i class="fas fa-plus"></i>
+         <span>Ajouter</span>
+      </a>
+   
+   
+         <input type="hidden" value="0" name="items_id">
+   
+         <script>
+      function refreshItemCounter773091463() {
+         const item_form = $("#itemAddForm773091463");
+         let item_count = item_form.find('input[type="hidden"][name^="items_id["]').length;
+         item_form.closest('.accordion-item').find('.item-counter').text(item_count);
+      }
+
+      function itemAction773091463(action, itemtype, items_id) {
+          if (itemtype === undefined && items_id === undefined) {
+              const my_items_dropdown = $('#dropdown_my_items773091463');
+              if (my_items_dropdown.length > 0) {
+                 const val = my_items_dropdown.val();
+                 if (val && val.includes('_')) {
+                    itemtype = val.split('_')[0];
+                    items_id = val.split('_')[1];
+                 }
+              }
+              if (itemtype === undefined && items_id === undefined) {
+                  const dropdown_itemtype = $('#dropdown_itemtype773091463');
+                  const dropdown_items_id = $('#dropdown_add_items_id773091463');
+                  if (dropdown_itemtype.length > 0 && dropdown_items_id.length > 0) {
+                      itemtype = dropdown_itemtype.val();
+                      items_id = dropdown_items_id.val();
+                  }
+              }
+          }
+         if (!itemtype || !items_id) {
+            glpi_toast_error(__('Please select an item to add'));
+            return;
+         }
+         $.ajax({
+            url: CFG_GLPI.root_doc + '/ajax/itemTicket.php',
+            dataType: 'html',
+            data: {
+               'action': action,
+               'rand': 773091463,
+               'params': {"templates_id":1,"id":0,"_users_id_requester":1872,"items_id":[],"itemtype":"","_canupdate":4,"entities_id":2},
+               'my_items': $('#dropdown_my_items773091463').val(),
+               'itemtype': itemtype,
+               'items_id': items_id,
+            },
+            success: function(response) {
+               $("#itemAddForm773091463").replaceWith(response);
+            }
+         });
+      }
+      refreshItemCounter773091463();
+   </script>
+</div>
+                     </div>
+                  
+         
+      </div>
+   </div>
+
+                  
+               
+                                                      
+   
+                     
+                              
+         
+         
+   
+            
+            
+   <div class="form-field row col-12  mb-2">
+          
+      
+      
+      
+   <label class="col-form-label col-lg-3 text-xxl-end" for="observer_1320264529">
+      Observateurs
+      
+      
+      
+   </label>
+
+            <div class="col-lg-9  field-container">
+         
+                     
+
+
+   
+
+
+
+                  
+
+
+
+
+
+   <select class="form-select select2-hidden-accessible" multiple="multiple" id="actor_229723372" data-actor-type="observer" data-select2-id="actor_229723372" tabindex="-1" aria-hidden="true">
+      </select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="13" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--multiple actor-field" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1" aria-disabled="false"><ul class="select2-selection__rendered"><li class="select2-search select2-search--inline"><input class="select2-search__field" type="search" tabindex="0" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" role="searchbox" aria-autocomplete="list" placeholder="" style="width: 0.75em;"></li></ul></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+
+   
+   <script type="text/javascript">
+   $(function() {
+      var actorytype = 'observer';
+
+      // function to display an option in the list or the selected input
+      var genericTemplate_229723372 = function(option = {}, is_selection = false) {
+         var element   = $(option.element);
+         var itemtype  = element.data('itemtype') ?? option.itemtype;
+         var items_id  = element.data('items-id') ?? option.items_id;
+         var text      = escapeMarkupText(element.data('text') ?? option.text ?? '');
+         var title     = escapeMarkupText(element.data('title') ?? option.title ?? '');
+         var use_notif = element.data('use-notification') ?? option.use_notification ?? 1;
+         var alt_email = element.data('alternative-email') ?? option.alternative_email ?? '';
+
+         var icon = "";
+         var fk   = "";
+         switch (itemtype) {
+            case "User":
+               if (items_id == 0) {
+                  text = alt_email;
+                  icon = `<i class="ti  fa-fw ti-mail mx-1" title="Email direct"></i>`;
+               } else {
+                  icon = `<i class="ti  fa-fw ti-user mx-1" title="Utilisateur"></i>`;
+               }
+               if ("observer" == "assign") {
+                  fk = "users_id_assign";
+               } else if ("observer" == "requester") {
+                  fk = "users_id_requester";
+               } else if ("observer" == "observer") {
+                  fk = "users_id_observer";
+               }
+               break;
+            case "Group":
+               icon = `<i class="ti  fa-fw ti-users mx-1" title="Groupe"></i>`;
+               if ("observer" == "assign") {
+                  fk = "groups_id_assign";
+               } else if ("observer" == "requester") {
+                  fk = "groups_id_requester";
+               } else if ("observer" == "observer") {
+                  fk = "groups_id_observer";
+               }
+               break;
+            case "Supplier":
+               icon = `<i class="ti fa-fw ti-package mx-1" title="Fournisseur"></i>`;
+               fk   = "suppliers_id_assign";
+               break;
+         }
+
+         var actions = "";
+                  if (['User', 'Supplier', 'Email'].includes(itemtype)
+            && is_selection) {
+            var fa_class = "far";
+            if (use_notif) {
+               fa_class = "fas";
+            }
+            actions = `<button class="btn btn-sm btn-ghost-secondary edit-notify-user"
+                              data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Suivi par courriel"
+                              type="button">
+               <i class="${fa_class} fa-bell notify-icon"></i>
+            </button>`;
+         }
+         
+         // manage specific display for tree data (like groups)
+         var indent = "";
+         if (!is_selection && "level" in option && option.level > 1) {
+            for (let index = 1; index < option.level; index++) {
+               indent = "&nbsp;&nbsp;&nbsp;"+indent;
+            }
+            indent = indent+"&raquo;";
+         }
+
+         // prepare html for option element
+         var text = (is_selection && itemtype == "Group") ? title : text;
+         var option_text    = `<span class="actor_text">${text}</span>`;
+         var option_element = $(`<span class="actor_entry" data-itemtype="${itemtype}" data-items-id="${items_id}" data-actortype="${actorytype}">${indent}${icon}${option_text}${actions}</span>`);
+
+          if (is_selection && itemtype == "User") {
+              const unique_id = "user_opt_" + actor_select.attr('data-actor-type') + "User" + items_id;
+              $.ajax({
+                  url: '/ajax/comments.php',
+                  type: 'POST',
+                  data: {
+                      'itemtype': 'User',
+                      'value': items_id,
+                  }
+              }).then((result) => {
+                  if (result) {
+                      actor_select.parent().append('<' + `div id="content${unique_id}" style="display: none;">` + result + '<' + '/div>');
+                      option_element.attr('data-glpi-popover-source', `content${unique_id}`);
+                  }
+              });
+          }
+
+         // manage ticket information (number of assigned ticket for an actor)
+         if (is_selection && itemtype != "Email") {
+            var label = '';
+            if ("observer" == "assign") {
+               label = "Nombre de tickets déjà attribués";
+            } else if ("observer" == "requester") {
+               label = "Nombre de tickets en tant que demandeur";
+            }
+            var existing_element = $(
+               `<span class="assign_infos ms-1" title="${label}"
+                     data-bs-toggle="tooltip" data-bs-placement="top"
+                     data-id="${items_id}" data-fk="${fk}">
+                  <i class="fas fa-spinner fa-spin"></i>
+               </span>`
+            );
+            option_element.append(existing_element);
+
+            $.get("/ajax/actorinformation.php", {
+               [fk]: items_id,
+               only_number: true,
+            }).done(function (number) {
+               var badge = "";
+               if (number.length > 0) {
+                  badge = `<span class="badge bg-secondary-lt">
+                  ${number}
+               </span>`;
+               }
+               existing_element.html(badge);
+            });
+         }
+
+         return option_element;
+      };
+
+      var select2_width = "100%";
+
+      const actor_select = $("#actor_229723372");
+      actor_select.select2({
+         tags: true,
+         width: select2_width,
+         tokenSeparators: [',', ' '],
+         disabled: false, // TODO can edit
+         containerCssClass: 'actor-field',
+         templateSelection: function(option) { return genericTemplate_229723372(option, true); },
+         templateResult:    function(option) { return genericTemplate_229723372(option, false); },
+         disabled: false,
+         createTag: function (params) {
+            var term = $.trim(params.term);
+
+            if (term === '') {
+               return null;
+            }
+
+            // Don't offset to create a tag if it's not an email
+            if (!new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,63}$/).test(term)) {
+               // Return null to disable tag creation
+               return null;
+            }
+
+            return {
+               id: term,
+               text: term,
+               itemtype: "User",
+               items_id: 0,
+               use_notification: 1,
+               alternative_email: term,
+            }
+         },
+         ajax: {
+            url: '/ajax/actors.php',
+            datatype: 'json',
+            type: 'POST',
+            delay:250,
+            data: function (params) {
+               var is_new_item = true;
+               return {
+                  action: 'getActors',
+                  actortype: actorytype,
+                  users_right: 'all',
+                  entity_restrict: (actors.requester.length == 0 && is_new_item) ? -1 : 2,
+                  searchText: params.term,
+                  _idor_token: 'ca2a1ab4218c65591a53b3d7b657022e7a252399ecd3e54d88cf99330b7f36cb',
+                  itiltemplate_class: 'TicketTemplate',
+                  itiltemplates_id: 1,
+                  itemtype: 'Ticket',
+                  items_id: -1,
+                  item: {"id":"","entities_id":2,"name":"","date":"","closedate":"","solvedate":"","takeintoaccountdate":"","date_mod":"","users_id_lastupdater":"","status":"","users_id_recipient":"","requesttypes_id":"","content":"","urgency":"","impact":"","priority":"","itilcategories_id":"","type":"","global_validation":"","slas_id_tto":"","slas_id_ttr":"","slalevels_id_ttr":"","time_to_resolve":"","time_to_own":"","begin_waiting_date":"","sla_waiting_duration":"","ola_waiting_duration":"","olas_id_tto":"","olas_id_ttr":"","olalevels_id_ttr":"","ola_ttr_begin_date":"","internal_time_to_resolve":"","internal_time_to_own":"","waiting_duration":"","close_delay_stat":"","solve_delay_stat":"","takeintoaccount_delay_stat":"","actiontime":"","is_deleted":"","locations_id":"","validation_percent":"","date_creation":"","ola_tto_begin_date":""},
+                  returned_itemtypes: ["User","Group","Supplier"],
+                  page: params.page || 1
+               };
+            },
+         }
+      }).on('select2:open', () => {
+          // Close popovers
+          $('.popover').popover('hide');
+      });
+
+       actor_select.parent().popover({
+           selector: '[data-glpi-popover-source]',
+           container: actor_select.parent(),
+           html: true,
+           sanitize: false,
+           trigger: 'hover',
+           delay: {
+               hide: 300
+           },
+           template: '<' + 'div class="popover shadow" role="tooltip"><' + 'div class="popover-arrow"><' + '/div><' + 'h3 class="popover-header"><' + '/h3><' + 'div class="popover-body"><' + '/div><' + '/div>',
+           content: function() {
+               // Close other popovers
+               $('.popover').popover('hide');
+               return $('#' + $(this).attr('data-glpi-popover-source')).html();
+           }
+       }).on('hide.bs.popover', function () {
+            // prevent closing popover when user card is hover
+            if ($('.user-info-card:hover').length > 0) {
+                return false;
+            }
+        });
+
+        // when the mouse leave the user card in the popover, close it
+        $(document).on('mouseleave', '.user-info-card', function() {
+            setTimeout(() => {
+                $('.popover').popover('hide');
+            }, 300);
+        });
+
+      // manage actors change
+      var updateActors229723372 = function() {
+         var data = $("#actor_229723372").select2('data');
+
+         var new_actors = [];
+         data.forEach(function(selection) {
+            var element = $(selection.element);
+
+            var itemtype  = selection.itemtype ?? element.data('itemtype');
+            var items_id  = selection.items_id ?? element.data('items-id');
+            var use_notif = selection.use_notification  ?? element.data('use-notification')  ?? false;
+            var def_email = selection.default_email ?? element.data('default-email') ?? '';
+            var alt_email = selection.alternative_email ?? element.data('alternative-email') ?? '';
+
+            if (itemtype == "Email") {
+               itemtype  = "User";
+               use_notif = true;
+               alt_email = selection.id;
+            }
+
+            new_actors.push({
+               itemtype: itemtype,
+               items_id: items_id,
+               use_notification: use_notif,
+               default_email: def_email,
+               alternative_email: alt_email,
+            });
+         });
+
+         actors[actorytype] = new_actors;
+
+         saveActorsToDom();
+      };
+      $("#actor_229723372").on('select2:select', function () {
+         updateActors229723372();
+         
+      });
+      $("#actor_229723372").on('select2:unselect', function () {
+         updateActors229723372();
+         
+      });
+
+      // intercept event for edit notification button
+      document.addEventListener('click', event => {
+         if (event.target.closest("#actor_229723372 + .select2 .edit-notify-user")) {
+            return openNotifyModal(event);
+         }
+         // if a click on assign info is detected prevent opening of select2
+         if (event.target.closest("#actor_229723372 + .select2 .assign_infos")) {
+            event.stopPropagation();
+         }
+      }, {capture: true})
+      document.addEventListener('keydown', event => {
+         if (event.target.closest("#actor_229723372 + .select2 .edit-notify-user")
+            && event.key == "Enter") {
+            return openNotifyModal(event);
+         }
+      }, {capture: true})
+
+               });
+   </script>
+
+   
+   
+
+<input type="hidden" name="_actors" id="_actors" value="{&quot;requester&quot;:[{&quot;itemtype&quot;:&quot;User&quot;,&quot;items_id&quot;:&quot;1872&quot;,&quot;use_notification&quot;:1,&quot;alternative_email&quot;:&quot;&quot;,&quot;default_email&quot;:&quot;luca.da-silva@fontenay-aux-roses.fr&quot;}],&quot;observer&quot;:[],&quot;assign&quot;:[]}">
+
+<div class="modal fade" id="editActorNotifySettings" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+         <h5 class="modal-title">
+            <i class="fas fa-envelope"></i>
+            &nbsp;Éditer les paramètres de notifications
+         </h5>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body">
+         <div class="mb-3">
+            <label class="form-label" for="actorname">Acteur</label>
+            <input type="text" class="form-control" id="actorname" name="_notifications_actorname">
+            <input type="hidden" name="_notifications_actortype" value="">
+            <input type="hidden" name="_notifications_actorindex" value="">
+         </div>
+         <div class="mb-3">
+            <label for="alternative_email" class="form-label">Courriel</label>
+            <div class="form-check form-switch">
+               <input class="form-check-input" type="checkbox" id="use_notification" name="_notifications_use_notification">
+               <label class="form-check-label" for="use_notification">Suivi par courriel</label>
+            </div>
+            <input type="email" class="form-control" id="alternative_email" name="_notifications_alternative_email">
+         </div>
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+            <i class="ti ti-x"></i>
+            <span>Fermer<span>
+         </span></span></button>
+         <button type="button" class="btn btn-primary" id="saveActorNotifySettings">
+            <i class="far fa-save"></i>
+            <span>Enregistrer</span>
+         </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+   /* global bootstrap */
+   var editActorNotifySettings_modal = null;
+   $(function () {
+      editActorNotifySettings_modal = new bootstrap.Modal(document.getElementById('editActorNotifySettings'), {});
+   });
+
+   var actors = {
+               requester: [
+                        {
+               itemtype: "User",
+               items_id: "1872",
+               use_notification: 1,
+               alternative_email: "",
+               default_email: "luca.da-silva@fontenay-aux-roses.fr",
+            },
+                     ],
+               observer: [
+                     ],
+               assign: [
+                     ],
+         };
+
+   // edit email preference when .edit-notify-user button is activated
+   function openNotifyModal(event) {
+      event.stopPropagation();
+
+      var element = $(event.target).closest('.actor_entry');
+      var itemtype  = element.data('itemtype');
+      var items_id  = element.data('items-id');
+      var actortype = element.data('actortype');
+      var text      = element.data('text');
+
+      var actorIndex = actors[actortype].findIndex(element => (element.itemtype == itemtype && element.items_id == items_id));
+      var actor      = actors[actortype][actorIndex];
+
+      var modal = $('#editActorNotifySettings');
+      modal.find("input[name=_notifications_actortype]").val(actortype);
+      modal.find("input[name=_notifications_actorindex]").val(actorIndex);
+      modal.find("input[name=_notifications_actorname]").removeAttr('readonly').val(text).attr('readonly', 'true');
+      modal.find("input[name=_notifications_use_notification]").prop('checked', parseInt(actor.use_notification));
+      modal.find("input[name=_notifications_alternative_email]").attr('placeholder', actor.default_email);
+      modal.find("input[name=_notifications_alternative_email]").val(actor.alternative_email);
+
+      editActorNotifySettings_modal.show();
+   }
+
+   // save edited actor when clicking on save button
+   $(document).on('click', '#saveActorNotifySettings', function(event) {
+      saveNotificationSettings();
+   });
+
+   // prevent submit on enter key in modal (but save notification settings)
+   $(document).on('keyup keypress', '#editActorNotifySettings input', function(event) {
+      var keyCode = event.keyCode || event.which;
+      if (keyCode === 13) {
+         event.preventDefault();
+         saveNotificationSettings();
+         return false;
+      }
+   });
+
+   // save settings from modal (get modal data, and serialize them into input hidden)
+   function saveNotificationSettings() {
+      var modal = $('#editActorNotifySettings');
+      var actortype  = modal.find("input[name=_notifications_actortype]").val();
+      var actorIndex = modal.find("input[name=_notifications_actorindex]").val();
+      var use_notif  = (modal.find("input[name=_notifications_use_notification]").is(":checked") ? 1 : 0);
+      var alt_email  = modal.find("input[name=_notifications_alternative_email]").val();
+
+      var actor = actors[actortype][actorIndex];
+      actor.use_notification = use_notif;
+      actor.alternative_email = alt_email;
+
+      // update notif setting icon for actor
+      var fa_class = "far";
+      if (use_notif) {
+         fa_class = "fas";
+      }
+
+      var actor_entry = $('.actor_entry[data-itemtype='+actor.itemtype+'][data-items-id='+actor.items_id+'][data-actortype='+actortype+']');
+
+      // toggle notify icon
+      actor_entry.find('.notify-icon')
+         .removeClass('fas far')
+         .addClass(fa_class);
+
+      // toggle text for direct email
+      if (actor.itemtype == "User" && parseInt(actor.items_id) == 0) {
+         actor_entry.find('.actor_text').html(alt_email);
+      }
+
+
+      editActorNotifySettings_modal.hide();
+      saveActorsToDom();
+   }
+
+   // save actors object to dom
+   function saveActorsToDom() {
+      $('#_actors').val(JSON.stringify(actors));
+   }
+   saveActorsToDom();
+</script>
+
+                  
+         
+      </div>
+   </div>
+
+                  
+               
+                         
+   
+   
+            
+   
+                     
+                              
+         
+         
+   
+            
+            
+   <div class="form-field row col-12  mb-2">
+          
+      
+      
+      
+   <label class="col-form-label col-lg-3 text-xxl-end" for="dropdown_locations_id_1320264529">
+      Lieu
+      
+      
+      
+   </label>
+
+            <div class="col-lg-9  field-container">
+               <div class="btn-group btn-group-sm" role="group" style="width: 100%"><script type="text/javascript">
+//<![CDATA[
+
+$(function() {
+         var params_dropdown_locations_id1320264529 = {multiple: 0,
+values: [],
+valuesnames: [],
+display_emptychoice: 1,
+specific_tags: [],
+itemtype: "Location",
+displaywith: [],
+emptylabel: "-----",
+condition: [],
+used: [],
+toadd: [],
+entity_restrict: -1,
+permit_select_parent: 0,
+class: "form-select",
+_idor_token: "42f01fb4d3cf8af9c2054951d00fddc2802a1731a80977c7a2ea5eab10d6860c",
+order: null,
+};
+
+         const select2_el = $('#dropdown_locations_id1320264529').select2({
+            width: 'calc(100% - ((2 * 0.9em) + (18px * 2)))',
+            multiple: '',
+            placeholder: "",
+            allowClear: false,
+            minimumInputLength: 0,
+            quietMillis: 100,
+            dropdownAutoWidth: true,
+            dropdownParent: $('#dropdown_locations_id1320264529').closest('div.modal, div.dropdown-menu, body'),
+            minimumResultsForSearch: 50,
+            ajax: {
+               url: '/ajax/getDropdownValue.php',
+               dataType: 'json',
+               type: 'POST',
+               data: function (params) {
+                  query = params;
+                  return $.extend({}, params_dropdown_locations_id1320264529, {
+                     searchText: params.term,
+                     page_limit: 100, // page size
+                     page: params.page || 1, // page number
+                  });
+               },
+               processResults: function (data, params) {
+                  params.page = params.page || 1;
+                  var more = (data.count >= 100);
+
+                  return {
+                     results: data.results,
+                     pagination: {
+                           more: more
+                     }
+                  };
+               }
+            },
+            templateResult: templateResult,
+            templateSelection: templateSelection
+         })
+         .bind('setValue', function(e, value) {
+            $.ajax('/ajax/getDropdownValue.php', {
+               data: $.extend({}, params_dropdown_locations_id1320264529, {
+                  _one_id: value,
+               }),
+               dataType: 'json',
+               type: 'POST',
+            }).done(function(data) {
+
+               var iterate_options = function(options, value) {
+                  var to_return = false;
+                  $.each(options, function(index, option) {
+                     if (option.hasOwnProperty('id')
+                         && option.id == value) {
+                        to_return = option;
+                        return false; // act as break;
+                     }
+
+                     if (option.hasOwnProperty('children')) {
+                        to_return = iterate_options(option.children, value);
+                     }
+                  });
+
+                  return to_return;
+               };
+
+               var option = iterate_options(data.results, value);
+               if (option !== false) {
+                  var newOption = new Option(option.text, option.id, true, true);
+                   $('#dropdown_locations_id1320264529').append(newOption).trigger('change');
+               }
+            });
+         });
+          $('label[for=dropdown_locations_id1320264529]').on('click', function(){ $('#dropdown_locations_id1320264529').select2('open'); }); $('#dropdown_locations_id1320264529').on('select2:open', function(e){    const search_input = document.querySelector(`.select2-search__field[aria-controls='select2-${e.target.id}-results']`);    if (search_input) {       search_input.focus();    } });});
+
+//]]>
+</script><select name="locations_id" id="dropdown_locations_id1320264529" class="form-select select2-hidden-accessible" data-select2-id="dropdown_locations_id1320264529" tabindex="-1" aria-hidden="true"><option value="0" data-select2-id="15" selected="selected">-----</option></select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="14" style="width: calc(100% - 1.8em - 36px);"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-dropdown_locations_id1320264529-container"><span class="select2-selection__rendered" id="select2-dropdown_locations_id1320264529-container" role="textbox" aria-readonly="true" title="-----"><span>-----</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span> <script type="text/javascript">$(function() {$('#dropdown_locations_id1320264529').on(
+               'change',
+               function(event) {$('#comment_locations_id1320264529').load('/ajax/comments.php'
+)
+});
+});</script><span id="tooltip1113515544" class="fas btn btn-outline-secondary fa-info fa-fw" data-hasqtip="1"></span><div id="comment_locations_id1320264529" class="tooltip-invisible">Montrer Lieux</div><script type="text/javascript">
+//<![CDATA[
+
+$(function(){$('#tooltip1113515544').qtip({
+         position: { viewport: $(window) },
+         content: {text: $('#comment_locations_id1320264529')}, style: { classes: 'qtip-shadow qtip-bootstrap'}, hide: {
+                  fixed: true,
+                  delay: 200,
+                  leave: false,
+                  when: { event: 'unfocus' }
+                }});});
+
+//]]>
+</script><div class="btn btn-outline-secondary"><span title="" data-bs-toggle="tooltip" onclick="showMapForLocation(this)" data-fid="dropdown_locations_id1320264529" data-bs-original-title="Afficher sur la carte">
+               <i class="fa-fw ti ti-map"></i>
+            </span></div></div>
+   
+         
+      </div>
+   </div>
+
+                  
+   
+
+                              
+   
+      
+   
+                     
+                              
+         
+         
+   
+            
+            
+   <div class="form-field row col-12  mb-2">
+          
+               
+      
+      
+   <label class="col-form-label col-lg-3 text-xxl-end" for="name_1320264529">
+      Titre
+      
+      <span class="required">*</span>
+      
+   </label>
+
+            <div class="col-lg-9  field-container">
+               <input type="text" id="name_1320264529" class="form-control " name="name" required="">
+   
+         
+      </div>
+   </div>
+
+                  
+
+
+                                                                                                               
+                  
+               
+   
+         <script type="text/javascript">
+//<![CDATA[
+
+         $(function() {
+            var is_dark = $('html').css('--is-dark').trim() === 'true';
+            var richtext_layout = "classic";
+
+            // init editor
+            tinyMCE.init(Object.assign({
+               link_default_target: '_blank',
+               branding: false,
+               selector: '#content_1320264529',
+               text_patterns: false,
+
+               plugins: ["autoresize","code","directionality","fullscreen","link","lists","quickbars","searchreplace","table","image","glpi_upload_doc","emoticons"],
+
+               // Appearance
+               skin_url: is_dark
+                  ? CFG_GLPI['root_doc']+'/public/lib/tinymce/skins/ui/oxide-dark'
+                  : CFG_GLPI['root_doc']+'/public/lib/tinymce/skins/ui/oxide',
+               body_class: 'rich_text_container',
+               content_css: '/css_compiled/css_palettes_auror.min.css,/public/lib/base.min.css',
+
+               min_height: 150,
+               resize: true,
+
+               // disable path indicator in bottom bar
+               elementpath: false,
+
+               // inline toolbar configuration
+               menubar: false,
+               toolbar: richtext_layout == 'classic'
+                  ? 'styles | bold italic | forecolor backcolor | bullist numlist outdent indent | emoticons table link image | code fullscreen'
+                  : false,
+               quickbars_insert_toolbar: richtext_layout == 'inline'
+                  ? 'emoticons quicktable quickimage quicklink | bullist numlist | outdent indent '
+                  : false,
+               quickbars_selection_toolbar: richtext_layout == 'inline'
+                  ? 'bold italic | styles | forecolor backcolor '
+                  : false,
+               contextmenu: richtext_layout == 'classic'
+                  ? false
+                  : 'copy paste | emoticons table image link | undo redo | code fullscreen',
+
+               // Content settings
+               entity_encoding: 'raw',
+               invalid_elements: 'applet,canvas,embed,form,object,iframe',
+               readonly: false,
+               relative_urls: false,
+               remove_script_host: false,
+
+               // Misc options
+               browser_spellcheck: true,
+               cache_suffix: '?v=06363bd5d4cbd11a2b1bdfef4343bf28309c3c1b',
+
+               setup: function(editor) {
+                  // "required" state handling
+                  if ($('#content_1320264529').attr('required') == 'required') {
+                     $('#content_1320264529').removeAttr('required'); // Necessary to bypass browser validation
+
+                     editor.on('submit', function (e) {
+                        if ($('#content_1320264529').val() == '') {
+                           const field = $('#content_1320264529').closest('.form-field').find('label').text().replace('*', '').trim();
+                           alert("Le champ %s est obligatoire".replace('%s', field));
+                           e.preventDefault();
+
+                           // Prevent other events to run
+                           // Needed to not break single submit forms
+                           e.stopPropagation();
+                        }
+                     });
+                     editor.on('keyup', function (e) {
+                        editor.save();
+                        if ($('#content_1320264529').val() == '') {
+                           $(editor.container).addClass('required');
+                        } else {
+                           $(editor.container).removeClass('required');
+                        }
+                     });
+                     editor.on('init', function (e) {
+                        if (strip_tags($('#content_1320264529').val()) == '') {
+                           $(editor.container).addClass('required');
+                        }
+                     });
+                     editor.on('paste', function (e) {
+                        // Remove required on paste event
+                        // This is only needed when pasting with right click (context menu)
+                        // Pasting with Ctrl+V is already handled by keyup event above
+                        $(editor.container).removeClass('required');
+                     });
+                  }
+
+                  editor.on('Change', function (e) {
+                     // Nothing fancy here. Since this is only used for tracking unsaved changes,
+                     // we want to keep the logic in common.js with the other form input events.
+                     onTinyMCEChange(e);
+                  });
+                  // ctrl + enter submit the parent form
+                  editor.addShortcut('ctrl+13', 'submit', function() {
+                     editor.save();
+                     submitparentForm($('#content_1320264529'));
+                  });
+               }
+            }, {"language":"fr_FR","language_url":"\/public\/lib\/tinymce-i18n\/langs6\/fr_FR.js"}));
+         });
+
+//]]>
+</script>   
+               
+                  
+      
+   
+                     
+                              
+         
+         
+   
+            
+            
+   <div class="form-field row col-12  mb-2">
+          
+               
+      
+      
+   <label class="col-form-label col-lg-3 text-xxl-end" for="content_1320264529">
+      Description
+      
+      <span class="required">*</span>
+      
+   </label>
+
+            <div class="col-lg-9  field-container">
+                     <textarea class="form-control " id="content_1320264529" name="content" rows="3" style="width: 100%; display: none;" aria-hidden="true"></textarea><div role="application" class="tox tox-tinymce required" style="visibility: hidden; width: 100%; height: 175px;" aria-disabled="false" data-mce-style="visibility: hidden; width: 100%; height: 175px;"><div class="tox-editor-container"><div data-alloy-vertical-dir="toptobottom" class="tox-editor-header"><div role="group" class="tox-toolbar-overlord" aria-disabled="false"><div role="group" class="tox-toolbar__primary"><div title="" role="toolbar" data-alloy-tabstop="true" tabindex="-1" class="tox-toolbar__group"><button title="Formats" aria-label="Formats" aria-haspopup="true" type="button" tabindex="-1" unselectable="on" class="tox-tbtn tox-tbtn--select tox-tbtn--bespoke" style="user-select: none;" aria-expanded="false"><span class="tox-tbtn__select-label">Paragraphe</span><div class="tox-tbtn__select-chevron"><svg width="10" height="10" focusable="false"><path d="M8.7 2.2c.3-.3.8-.3 1 0 .4.4.4.9 0 1.2L5.7 7.8c-.3.3-.9.3-1.2 0L.2 3.4a.8.8 0 0 1 0-1.2c.3-.3.8-.3 1.1 0L5 6l3.7-3.8Z" fill-rule="nonzero"></path></svg></div></button></div><div title="" role="toolbar" data-alloy-tabstop="true" tabindex="-1" class="tox-toolbar__group"><button aria-label="Gras" title="Gras" type="button" tabindex="-1" class="tox-tbtn" aria-disabled="false" aria-pressed="false"><span class="tox-icon tox-tbtn__icon-wrap"><svg width="24" height="24" focusable="false"><path d="M7.8 19c-.3 0-.5 0-.6-.2l-.2-.5V5.7c0-.2 0-.4.2-.5l.6-.2h5c1.5 0 2.7.3 3.5 1 .7.6 1.1 1.4 1.1 2.5a3 3 0 0 1-.6 1.9c-.4.6-1 1-1.6 1.2.4.1.9.3 1.3.6s.8.7 1 1.2c.4.4.5 1 .5 1.6 0 1.3-.4 2.3-1.3 3-.8.7-2.1 1-3.8 1H7.8Zm5-8.3c.6 0 1.2-.1 1.6-.5.4-.3.6-.7.6-1.3 0-1.1-.8-1.7-2.3-1.7H9.3v3.5h3.4Zm.5 6c.7 0 1.3-.1 1.7-.4.4-.4.6-.9.6-1.5s-.2-1-.7-1.4c-.4-.3-1-.4-2-.4H9.4v3.8h4Z" fill-rule="evenodd"></path></svg></span></button><button aria-label="Italique" title="Italique" type="button" tabindex="-1" class="tox-tbtn" aria-disabled="false" aria-pressed="false"><span class="tox-icon tox-tbtn__icon-wrap"><svg width="24" height="24" focusable="false"><path d="m16.7 4.7-.1.9h-.3c-.6 0-1 0-1.4.3-.3.3-.4.6-.5 1.1l-2.1 9.8v.6c0 .5.4.8 1.4.8h.2l-.2.8H8l.2-.8h.2c1.1 0 1.8-.5 2-1.5l2-9.8.1-.5c0-.6-.4-.8-1.4-.8h-.3l.2-.9h5.8Z" fill-rule="evenodd"></path></svg></span></button></div><div role="toolbar" data-alloy-tabstop="true" tabindex="-1" class="tox-toolbar__group"><button aria-label="Plus..." title="Plus..." aria-haspopup="true" type="button" tabindex="-1" data-alloy-tabstop="true" class="tox-tbtn" aria-expanded="false"><span class="tox-icon tox-tbtn__icon-wrap"><svg width="24" height="24" focusable="false"><path d="M6 10a2 2 0 0 0-2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2 2 2 0 0 0-2-2Zm12 0a2 2 0 0 0-2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2 2 2 0 0 0-2-2Zm-6 0a2 2 0 0 0-2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2 2 2 0 0 0-2-2Z" fill-rule="nonzero"></path></svg></span></button></div></div></div><div class="tox-anchorbar"></div></div><div class="tox-sidebar-wrap"><div class="tox-edit-area"><iframe id="content_1320264529_ifr" allowtransparency="true" title="Zone de Texte Riche" class="tox-edit-area__iframe" frameborder="0"></iframe></div><div role="complementary" class="tox-sidebar"><div data-alloy-tabstop="true" tabindex="-1" class="tox-sidebar__slider tox-sidebar--sliding-closed" style="width: 0px;"><div class="tox-sidebar__pane-container"></div></div></div></div><div class="tox-statusbar"><div title="Redimensionner" data-alloy-tabstop="true" tabindex="-1" class="tox-statusbar__resize-handle"><svg width="10" height="10" focusable="false"><g fill-rule="nonzero"><path d="M8.1 1.1A.5.5 0 1 1 9 2l-7 7A.5.5 0 1 1 1 8l7-7ZM8.1 5.1A.5.5 0 1 1 9 6l-3 3A.5.5 0 1 1 5 8l3-3Z"></path></g></svg></div></div></div><div aria-hidden="true" class="tox-view-wrap" style="display: none;"><div class="tox-view-wrap__slot-container"></div></div><div aria-hidden="true" class="tox-throbber" style="display: none;"></div></div>
+   
+                  <div class="fileupload draghoverable" id="dropdoc394177145"><b>Fichier(s) (100000 Mio maximum)&nbsp;<a href="#" data-bs-toggle="modal" data-bs-target="#documenttypelist_394177145" class="fa fa-info pointer" title="Aide"><span class="sr-only">Aide&gt;</span></a><script type="text/javascript">      $(function() {
+         myModalEl396881269 = document.getElementById('documenttypelist_394177145');
+         myModal396881269   = new bootstrap.Modal(myModalEl396881269);
+
+         // move modal to body
+         $(myModalEl396881269).appendTo($("body"));
+
+         myModalEl396881269.addEventListener('show.bs.modal', function () {
+            $('#iframedocumenttypelist_394177145').attr('src','/front/documenttype.list.php?_in_modal=1').removeClass('hidden');
+         });
+         myModalEl396881269.addEventListener('hide.bs.modal', function () {
+            if (false) {
+               window.location.reload()
+            }
+         });
+
+         if (false) {
+            myModal396881269.show();
+         }
+
+         document.getElementById('iframedocumenttypelist_394177145').onload = function() {
+            if (500 !== 'undefined') {
+               var h =  500;
+            } else {
+               var h =  $('#iframedocumenttypelist_394177145').contents().height();
+            }
+            if (1050 !== 'undefined') {
+               var w =  1050;
+            } else {
+               var w =  $('#iframedocumenttypelist_394177145').contents().width();
+            }
+
+            $('#iframedocumenttypelist_394177145')
+               .height(h);
+
+            if (w >= 700) {
+               $('#documenttypelist_394177145 .modal-dialog').addClass('modal-xl');
+            } else if (w >= 500) {
+               $('#documenttypelist_394177145 .modal-dialog').addClass('modal-lg');
+            } else if (w <= 300) {
+               $('#documenttypelist_394177145 .modal-dialog').addClass('modal-sm');
+            }
+
+            // reajust height to content
+            myModal396881269.handleUpdate()
+         };
+      });</script></b><div id="fileupload_info394177145" class="fileupload_info"></div><span class="b">Glissez et déposez votre fichier ici, ou</span><br><input id="fileupload394177145" type="file" name="_uploader_filename[]" class="form-control" data-uploader-name="filename" data-url="/ajax/fileupload.php" data-form-data="{&quot;name&quot;: &quot;_uploader_filename&quot;, &quot;showfilesize&quot;: &quot;1&quot;}" multiple="multiple"><div id="progress394177145" style="display:none"><div class="uploadbar" style="width: 0%;"></div></div><script type="text/javascript">
+//<![CDATA[
+
+
+      $(function() {
+         var fileindex394177145 = 0;
+         $('#fileupload394177145').fileupload({
+            dataType: 'json',
+            pasteZone: false,
+            dropZone:  $('#dropdoc394177145'),
+            acceptFileTypes: /(\.jpg$|\.png$|\.gif$|\.bmp$|\.psd$|\.tif$|\.aiff$|\.asf$|\.avi$|\.bz2$|\.doc$|\.djvu$|\.eps$|\.gz$|\.html$|\.mid$|\.mov$|\.mp3$|\.mpg$|\.ogg$|\.pdf$|\.ppt$|\.ps$|\.qt$|\.ra$|\.ram$|\.rm$|\.rtf$|\.sdd$|\.sdw$|\.sit$|\.sxi$|\.sxw$|\.swf$|\.tgz$|\.txt$|\.wav$|\.xls$|\.xml$|\.wmv$|\.zip$|\.mng$|\.ai$|\.c$|\.deb$|\.dvi$|\.h$|\.pas$|\.rpm$|\.sxc$|\.tex$|\.xcf$|\.jpeg$|\.odt$|\.ods$|\.odp$|\.otp$|\.ott$|\.ots$|\.odf$|\.odg$|\.otg$|\.odb$|\.oth$|\.odm$|\.odc$|\.odi$|\.docx$|\.xlsx$|\.pptx$|\.csv$|\.svg$|\.reg$|\.msg$)/i,
+            maxFileSize: 104857600000,
+            maxChunkSize: 1887437,
+            add: function (e, data) {
+               // disable submit button during upload
+               $(this).closest('form').find(':submit').prop('disabled', true);
+               // randomize filename
+               for (var i = 0; i < data.files.length; i++) {
+                  data.files[i].uploadName = uniqid('', true) + data.files[i].name;
+               }
+               // call default handler
+               $.blueimp.fileupload.prototype.options.add.call(this, e, data);
+            },
+            done: function (event, data) {
+               handleUploadedFile(
+                  data.files, // files as blob
+                  data.result._uploader_filename, // response from '/ajax/fileupload.php'
+                  'filename',
+                  $('#fileupload_info394177145'),
+                  'content_1320264529'
+               );
+               // enable submit button after upload
+               $(this).closest('form').find(':submit').prop('disabled', false);
+               // remove required
+                $('#fileupload394177145').removeAttr('required');
+            },
+            fail: function (e, data) {
+                // enable submit button after upload
+                $(this).closest('form').find(':submit').prop('disabled', false);
+               const err = 'responseText' in data.jqXHR && data.jqXHR.responseText.length > 0
+                  ? data.jqXHR.responseText
+                  : data.jqXHR.statusText;
+               alert(err);
+            },
+            processfail: function (e, data) {
+                // enable submit button after upload
+                $(this).closest('form').find(':submit').prop('disabled', false);
+               $.each(
+                  data.files,
+                  function(index, file) {
+                     if (file.error) {
+                        $('#progress394177145').show();
+                        $('#progress394177145 .uploadbar')
+                           .text(file.error)
+                           .css('width', '100%')
+                           .show();
+                        return;
+                     }
+                  }
+               );
+            },
+            messages: {
+              acceptFileTypes: __('Filetype not allowed'),
+              maxFileSize: __('File is too big'),
+            },
+            
+        progressall: function(event, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress394177145').show();
+            $('#progress394177145 .uploadbar')
+                .text(progress + '%')
+                .css('width', progress + '%')
+                .show();
+        },
+        
+         });
+      });
+
+//]]>
+</script></div>      
+      </div>
+   </div>
+
+                  
+   
+            </div>
+        </div>
+
+      
+
+        <div class="card-footer text-center">
+            <input type="hidden" name="entities_id" value="2">
+            <button type="submit" class="btn btn-primary" name="add">
+                <i class="fas fa-plus"></i>
+                <span>Soumettre la demande</span>
+            </button>
+        </div>
+    </div>
+
+   
+</form>
+
+</div>
+
+<script type="text/javascript">
+$(function () {
+    $('#btn-collapse-items1320264529').on('click', function() {
+        $(this).hide();
+    });
+
+    $('#dropdown_nodelegate1320264529').on('change', function() {
+        var is_for_me = ($(this).val() == '1');
+        $('#user-info1320264529-block').toggleClass('d-none', !is_for_me);
+        $('#delegate_other1320264529 .card-body')
+            .html("")
+            .load('/ajax/dropdownDelegationUsers.php', {
+                'right': "delegate",
+                'nodelegate': (is_for_me ? 1 : 0),
+                '_users_id_requester': 1872,
+                '_users_id_requester_notif': {"use_notification":1},
+                'use_notification': 1,
+                'entity_restrict':  2
+            });
+    })
+
+    saveActorsToDom();
+});
+</script>
+<script type="text/javascript">
+//<![CDATA[
+
+
+            var CFG_GLPI  = {"languages":{"ar_SA":["\u0627\u0644\u0639\u064e\u0631\u064e\u0628\u0650\u064a\u064e\u0651\u0629\u064f","ar_SA.mo","ar","ar","arabic",103],"bg_BG":["\u0411\u044a\u043b\u0433\u0430\u0440\u0441\u043a\u0438","bg_BG.mo","bg","bg","bulgarian",2],"id_ID":["Bahasa Indonesia","id_ID.mo","id","id","indonesian",2],"ms_MY":["Bahasa Melayu","ms_MY.mo","ms","ms","malay",2],"ca_ES":["Catal\u00e0","ca_ES.mo","ca","ca","catalan",2],"cs_CZ":["\u010ce\u0161tina","cs_CZ.mo","cs","cs","czech",10],"de_DE":["Deutsch","de_DE.mo","de","de","german",2],"da_DK":["Dansk","da_DK.mo","da","da","danish",2],"et_EE":["Eesti","et_EE.mo","et","et","estonian",2],"en_GB":["English","en_GB.mo","en-GB","en","english",2],"en_US":["English (US)","en_US.mo","en-GB","en","english",2],"es_AR":["Espa\u00f1ol (Argentina)","es_AR.mo","es","es","spanish",2],"es_EC":["Espa\u00f1ol (Ecuador)","es_EC.mo","es","es","spanish",2],"es_CO":["Espa\u00f1ol (Colombia)","es_CO.mo","es","es","spanish",2],"es_ES":["Espa\u00f1ol (Espa\u00f1a)","es_ES.mo","es","es","spanish",2],"es_419":["Espa\u00f1ol (Am\u00e9rica Latina)","es_419.mo","es","es","spanish",2],"es_MX":["Espa\u00f1ol (Mexico)","es_MX.mo","es","es","spanish",2],"es_VE":["Espa\u00f1ol (Venezuela)","es_VE.mo","es","es","spanish",2],"eu_ES":["Euskara","eu_ES.mo","eu","eu","basque",2],"fr_FR":["Fran\u00e7ais","fr_FR.mo","fr","fr","french",2],"fr_CA":["Fran\u00e7ais (Canada)","fr_CA.mo","fr","fr","french",2],"fr_BE":["Fran\u00e7ais (Belgique)","fr_BE.mo","fr","fr","french",2],"gl_ES":["Galego","gl_ES.mo","gl","gl","galician",2],"el_GR":["\u0395\u03bb\u03bb\u03b7\u03bd\u03b9\u03ba\u03ac","el_GR.mo","el","el","greek",2],"he_IL":["\u05e2\u05d1\u05e8\u05d9\u05ea","he_IL.mo","he","he","hebrew",2],"hi_IN":["\u0939\u093f\u0928\u094d\u0926\u0940","hi_IN.mo","hi","hi_IN","hindi",2],"hr_HR":["Hrvatski","hr_HR.mo","hr","hr","croatian",2],"hu_HU":["Magyar","hu_HU.mo","hu","hu","hungarian",2],"it_IT":["Italiano","it_IT.mo","it","it","italian",2],"kn":["\u0c95\u0ca8\u0ccd\u0ca8\u0ca1","kn.mo","en-GB","en","kannada",2],"lv_LV":["Latvie\u0161u","lv_LV.mo","lv","lv","latvian",2],"lt_LT":["Lietuvi\u0173","lt_LT.mo","lt","lt","lithuanian",2],"mn_MN":["\u041c\u043e\u043d\u0433\u043e\u043b \u0445\u044d\u043b","mn_MN.mo","mn","mn","mongolian",2],"nl_NL":["Nederlands","nl_NL.mo","nl","nl","dutch",2],"nl_BE":["Flemish","nl_BE.mo","nl","nl","flemish",2],"nb_NO":["Norsk (Bokm\u00e5l)","nb_NO.mo","no","nb","norwegian",2],"nn_NO":["Norsk (Nynorsk)","nn_NO.mo","no","nn","norwegian",2],"fa_IR":["\u0641\u0627\u0631\u0633\u06cc","fa_IR.mo","fa","fa","persian",2],"pl_PL":["Polski","pl_PL.mo","pl","pl","polish",2],"pt_PT":["Portugu\u00eas","pt_PT.mo","pt","pt","portuguese",2],"pt_BR":["Portugu\u00eas do Brasil","pt_BR.mo","pt-BR","pt","brazilian portuguese",2],"ro_RO":["Rom\u00e2n\u0103","ro_RO.mo","ro","en","romanian",2],"ru_RU":["\u0420\u0443\u0441\u0441\u043a\u0438\u0439","ru_RU.mo","ru","ru","russian",2],"sk_SK":["Sloven\u010dina","sk_SK.mo","sk","sk","slovak",10],"sl_SI":["Sloven\u0161\u010dina","sl_SI.mo","sl","sl","slovenian slovene",2],"sr_RS":["Srpski","sr_RS.mo","sr","sr","serbian",2],"fi_FI":["Suomi","fi_FI.mo","fi","fi","finish",2],"sv_SE":["Svenska","sv_SE.mo","sv","sv","swedish",2],"vi_VN":["Ti\u1ebfng Vi\u1ec7t","vi_VN.mo","vi","vi","vietnamese",2],"th_TH":["\u0e20\u0e32\u0e29\u0e32\u0e44\u0e17\u0e22","th_TH.mo","th","th","thai",2],"tr_TR":["T\u00fcrk\u00e7e","tr_TR.mo","tr","tr","turkish",2],"uk_UA":["\u0423\u043a\u0440\u0430\u0457\u043d\u0441\u044c\u043a\u0430","uk_UA.mo","uk","en","ukrainian",2],"ja_JP":["\u65e5\u672c\u8a9e","ja_JP.mo","ja","ja","japanese",2],"zh_CN":["\u7b80\u4f53\u4e2d\u6587","zh_CN.mo","zh-CN","zh","chinese",2],"zh_TW":["\u7e41\u9ad4\u4e2d\u6587","zh_TW.mo","zh-TW","zh","chinese",2],"ko_KR":["\ud55c\uad6d\/\u97d3\u570b","ko_KR.mo","ko","ko","korean",1],"zh_HK":["\u9999\u6e2f","zh_HK.mo","zh-HK","zh","chinese",2],"be_BY":["Belarussian","be_BY.mo","be","be","belarussian",3],"is_IS":["\u00edslenska","is_IS.mo","is","en","icelandic",2],"eo":["Esperanto","eo.mo","eo","en","esperanto",2],"es_CL":["Espa\u00f1ol chileno","es_CL","es","es","spanish chilean",2]},"glpitables":[],"unicity_types":["Budget","Computer","Contact","Contract","Infocom","Monitor","NetworkEquipment","Peripheral","Phone","Printer","Software","SoftwareLicense","Supplier","User","Certificate","Rack","Enclosure","PDU","Cluster","Item_DeviceSimcard"],"state_types":["Computer","Monitor","NetworkEquipment","Peripheral","Phone","Printer","SoftwareLicense","Certificate","Enclosure","PDU","Line","Rack","SoftwareVersion","Cluster","Contract","Appliance","DatabaseInstance","Cable","Unmanaged","PassiveDCEquipment"],"asset_types":["Computer","Monitor","NetworkEquipment","Peripheral","Phone","Printer","SoftwareLicense","Certificate","Unmanaged","Appliance"],"project_asset_types":["Computer","Monitor","NetworkEquipment","Peripheral","Phone","Printer","Software","DeviceMotherboard","DeviceProcessor","DeviceMemory","DeviceHardDrive","DeviceNetworkCard","DeviceDrive","DeviceControl","DeviceGraphicCard","DeviceSoundCard","DevicePci","DeviceCase","DevicePowerSupply","DeviceGeneric","DeviceBattery","DeviceFirmware","DeviceCamera","Certificate"],"document_types":["Budget","CartridgeItem","Change","Computer","ConsumableItem","Contact","Contract","Document","Entity","KnowbaseItem","Monitor","NetworkEquipment","Peripheral","Phone","Printer","Problem","Project","ProjectTask","Reminder","Software","Line","SoftwareLicense","Supplier","Ticket","User","Certificate","Cluster","ITILFollowup","ITILSolution","ChangeTask","ProblemTask","TicketTask","Appliance","DatabaseInstance"],"consumables_types":["Group","User"],"report_types":["Computer","Monitor","NetworkEquipment","Peripheral","Phone","Printer","Project","Software","SoftwareLicense","Certificate"],"directconnect_types":["Monitor","Peripheral","Phone","Printer"],"infocom_types":["Cartridge","CartridgeItem","Computer","Consumable","ConsumableItem","Monitor","NetworkEquipment","Peripheral","Phone","Printer","Software","SoftwareLicense","Line","Certificate","Domain","Appliance","Item_DeviceSimcard","Rack","Enclosure","PDU","PassiveDCEquipment","DatabaseInstance","Cable"],"reservation_types":["Computer","Monitor","NetworkEquipment","Peripheral","Phone","Printer","Software"],"linkuser_types":["Computer","Monitor","NetworkEquipment","Peripheral","Phone","Printer","Software","SoftwareLicense","Certificate","Appliance","Item_DeviceSimcard","Line"],"linkgroup_types":["Computer","Consumable","Monitor","NetworkEquipment","Peripheral","Phone","Printer","Software","SoftwareLicense","Certificate","Appliance","Item_DeviceSimcard","Line"],"linkuser_tech_types":["Computer","ConsumableItem","Monitor","NetworkEquipment","Peripheral","Phone","Printer","Software","SoftwareLicense","Certificate","Appliance","DatabaseInstance"],"linkgroup_tech_types":["Computer","ConsumableItem","Monitor","NetworkEquipment","Peripheral","Phone","Printer","Software","SoftwareLicense","Certificate","Appliance","DatabaseInstance"],"location_types":["Budget","CartridgeItem","ConsumableItem","Computer","Monitor","Glpi\\Socket","NetworkEquipment","Peripheral","Phone","Printer","Software","SoftwareLicense","Ticket","User","Certificate","Item_DeviceSimcard","Line","Appliance","PassiveDCEquipment","DataCenter","DCRoom","Rack","Enclosure","PDU","Item_DeviceMotherboard","Item_DeviceFirmware","Item_DeviceProcessor","Item_DeviceMemory","Item_DeviceHardDrive","Item_DeviceNetworkCard","Item_DeviceDrive","Item_DeviceBattery","Item_DeviceGraphicCard","Item_DeviceSoundCard","Item_DeviceControl","Item_DevicePci","Item_DeviceCase","Item_DevicePowerSupply","Item_DeviceGeneric","Item_DeviceSimcard","Item_DeviceSensor","Item_DeviceCamera"],"ticket_types":["Computer","Monitor","NetworkEquipment","Peripheral","Phone","Printer","Software","SoftwareLicense","Certificate","Line","DCRoom","Rack","Enclosure","Cluster","PDU","Domain","DomainRecord","Appliance","Item_DeviceSimcard","PassiveDCEquipment","DatabaseInstance","Database","Cable"],"link_types":["Budget","CartridgeItem","Computer","ConsumableItem","Contact","Contract","Monitor","NetworkEquipment","Peripheral","Phone","Printer","Software","Supplier","User","Certificate","Cluster","DCRoom","Domain","Appliance","DatabaseInstance"],"dictionnary_types":["ComputerModel","ComputerType","Manufacturer","MonitorModel","MonitorType","NetworkEquipmentModel","NetworkEquipmentType","OperatingSystem","OperatingSystemServicePack","OperatingSystemVersion","PeripheralModel","PeripheralType","PhoneModel","PhoneType","Printer","PrinterModel","PrinterType","Software","OperatingSystemArchitecture","OperatingSystemKernel","OperatingSystemKernelVersion","OperatingSystemEdition","ImageResolution","ImageFormat","DatabaseInstanceType","Glpi\\SocketModel","CableType"],"helpdesk_visible_types":["Software","Appliance","DatabaseInstance"],"networkport_types":["Computer","Monitor","NetworkEquipment","Peripheral","Phone","Printer","Enclosure","PDU","Cluster","Unmanaged"],"networkport_instantiations":["NetworkPortEthernet","NetworkPortWifi","NetworkPortAggregate","NetworkPortAlias","NetworkPortDialup","NetworkPortLocal","NetworkPortFiberchannel"],"device_types":["DeviceMotherboard","DeviceFirmware","DeviceProcessor","DeviceMemory","DeviceHardDrive","DeviceNetworkCard","DeviceDrive","DeviceBattery","DeviceGraphicCard","DeviceSoundCard","DeviceControl","DevicePci","DeviceCase","DevicePowerSupply","DeviceGeneric","DeviceSimcard","DeviceSensor","DeviceCamera"],"socket_types":["Computer","NetworkEquipment","Peripheral","Phone","Printer","PassiveDCEquipment"],"itemdevices":["Item_DeviceMotherboard","Item_DeviceFirmware","Item_DeviceProcessor","Item_DeviceMemory","Item_DeviceHardDrive","Item_DeviceNetworkCard","Item_DeviceDrive","Item_DeviceBattery","Item_DeviceGraphicCard","Item_DeviceSoundCard","Item_DeviceControl","Item_DevicePci","Item_DeviceCase","Item_DevicePowerSupply","Item_DeviceGeneric","Item_DeviceSimcard","Item_DeviceSensor","Item_DeviceCamera"],"itemdevices_types":["Computer","NetworkEquipment","Peripheral","Phone","Printer","Enclosure"],"itemdevices_itemaffinity":["Computer"],"itemdevicememory_types":["Computer","NetworkEquipment","Peripheral","Printer","Phone"],"itemdevicepowersupply_types":["Computer","NetworkEquipment","Enclosure","Phone"],"itemdevicenetworkcard_types":["Computer","NetworkEquipment","Peripheral","Phone","Printer"],"itemdeviceharddrive_types":["Computer","Peripheral","NetworkEquipment","Printer","Phone"],"itemdevicebattery_types":["Computer","Peripheral","Phone","Printer"],"itemdevicefirmware_types":["Computer","Peripheral","Phone","NetworkEquipment","Printer"],"itemdevicesimcard_types":["Computer","Peripheral","Phone","NetworkEquipment","Printer"],"itemdevicegeneric_types":["*"],"itemdevicepci_types":["*"],"itemdevicesensor_types":["Computer","Peripheral","Phone"],"itemdeviceprocessor_types":["Computer","Phone"],"itemdevicesoundcard_types":["Computer"],"itemdevicegraphiccard_types":["Computer","Phone"],"itemdevicemotherboard_types":["Computer","Phone"],"itemdevicecamera_types":["Computer","Phone"],"notificationtemplates_types":["CartridgeItem","Change","ConsumableItem","Contract","CronTask","DBConnection","FieldUnicity","Infocom","MailCollector","ObjectLock","PlanningRecall","Problem","Project","ProjectTask","Reservation","SoftwareLicense","Ticket","User","SavedSearch_Alert","Certificate","Glpi\\Marketplace\\Controller","Domain"],"contract_types":["Computer","Monitor","NetworkEquipment","Peripheral","Phone","Printer","Project","Line","Software","SoftwareLicense","Certificate","DCRoom","Rack","Enclosure","Cluster","PDU","Appliance","Domain","DatabaseInstance","Item_DeviceMotherboard","Item_DeviceFirmware","Item_DeviceProcessor","Item_DeviceMemory","Item_DeviceHardDrive","Item_DeviceNetworkCard","Item_DeviceDrive","Item_DeviceBattery","Item_DeviceGraphicCard","Item_DeviceSoundCard","Item_DeviceControl","Item_DevicePci","Item_DeviceCase","Item_DevicePowerSupply","Item_DeviceGeneric","Item_DeviceSimcard","Item_DeviceSensor","Item_DeviceCamera"],"union_search_type":{"ReservationItem":"reservation_types","AllAssets":"asset_types"},"systeminformations_types":["AuthLDAP","DBConnection","MailCollector","Plugin"],"rulecollections_types":["RuleImportAssetCollection","RuleImportEntityCollection","RuleLocationCollection","RuleMailCollectorCollection","RuleRightCollection","RuleSoftwareCategoryCollection","RuleTicketCollection","RuleAssetCollection"],"planning_types":["ChangeTask","ProblemTask","Reminder","TicketTask","ProjectTask","PlanningExternalEvent"],"planning_add_types":["PlanningExternalEvent"],"caldav_supported_components":["VEVENT","VJOURNAL"],"globalsearch_types":["Computer","Contact","Contract","Document","Monitor","NetworkEquipment","Peripheral","Phone","Printer","Software","SoftwareLicense","Ticket","Problem","Change","User","Group","Project","Supplier","Budget","Certificate","Line","Datacenter","DCRoom","Enclosure","PDU","Rack","Cluster","PassiveDCEquipment","Domain","Appliance"],"number_format":"0","decimal_number":"2","debug_lang":1,"debug_vars":1,"debug_sql":1,"user_pref_field":["backcreated","csv_delimiter","date_format","default_requesttypes_id","display_count_on_home","duedatecritical_color","duedatecritical_less","duedatecritical_unit","duedateok_color","duedatewarning_color","duedatewarning_less","duedatewarning_unit","followup_private","is_ids_visible","keep_devices_when_purging_item","language","list_limit","lock_autolock_mode","lock_directunlock_notification","names_format","notification_to_myself","number_format","pdffont","priority_1","priority_2","priority_3","priority_4","priority_5","priority_6","refresh_views","set_default_tech","set_default_requester","show_count_on_tabs","show_jobs_at_login","task_private","task_state","use_flat_dropdowntree","use_flat_dropdowntree_on_search_result","palette","page_layout","highcontrast_css","default_dashboard_central","default_dashboard_assets","default_dashboard_helpdesk","default_dashboard_mini_ticket","default_central_tab","fold_menu","fold_search","savedsearches_pinned","richtext_layout","timeline_order","itil_layout","timeline_action_btn_layout","timeline_date_format"],"lock_lockable_objects":["Budget","Change","Contact","Contract","Document","CartridgeItem","Computer","ConsumableItem","Entity","Group","KnowbaseItem","Line","Link","Monitor","NetworkEquipment","NetworkName","Peripheral","Phone","Printer","Problem","Profile","Project","Reminder","RSSFeed","Software","Supplier","Ticket","User","SoftwareLicense","Certificate"],"inventory_types":["Computer","Phone","Printer","NetworkEquipment"],"inventory_lockable_objects":["Computer_Item","Item_SoftwareLicense","Item_SoftwareVersion","Item_Disk","ComputerVirtualMachine","ComputerAntivirus","NetworkPort","NetworkName","IPAddress","Item_OperatingSystem","Item_DeviceBattery","Item_DeviceCase","Item_DeviceControl","Item_DeviceDrive","Item_DeviceFirmware","Item_DeviceGeneric","Item_DeviceGraphicCard","Item_DeviceHardDrive","Item_DeviceMemory","Item_DeviceMotherboard","Item_DeviceNetworkCard","Item_DevicePci","Item_DevicePowerSupply","Item_DeviceProcessor","Item_DeviceSensor","Item_DeviceSimcard","Item_DeviceSoundCard","DatabaseInstance","Item_RemoteManagement","Monitor","Domain_Item"],"kb_types":["Budget","Change","Computer","Contract","Entity","Monitor","NetworkEquipment","Peripheral","Phone","Printer","Problem","Project","Software","SoftwareLicense","Supplier","Ticket","Certificate","Appliance","DatabaseInstance"],"certificate_types":["Computer","NetworkEquipment","Peripheral","Phone","Printer","SoftwareLicense","User","Domain","Appliance","DatabaseInstance"],"rackable_types":["Computer","Monitor","NetworkEquipment","Peripheral","Enclosure","PDU","PassiveDCEquipment"],"cluster_types":["Computer","NetworkEquipment"],"operatingsystem_types":["Computer","Monitor","NetworkEquipment","Peripheral","Phone","Printer"],"software_types":["Computer","Monitor","NetworkEquipment","Peripheral","Phone","Printer"],"disk_types":["Computer","NetworkEquipment","Phone","Printer"],"kanban_types":["Project"],"domain_types":["Computer","Monitor","NetworkEquipment","Peripheral","Phone","Printer","Software","Appliance","Certificate","DatabaseInstance","Database","Unmanaged"],"appliance_types":["Computer","Monitor","NetworkEquipment","Peripheral","Phone","Printer","Software","Appliance","Cluster","DatabaseInstance","Database"],"appliance_relation_types":["Location","Network","Domain"],"remote_management_types":["Computer","Phone"],"databaseinstance_types":["Computer"],"agent_types":["Computer","Phone"],"javascript":{"central":{"central":["fullcalendar","planning","masonry","tinymce","dashboard"]},"assets":{"dashboard":["dashboard"],"rack":["gridstack","rack"],"printer":["dashboard","fullcalendar","reservations"],"cable":["cable"],"socket":["cable"],"networkport":["dashboard"],"computer":["fullcalendar","reservations"],"monitor":["fullcalendar","reservations"],"networkequipment":["fullcalendar","reservations"],"peripheral":["fullcalendar","reservations"],"phone":["fullcalendar","reservations"],"software":["fullcalendar","reservations"]},"helpdesk":{"dashboard":["dashboard"],"planning":["clipboard","fullcalendar","tinymce","planning"],"ticket":["rateit","tinymce","kanban","dashboard"],"problem":["tinymce","kanban","sortable"],"change":["tinymce","kanban","sortable"],"stat":["charts","rateit"]},"tools":{"project":["kanban","tinymce","sortable"],"knowbaseitem":["tinymce"],"knowbaseitemtranslation":["tinymce"],"reminder":["tinymce"],"remindertranslation":["tinymce"],"reservationitem":["fullcalendar","reservations"]},"management":{"datacenter":{"dcroom":["gridstack","rack"]}},"config":{"commondropdown":{"ITILFollowupTemplate":["tinymce"],"ProjectTaskTemplate":["tinymce"],"SolutionTemplate":["tinymce"],"TaskTemplate":["tinymce"]},"notification":{"notificationtemplate":["tinymce"]},"plugin":{"marketplace":["marketplace"]},"config":["clipboard"]},"admin":["clipboard","sortable"],"preference":["clipboard"],"self-service":["tinymce","fullcalendar","reservations"],"tickets":{"ticket":["tinymce"]},"create_ticket":["tinymce"],"reservation":["tinymce","fullcalendar","reservations"],"faq":["tinymce"]},"max_time_for_count":200,"default_impact_asset_types":{"Appliance":"pics\/impact\/appliance.png","Cluster":"pics\/impact\/cluster.png","Computer":"pics\/impact\/computer.png","Datacenter":"pics\/impact\/datacenter.png","DCRoom":"pics\/impact\/dcroom.png","Domain":"pics\/impact\/domain.png","Enclosure":"pics\/impact\/enclosure.png","Monitor":"pics\/impact\/monitor.png","NetworkEquipment":"pics\/impact\/networkequipment.png","PDU":"pics\/impact\/pdu.png","Peripheral":"pics\/impact\/peripheral.png","Phone":"pics\/impact\/phone.png","Printer":"pics\/impact\/printer.png","Rack":"pics\/impact\/rack.png","Software":"pics\/impact\/software.png","DatabaseInstance":"pics\/impact\/databaseinstance.png"},"impact_asset_types":{"Appliance":"pics\/impact\/appliance.png","Cluster":"pics\/impact\/cluster.png","Computer":"pics\/impact\/computer.png","Datacenter":"pics\/impact\/datacenter.png","DCRoom":"pics\/impact\/dcroom.png","Domain":"pics\/impact\/domain.png","Enclosure":"pics\/impact\/enclosure.png","Monitor":"pics\/impact\/monitor.png","NetworkEquipment":"pics\/impact\/networkequipment.png","PDU":"pics\/impact\/pdu.png","Peripheral":"pics\/impact\/peripheral.png","Phone":"pics\/impact\/phone.png","Printer":"pics\/impact\/printer.png","Rack":"pics\/impact\/rack.png","Software":"pics\/impact\/software.png","DatabaseInstance":"pics\/impact\/databaseinstance.png","AuthLDAP":"pics\/impact\/authldap.png","CartridgeItem":"pics\/impact\/cartridgeitem.png","Contract":"pics\/impact\/contract.png","CronTask":"pics\/impact\/crontask.png","DeviceSimcard":"pics\/impact\/devicesimcard.png","Entity":"pics\/impact\/entity.png","Group":"pics\/impact\/group.png","ITILCategory":"pics\/impact\/itilcategory.png","Line":"pics\/impact\/line.png","Location":"pics\/impact\/location.png","MailCollector":"pics\/impact\/mailcollector.png","Notification":"pics\/impact\/notification.png","Profile":"pics\/impact\/profile.png","Project":"pics\/impact\/project.png","SLM":"pics\/impact\/slm.png","SoftwareLicense":"pics\/impact\/softwarelicense.png","Supplier":"pics\/impact\/supplier.png","User":"pics\/impact\/user.png","Database":"pics\/impact\/database.png"},"root_doc":"","typedoc_icon_dir":"\/pics\/icones","version":"10.0.10","show_jobs_at_login":"1","cut":"250","list_limit":"30","list_limit_max":"50","url_maxlength":"30","event_loglevel":"1","use_mailing":"1","admin_email_name":"GLPI","admin_reply":"glpi@fontenay-aux-roses.fr","admin_reply_name":"GLPI - Support Informatique","mailing_signature":"","use_anonymous_helpdesk":"0","use_anonymous_followups":"0","language":"fr_FR","priority_1":"#fff2f2","priority_2":"#ffe0e0","priority_3":"#ffcece","priority_4":"#ffbfbf","priority_5":"#ffadad","priority_6":"#ff5555","date_tax":"2005-12-31","cas_host":"","cas_port":"443","cas_uri":"","cas_logout":"","existing_auth_server_field_clean_domain":"0","planning_begin":"08:30","planning_end":"17:30","utf8_conv":"1","use_public_faq":"0","url_base":"https:\/\/glpi.fontenay-aux-roses.fr","show_link_in_mail":"0","text_login":"&#60;div&#62;&#60;span style=\"font-family: arial;\"&#62;&#60;span style=\"font-size: 150%;\"&#62; &#60;br&#62;&#60;strong&#62;Veuillez vous connecter \u00e0 l'aide de votre adresse mail &#60;\/strong&#62;&#60;\/span&#62;&#60;\/span&#62;&#60;\/div&#62;\r\n&#60;div&#62;&#60;span style=\"font-family: arial;\"&#62;&#60;span style=\"font-size: 150%;\"&#62;&#60;strong&#62;(&#60;span style=\"color: rgb(224, 62, 45);\"&#62;prenom.nom@fontenay-aux-roses.fr&#60;\/span&#62;) et de votre mot de passe habituel &#60;\/strong&#62;&#60;br&#62;&#60;br&#62;&#60;\/span&#62;&#60;\/span&#62;&#60;\/div&#62;\r\n&#60;p&#62;&#60;a href=\"https:\/\/bookstack.fontenay-aux-roses.fr\/books\/informatique\/page\/glpi-demande-dintervention-informatique\" target=\"_blank\" rel=\"noopener\"&#62;&#60;span style=\"font-family: arial;\"&#62;&#60;span style=\"font-size: 150%;\"&#62;&#60;strong&#62;Comment fonctionne GLPI&#60;\/strong&#62;&#60;\/span&#62;&#60;\/span&#62;&#60;\/a&#62;&#60;\/p&#62;\r\n&#60;p&#62;&#60;span style=\"font-family: arial;\"&#62;&#60;span style=\"font-size: 150%;\"&#62; &#60;a style=\"text-decoration: none;\" href=\"https:\/\/bookstack.fontenay-aux-roses.fr\/books\/informatique\/page\/glpi-demande-dintervention-informatique\"&#62; &#60;\/a&#62; &#60;\/span&#62;&#60;\/span&#62;&#60;\/p&#62;\r\n&#60;p&#62;\u00a0&#60;\/p&#62;","founded_new_version":"11.0.5","dropdown_max":"100","ajax_wildcard":"*","ajax_limit_count":"50","is_users_auto_add":"1","date_format":"1","csv_delimiter":";","is_ids_visible":"0","smtp_mode":"1","smtp_host":"fontenayauxroses-fr02bb.mail.protection.outlook.com","smtp_port":"25","smtp_username":"","proxy_name":"","proxy_port":"","proxy_user":"","add_followup_on_update_ticket":"1","keep_tickets_on_delete":"0","time_step":"5","helpdesk_doc_url":"","central_doc_url":"","documentcategories_id_forticket":"0","monitors_management_restrict":"2","phones_management_restrict":"2","peripherals_management_restrict":"2","printers_management_restrict":"2","use_log_in_files":"1","time_offset":"0","is_contact_autoupdate":"1","is_user_autoupdate":"1","is_group_autoupdate":"1","is_location_autoupdate":"1","state_autoupdate_mode":"0","is_contact_autoclean":"0","is_user_autoclean":"0","is_group_autoclean":"0","is_location_autoclean":"0","state_autoclean_mode":"0","use_flat_dropdowntree":"0","use_autoname_by_entity":"1","softwarecategories_id_ondelete":"1","x509_email_field":"","x509_cn_restrict":"","x509_o_restrict":"","x509_ou_restrict":"","default_mailcollector_filesize_max":"103809024","followup_private":"0","task_private":"0","default_software_helpdesk_visible":"1","names_format":"1","default_requesttypes_id":"1","use_noright_users_add":"1","cron_limit":"5","priority_matrix":{"1":{"1":"1","2":"1","3":"2","4":"2","5":"2"},"2":{"1":"1","2":"2","3":"2","4":"3","5":"3"},"3":{"1":"2","2":"2","3":"3","4":"4","5":"4"},"4":{"1":"2","2":"3","3":"4","4":"4","5":"5"},"5":{"1":"2","2":"3","3":"4","4":"5","5":"5"}},"urgency_mask":"62","impact_mask":"62","user_deleted_ldap":"1","auto_create_infocoms":"1","use_slave_for_search":"0","show_count_on_tabs":"1","refresh_views":"0","set_default_tech":"1","allow_search_view":"2","allow_search_all":"1","allow_search_global":"1","display_count_on_home":"5","use_password_security":"0","password_min_length":"8","password_need_number":"1","password_need_letter":"1","password_need_caps":"1","password_need_symbol":"1","use_check_pref":"0","notification_to_myself":"1","duedateok_color":"#06ff00","duedatewarning_color":"#ffb800","duedatecritical_color":"#ff0000","duedatewarning_less":"20","duedatecritical_less":"5","duedatewarning_unit":"%","duedatecritical_unit":"%","realname_ssofield":"","firstname_ssofield":"","email1_ssofield":"","email2_ssofield":"","email3_ssofield":"","email4_ssofield":"","phone_ssofield":"","phone2_ssofield":"","mobile_ssofield":"","comment_ssofield":"","title_ssofield":"","category_ssofield":"","language_ssofield":"","entity_ssofield":"","registration_number_ssofield":"","ssovariables_id":"0","translate_kb":"0","translate_dropdowns":"0","pdffont":"pdfahelvetica","keep_devices_when_purging_item":"0","maintenance_mode":"0","maintenance_text":"GLPI est en cours de maintenance","attach_ticket_documents_to_mail":"0","backcreated":"0","task_state":"1","palette":"auror","lock_use_lock_item":"0","lock_autolock_mode":"1","lock_directunlock_notification":"0","lock_item_list":[],"lock_lockprofile_id":"8","set_default_requester":"1","highcontrast_css":0,"smtp_check_certificate":"1","enable_api":"1","enable_api_login_credentials":"0","enable_api_login_external_token":"1","url_base_api":"https:\/\/glpi.fontenay-aux-roses.fr\/apirest.php\/","_no_history":"","_dbslave_status":"0","update_auth":"Sauvegarder","_blank_smtp_passwd":"on","instance_uuid":"12QwIxAA3Cj5i3KYowarXl1GZvMWJK8uGEZSnBmG","registration_uuid":"ZEfAOmaV6HNRdsAxquZbEffbApGJhdU4lRQHS6tA","login_remember_time":"1209600","login_remember_default":"0","use_notifications":"1","notifications_mailing":"1","notifications_ajax":"1","notifications_ajax_check_interval":"5","notifications_ajax_sound":"0","notifications_ajax_icon_url":"https:\/\/fontenay-aux-roses.plan-interactif.com\/images\/logo-fontenayauxroses-mo.jpg","dbversion":"10.0.10@05de68add675fb55abaeec10f3a2552085594a16","smtp_max_retries":"20","smtp_sender":"glpi@fontenay-aux-roses.fr","from_email":"","from_email_name":"GLPI - Support Informatique","smtp_retry_time":"0","purge_item_software_install":"0","purge_software_item_install":"0","purge_software_version_install":"0","purge_infocom_creation":"0","purge_profile_user":"0","purge_group_user":"0","purge_adddevice":"0","purge_updatedevice":"0","purge_deletedevice":"0","purge_connectdevice":"0","purge_disconnectdevice":"0","purge_userdeletedfromldap":"0","purge_addrelation":"0","purge_deleterelation":"0","purge_createitem":"0","purge_deleteitem":"0","purge_restoreitem":"0","purge_updateitem":"0","purge_comments":"0","purge_datemod":"0","purge_all":"0","purge_user_auth_changes":"0","purge_plugins":"0","_date_tax":"31-12-2005","display_login_source":"0","_matrix":"1","_impact_5":"1","_impact_4":"1","_impact_3":"1","_impact_2":"1","_impact_1":"1","_urgency_5":"1","_matrix_5_5":"5","_matrix_5_4":"5","_matrix_5_3":"4","_matrix_5_2":"3","_matrix_5_1":"2","_urgency_4":"1","_matrix_4_5":"5","_matrix_4_4":"4","_matrix_4_3":"4","_matrix_4_2":"3","_matrix_4_1":"2","_urgency_3":"1","_matrix_3_5":"4","_matrix_3_4":"4","_matrix_3_3":"3","_matrix_3_2":"2","_matrix_3_1":"2","_urgency_2":"1","_matrix_2_5":"3","_matrix_2_4":"3","_matrix_2_3":"2","_matrix_2_2":"2","_matrix_2_1":"1","_urgency_1":"1","_matrix_1_5":"2","_matrix_1_4":"2","_matrix_1_3":"2","_matrix_1_2":"1","_matrix_1_1":"1","cas_version":"CAS_VERSION_2_0","timezone":null,"devices_in_menu":[],"impact_assets_list":"[]","default_dashboard_central":"assets","default_dashboard_assets":"assets","default_dashboard_helpdesk":"assistance","default_dashboard_mini_ticket":"mini_tickets","ssologout_url":"","password_expiration_delay":"-1","password_expiration_notice":"-1","password_expiration_lock_delay":"-1","translate_reminders":"0","impact_enabled_itemtypes":"[\"Appliance\",\"Cluster\",\"Computer\",\"Datacenter\",\"DCRoom\",\"Domain\",\"Enclosure\",\"Monitor\",\"NetworkEquipment\",\"PDU\",\"Peripheral\",\"Phone\",\"Printer\",\"Rack\",\"Software\"]","admin_email_noreply":"glpi@fontenay-aux-roses.fr","admin_email_noreply_name":"GLPI - Support Informatique","marketplace_replace_plugins":"2","glpi_network_uuid":"2GFQ6VgvIXSfW9vmHR4lRGrsML0RWYWkbACvHJde","_update_devices_in_menu":"1","system_user":"1714","default_central_tab":0,"page_layout":"vertical","fold_menu":"0","fold_search":"0","savedsearches_pinned":"0","richtext_layout":"classic","user_restored_ldap":"0","timeline_order":"natural","itil_layout":"0","noreply_email":"","noreply_email_name":"","replyto_email_name":"","support_legacy_data":"1","document_max_size":"100000","purge_refusedequipment":"0","planning_work_days":["1","2","3","4","5"],"enabled_inventory":"1","import_software":"1","import_volume":"1","import_antivirus":"1","import_registry":"1","import_process":"1","import_vm":"0","import_monitor_on_partial_sn":"0","import_unmanaged":"1","component_processor":"1","component_memory":"1","component_harddrive":"1","component_networkcard":"1","component_graphiccard":"1","component_soundcard":"1","component_drive":"1","component_networkdrive":"1","component_networkcardvirtual":"1","component_control":"1","component_battery":"1","component_simcard":"1","states_id_default":"2","entities_id_default":"2","location":"0","group":"0","vm_type":"0","vm_components":"0","vm_as_computer":"0","component_removablemedia":"1","component_powersupply":"1","inventory_frequency":"1","import_monitor":"1","import_printer":"1","import_peripheral":"1","stale_agents_delay":"1","stale_agents_action":"[\"0\"]","stale_agents_status":"0","timeline_action_btn_layout":0,"timeline_date_format":0,"initialized_rules_collections":"[\"RuleImportAssetCollection\",\"RuleMailCollectorCollection\",\"RuleRightCollection\",\"RuleSoftwareCategoryCollection\",\"RuleTicketCollection\",\"RuleAssetCollection\",\"RuleDictionnaryOperatingSystemCollection\",\"RuleDictionnaryOperatingSystemVersionCollection\",\"RuleDictionnaryOperatingSystemEditionCollection\"]","smtp_oauth_provider":"","notification_uuid":"7hU0mwBnrySGp3bsXyP6fBpHVR0LyflspMwk36Os","use_flat_dropdowntree_on_search_result":"1","glpitablesitemtype":{"User":"glpi_users","Profile_User":"glpi_profiles_users","Plugin":"glpi_plugins","PluginOauthimapApplication":"glpi_plugin_oauthimap_applications","PluginOauthimapAuthorization":"glpi_plugin_oauthimap_authorizations","Entity":"glpi_entities","UserEmail":"glpi_useremails","TicketTemplate":"glpi_tickettemplates","TicketTemplateHiddenField":"glpi_tickettemplatehiddenfields","Ticket":"glpi_tickets","PendingReason":"glpi_pendingreasons","PendingReason_Item":"glpi_pendingreasons_items","Itil_Project":"glpi_itils_projects","Project":"glpi_projects","Ticket_User":"glpi_tickets_users","Group_Ticket":"glpi_groups_tickets","Supplier_Ticket":"glpi_suppliers_tickets","TicketValidation":"glpi_ticketvalidations","ITILFollowup":"glpi_itilfollowups","TicketTask":"glpi_tickettasks","TaskTemplate":"glpi_tasktemplates","Contract":"glpi_contracts","Ticket_Contract":"glpi_tickets_contracts","ContractType":"glpi_contracttypes","TicketTemplateMandatoryField":"glpi_tickettemplatemandatoryfields","TicketTemplatePredefinedField":"glpi_tickettemplatepredefinedfields","Problem":"glpi_problems","ITILCategory":"glpi_itilcategories","Computer":"glpi_computers","Monitor":"glpi_monitors","Printer":"glpi_printers","Location":"glpi_locations"},"glpiitemtypetables":{"glpi_users":"User","glpi_profiles_users":"Profile_User","glpi_plugins":"Plugin","glpi_plugin_oauthimap_applications":"PluginOauthimapApplication","glpi_plugin_oauthimap_authorizations":"PluginOauthimapAuthorization","glpi_entities":"Entity","glpi_useremails":"UserEmail","glpi_tickettemplates":"TicketTemplate","glpi_tickettemplatehiddenfields":"TicketTemplateHiddenField","glpi_tickets":"Ticket","glpi_pendingreasons":"PendingReason","glpi_pendingreasons_items":"PendingReason_Item","glpi_itils_projects":"Itil_Project","glpi_projects":"Project","glpi_tickets_users":"Ticket_User","glpi_groups_tickets":"Group_Ticket","glpi_suppliers_tickets":"Supplier_Ticket","glpi_ticketvalidations":"TicketValidation","glpi_itilfollowups":"ITILFollowup","glpi_tickettasks":"TicketTask","glpi_tasktemplates":"TaskTemplate","glpi_contracts":"Contract","glpi_tickets_contracts":"Ticket_Contract","glpi_contracttypes":"ContractType","glpi_tickettemplatemandatoryfields":"TicketTemplateMandatoryField","glpi_tickettemplatepredefinedfields":"TicketTemplatePredefinedField","glpi_problems":"Problem","glpi_itilcategories":"ITILCategory","glpi_computers":"Computer","glpi_monitors":"Monitor","glpi_printers":"Printer","glpi_locations":"Location"}};
+            var GLPI_PLUGINS_PATH = {"oauthimap":"plugins\/oauthimap"};
+        
+
+//]]>
+</script><script type="text/javascript">
+//<![CDATA[
+
+$(function() {
+            notifications_ajax = new GLPINotificationsAjax({"interval":5000,"sound":false,"icon":"https:\/\/fontenay-aux-roses.plan-interactif.com\/images\/logo-fontenayauxroses-mo.jpg","user_id":1872});
+            notifications_ajax.start();
+         });
+
+//]]>
+</script>
+            </main>          </div>       </div>    </div> 
+   <div class="floating-buttons d-inline-flex">
+      <span class="btn btn-secondary d-none me-1" id="backtotop">
+         <i class="fas fa-arrow-up" title="Retour en haut de page">
+            <span class="visually-hidden">Retour en haut de page</span>
+         </i>
+      </span>
+   </div>
+
+   
+         <script type="text/javascript" src="ticketGLPI_fichiers/notifications_ajax.min.js"></script>
+         <script type="text/javascript" src="ticketGLPI_fichiers/leaflet.min.js"></script>
+         <script type="text/javascript" src="ticketGLPI_fichiers/flatpickr.min.js"></script>
+         <script type="text/javascript" src="ticketGLPI_fichiers/flatpickr_buttons_plugin.min.js"></script>
+         <script type="text/javascript" src="ticketGLPI_fichiers/fr.min_002.js"></script>
+         <script type="text/javascript" src="ticketGLPI_fichiers/photoswipe.min.js"></script>
+         <script type="text/javascript" src="ticketGLPI_fichiers/gridstack.min.js"></script>
+         <script type="text/javascript" src="ticketGLPI_fichiers/sortable.min.js"></script>
+         <script type="text/javascript" src="ticketGLPI_fichiers/tinymce.min.js"></script>
+         <script type="text/javascript" src="ticketGLPI_fichiers/UserMention.min.js"></script>
+         <script type="text/javascript" src="ticketGLPI_fichiers/ContentTemplatesParameters.min.js"></script>
+         <script type="text/javascript" src="ticketGLPI_fichiers/clipboard.min.js"></script>
+         <script type="text/javascript" src="ticketGLPI_fichiers/chartist.min.js"></script>
+         <script type="text/javascript" src="ticketGLPI_fichiers/jquery.rateit.min.js"></script>
+         <script type="text/javascript" src="ticketGLPI_fichiers/jquery-file-upload.min.js"></script>
+         <script type="text/javascript" src="ticketGLPI_fichiers/fileupload.min.js"></script>
+         <script type="text/javascript" src="ticketGLPI_fichiers/fuzzy.min.js"></script>
+         <script type="text/javascript" src="ticketGLPI_fichiers/fuzzysearch.min.js"></script>
+         <script type="text/javascript" src="ticketGLPI_fichiers/glpi_dialog.min.js"></script>
+         <script type="text/javascript" src="ticketGLPI_fichiers/log_filters.min.js"></script>
+         <script type="text/javascript" src="ticketGLPI_fichiers/fr.min.js"></script>
+         <script type="text/javascript" src="ticketGLPI_fichiers/misc.min.js"></script>
+   
+   
+
+
+<div class="tox tox-silver-sink tox-tinymce-aux" style="position: relative;"></div><div id="documenttypelist_394177145" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg modal-xl">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                     <h3>Types de documents</h3>
+                  </div>
+                  <div class="modal-body">
+                     <iframe id="iframedocumenttypelist_394177145" class="iframe hidden" style="height: 500px;" width="100%" height="400" frameborder="0">
+                     </iframe>
+                  </div>
+               </div>
+            </div>
+         </div></body></html>
