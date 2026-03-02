@@ -1115,29 +1115,26 @@ $(function() {
             Assistant virtuel
          </span>
       </div>
-      <p class="text-muted mb-3">Un espace dedie pour orienter les utilisateurs avant la creation de ticket.</p>
 
-      <div class="mb-3">
-         <div class="border rounded p-3 bg-light">
-            <div class="d-flex flex-column gap-2">
-               <div class="p-2 rounded border bg-white text-muted">Exemple: Decrivez rapidement votre probleme...</div>
-               <div class="p-2 rounded border text-end bg-white text-muted">Le chatbot pourra proposer un tuto avant ticket.</div>
-            </div>
-         </div>
+      <p class="text-muted mb-3">Decrivez votre probleme. Le bot tente une resolution avant creation de ticket.</p>
+
+      <div id="chatbot-messages" class="border rounded p-3 bg-light mb-3" style="height: 280px; overflow-y: auto; color: #1f2937;">
       </div>
 
       <div class="mb-2">
-         <small class="text-muted d-block mb-2">Questions frequentes :</small>
+         <small class="text-muted d-block mb-2">Suggestions :</small>
          <div class="d-flex flex-wrap gap-2">
-            <button type="button" class="btn btn-sm btn-outline-primary js-chatbot-suggestion" data-question="Mon imprimante n'imprime plus, quelles verifications faire ?">Mon imprimante n'imprime plus</button>
-            <button type="button" class="btn btn-sm btn-outline-primary js-chatbot-suggestion" data-question="Mon ordinateur est tres lent, quelles etapes puis-je faire avant un ticket ?">Mon ordinateur est tres lent</button>
+            <button type="button" class="btn btn-sm btn-outline-primary js-chatbot-suggestion" data-question="Mon imprimante n'imprime plus.">Mon imprimante n'imprime plus</button>
+            <button type="button" class="btn btn-sm btn-outline-primary js-chatbot-suggestion" data-question="Mon ordinateur est tres lent.">Mon ordinateur est tres lent</button>
+            <button type="button" class="btn btn-sm btn-outline-primary js-chatbot-suggestion" data-question="Je n'arrive pas a me connecter au wifi.">Probleme de wifi</button>
          </div>
       </div>
 
       <div class="input-group">
-         <input id="chatbot-question-input" type="text" class="form-control" placeholder="Posez votre question...">
-         <button class="btn btn-outline-secondary" type="button" disabled>Envoyer</button>
+         <input id="chatbot-question-input" type="text" class="form-control" placeholder="Expliquez votre probleme...">
+         <button id="chatbot-send-btn" class="btn btn-outline-secondary" type="button">Envoyer</button>
       </div>
+      <div id="chatbot-restart-actions" class="mt-2"></div>
    </div>
 </div>
 
@@ -1159,9 +1156,316 @@ $(function() {
        window.msnry_grid_19565613.layout();
    })
 
-   $('.js-chatbot-suggestion').on('click', function() {
-      $('#chatbot-question-input').val($(this).data('question')).trigger('focus');
+   var chatbotState = {
+      stage: 'identify',
+      issue: null,
+      issueLabel: null,
+      userProblem: '',
+      qualificationAnswer: ''
+   };
+
+   function resetChatbotState() {
+      chatbotState.stage = 'identify';
+      chatbotState.issue = null;
+      chatbotState.issueLabel = null;
+      chatbotState.userProblem = '';
+      chatbotState.qualificationAnswer = '';
+   }
+
+   var issueCatalog = [
+      {
+         key: 'printer',
+         label: 'Probleme imprimante',
+         keywords: ['imprimante', 'imprimer', 'impression'],
+         question: "L'imprimante est-elle allumee, connectee et affiche-t-elle un voyant ou un message d'erreur ?",
+         procedure: [
+            "Verifier que l'imprimante est allumee et qu'aucun voyant rouge n'est actif.",
+            "Verifier le cable USB/reseau ou la connexion wifi de l'imprimante.",
+            "Supprimer la file d'impression bloquee puis relancer le service d'impression.",
+            "Faire un test depuis une autre application (ex: Bloc-notes)."
+         ]
+      },
+      {
+         key: 'slow_pc',
+         label: 'Ordinateur lent',
+         keywords: ['lent', 'lenteur', 'ralenti', 'freeze', 'bloque'],
+         question: "La lenteur est-elle generale ou seulement sur une application ?",
+         procedure: [
+            "Redemarrer le poste pour liberer la memoire et les processus bloques.",
+            "Fermer les applications non essentielles et verifier l'espace disque disponible.",
+            "Verifier si une mise a jour Windows est en cours.",
+            "Lancer une analyse antivirus rapide."
+         ]
+      },
+      {
+         key: 'wifi',
+         label: 'Connexion wifi',
+         keywords: ['wifi', 'wi-fi', 'reseau', 'internet', 'connexion'],
+         question: "Le probleme concerne uniquement votre poste ou plusieurs postes autour de vous ?",
+         procedure: [
+            "Verifier si le wifi est active sur le poste et desactiver/reactiver l'adaptateur.",
+            "Oublier puis reconnecter le reseau wifi avec vos identifiants.",
+            "Tester un autre reseau (partage 4G) pour isoler le probleme local/reseau.",
+            "Redemarrer le poste puis retester la connexion."
+         ]
+      },
+      {
+         key: 'password',
+         label: 'Mot de passe / compte',
+         keywords: ['mot de passe', 'mdp', 'compte', 'connexion impossible', 'login'],
+         question: "Avez-vous un message precis (compte verrouille, mot de passe incorrect, etc.) ?",
+         procedure: [
+            "Verifier que le clavier est en AZERTY et que la touche Verr. Maj n'est pas active.",
+            "Retenter la connexion en saisissant manuellement l'identifiant complet.",
+            "Si besoin, proceder a la reinitialisation du mot de passe.",
+            "Fermer/reouvrir la session puis retester."
+         ]
+      }
+   ];
+
+   function escapeHtml(text) {
+      return $('<div>').text(text).html();
+   }
+
+   function addMessage(role, text) {
+      var isUser = role === 'user';
+      var bubbleClass = isUser ? 'border-primary bg-white ms-auto text-dark' : 'border-secondary bg-white text-dark';
+      var alignClass = isUser ? 'text-end' : 'text-start';
+      var label = isUser ? 'Vous' : 'Assistant';
+
+      var html = [
+         '<div class="mb-2 ' + alignClass + '">',
+         '  <small class="d-block" style="color: #4b5563;">' + label + '</small>',
+         '  <div class="p-2 rounded border ' + bubbleClass + ' d-inline-block" style="max-width: 95%; color: #111827;">' + text + '</div>',
+         '</div>'
+      ].join('');
+
+      $('#chatbot-messages').append(html);
+      var el = $('#chatbot-messages').get(0);
+      el.scrollTop = el.scrollHeight;
+   }
+
+   function addDecisionButtons() {
+      var buttonsHtml = [
+         '<div class="mb-2 text-start" id="chatbot-resolution-buttons">',
+         '  <small class="d-block" style="color: #4b5563;">Reponse rapide</small>',
+         '  <div class="d-flex flex-wrap gap-2">',
+         '    <button type="button" class="btn btn-sm btn-success js-chatbot-resolution" data-value="oui">Oui, resolu</button>',
+         '    <button type="button" class="btn btn-sm btn-outline-danger js-chatbot-resolution" data-value="non">Non, toujours en panne</button>',
+         '  </div>',
+         '</div>'
+      ].join('');
+
+      $('#chatbot-resolution-buttons').remove();
+      $('#chatbot-messages').append(buttonsHtml);
+      var el = $('#chatbot-messages').get(0);
+      el.scrollTop = el.scrollHeight;
+   }
+
+   function hideRestartButton() {
+      $('#chatbot-new-chat-wrap').remove();
+      $('#chatbot-restart-actions').empty();
+   }
+
+   function showRestartButton() {
+      if ($('#chatbot-new-chat-btn').length > 0) {
+         return;
+      }
+
+      var html = [
+         '<div id="chatbot-new-chat-wrap" class="text-center mt-2">',
+         '  <button id="chatbot-new-chat-btn" type="button" class="btn btn-outline-primary btn-sm">',
+         '    Nouveau chat',
+         '  </button>',
+         '</div>'
+      ].join('');
+
+      $('#chatbot-messages').append(html);
+      var el = $('#chatbot-messages').get(0);
+      el.scrollTop = el.scrollHeight;
+   }
+
+   function detectIssue(userText) {
+      var text = userText.toLowerCase();
+
+      for (var i = 0; i < issueCatalog.length; i++) {
+         var issue = issueCatalog[i];
+         for (var j = 0; j < issue.keywords.length; j++) {
+            if (text.indexOf(issue.keywords[j]) !== -1) {
+               return issue;
+            }
+         }
+      }
+
+      return null;
+   }
+
+   function buildProcedure(issue) {
+      var lines = [];
+      lines.push('<strong>Procedure proposee :</strong>');
+      for (var i = 0; i < issue.procedure.length; i++) {
+         lines.push((i + 1) + '. ' + escapeHtml(issue.procedure[i]));
+      }
+      lines.push('Le probleme est-il resolu apres ces verifications ?');
+      return lines.join('<br>');
+   }
+
+   function buildTicketDraft() {
+      var now = new Date().toLocaleString('fr-FR');
+      var title = chatbotState.issueLabel ? chatbotState.issueLabel + ' - non resolu' : 'Incident non resolu';
+      var description = [
+         'Probleme initial: ' + (chatbotState.userProblem || 'Non precise'),
+         'Precision utilisateur: ' + (chatbotState.qualificationAnswer || 'Non precisee'),
+         'Diagnostic chatbot: ' + (chatbotState.issueLabel || 'Non identifie'),
+         'Horodatage: ' + now,
+         'Actions deja tentees: checks proposes par le chatbot, probleme persistant.'
+      ].join('<br>');
+
+      return [
+         '<strong>Le probleme persiste. Brouillon de ticket :</strong>',
+         '<br><strong>Titre</strong>: ' + escapeHtml(title),
+         '<br><strong>Description</strong>:<br>' + escapeHtml(description).replace(/&lt;br&gt;/g, '<br>'),
+         '<br><strong>Impact</strong>: A confirmer (poste unique ou plusieurs utilisateurs).',
+         '<br><strong>Priorite</strong>: A qualifier selon impact metier.',
+         '<br><strong>Prochaine etape</strong>: cliquer sur "Creer un ticket" et reprendre ces informations.'
+      ].join('');
+   }
+
+   function askForMoreDetails() {
+      addMessage('bot', "Je n'ai pas encore identifie le probleme. Pouvez-vous preciser : materiel concerne, message d'erreur exact, et depuis quand ?");
+   }
+
+   function handleUserMessage(rawText) {
+      var text = $.trim(rawText || '');
+      if (!text) {
+         return;
+      }
+
+      addMessage('user', escapeHtml(text));
+
+      if (chatbotState.stage === 'identify') {
+         chatbotState.userProblem = text;
+         var issue = detectIssue(text);
+
+         if (!issue) {
+            if (text.length < 18) {
+               askForMoreDetails();
+               return;
+            }
+
+            chatbotState.stage = 'ticket_ready';
+            addMessage('bot', "Incident non reconnu automatiquement. Je vous propose de preparer un ticket complet pour accelerer la prise en charge.");
+            addMessage('bot', buildTicketDraft());
+            showRestartButton();
+            return;
+         }
+
+         chatbotState.issue = issue.key;
+         chatbotState.issueLabel = issue.label;
+         chatbotState.stage = 'qualify';
+
+         addMessage('bot', "J'ai detecte : <strong>" + escapeHtml(issue.label) + "</strong>.");
+         addMessage('bot', escapeHtml(issue.question));
+         return;
+      }
+
+      if (chatbotState.stage === 'qualify') {
+         chatbotState.qualificationAnswer = text;
+         chatbotState.stage = 'procedure';
+
+         var selectedIssue = null;
+         for (var i = 0; i < issueCatalog.length; i++) {
+            if (issueCatalog[i].key === chatbotState.issue) {
+               selectedIssue = issueCatalog[i];
+               break;
+            }
+         }
+
+         if (!selectedIssue) {
+            chatbotState.stage = 'ticket_ready';
+            addMessage('bot', buildTicketDraft());
+            showRestartButton();
+            return;
+         }
+
+         addMessage('bot', buildProcedure(selectedIssue));
+         addDecisionButtons();
+         return;
+      }
+
+      if (chatbotState.stage === 'procedure') {
+         var lower = text.toLowerCase();
+         if (lower.indexOf('oui') !== -1 || lower.indexOf('resolu') !== -1) {
+            chatbotState.stage = 'done';
+            $('#chatbot-resolution-buttons').remove();
+            addMessage('bot', "Parfait. Pensez a refaire ce meme parcours si le probleme revient.");
+            showRestartButton();
+            return;
+         }
+
+         if (lower.indexOf('non') !== -1 || lower.indexOf('toujours') !== -1 || lower.indexOf('persiste') !== -1) {
+            chatbotState.stage = 'ticket_ready';
+            $('#chatbot-resolution-buttons').remove();
+            addMessage('bot', buildTicketDraft());
+            showRestartButton();
+            return;
+         }
+
+         addMessage('bot', "Repondez simplement par 'oui' si c'est resolu, ou 'non' si le probleme persiste.");
+         return;
+      }
+
+      if (chatbotState.stage === 'ticket_ready') {
+         addMessage('bot', "Le ticket est deja prepare. Cliquez sur 'Nouveau chat' pour recommencer une conversation.");
+         showRestartButton();
+         return;
+      }
+
+      if (chatbotState.stage === 'done') {
+         addMessage('bot', "Conversation terminee. Cliquez sur 'Nouveau chat' pour recommencer.");
+         showRestartButton();
+         return;
+      }
+   }
+
+   function sendInputMessage() {
+      var text = $('#chatbot-question-input').val();
+      $('#chatbot-question-input').val('');
+      handleUserMessage(text);
+   }
+
+   $('#chatbot-send-btn').on('click', function() {
+      sendInputMessage();
    });
+
+   $('#chatbot-question-input').on('keydown', function(e) {
+      if (e.key === 'Enter') {
+         e.preventDefault();
+         sendInputMessage();
+      }
+   });
+
+   $(document).on('click', '.js-chatbot-suggestion', function() {
+      var question = $(this).data('question');
+      $('#chatbot-question-input').val(question).trigger('focus');
+      sendInputMessage();
+   });
+
+   $(document).on('click', '.js-chatbot-resolution', function() {
+      var value = $(this).data('value');
+      handleUserMessage(value);
+   });
+
+    $(document).on('click', '#chatbot-new-chat-btn', function() {
+      $('#chatbot-messages').empty();
+      $('#chatbot-resolution-buttons').remove();
+      hideRestartButton();
+      resetChatbotState();
+      addMessage('bot', "Bonjour. Comment puis-je vous aider aujourd'hui ?");
+      $('#chatbot-question-input').trigger('focus');
+   });
+
+   addMessage('bot', "Bonjour. Comment puis-je vous aider aujourd'hui ?");
 
 });
 </script>
