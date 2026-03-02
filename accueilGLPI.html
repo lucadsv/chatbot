@@ -1314,19 +1314,17 @@ $(function() {
       var now = new Date().toLocaleString('fr-FR');
       var title = chatbotState.issueLabel ? chatbotState.issueLabel + ' - non resolu' : 'Incident non resolu';
       var description = [
-         'Probleme initial: ' + (chatbotState.userProblem || 'Non precise'),
-         'Precision utilisateur: ' + (chatbotState.qualificationAnswer || 'Non precisee'),
-         'Diagnostic chatbot: ' + (chatbotState.issueLabel || 'Non identifie'),
-         'Horodatage: ' + now,
-         'Actions deja tentees: checks proposes par le chatbot, probleme persistant.'
+         'Problème initial : ' + (chatbotState.userProblem || 'Non precise'),
+         'Précision utilisateur : ' + (chatbotState.qualificationAnswer || 'Non precisee'),
+         //'Diagnostic chatbot : ' + (chatbotState.issueLabel || 'Non identifie'),
+         'Horodatage : ' + now,
+         'Actions déjà tentées : checks proposes par le chatbot, problème persistant.'
       ].join('<br>');
 
       return [
          '<strong>Le probleme persiste. Brouillon de ticket :</strong>',
          '<br><strong>Titre</strong>: ' + escapeHtml(title),
          '<br><strong>Description</strong>:<br>' + escapeHtml(description).replace(/&lt;br&gt;/g, '<br>'),
-         '<br><strong>Impact</strong>: A confirmer (poste unique ou plusieurs utilisateurs).',
-         '<br><strong>Priorite</strong>: A qualifier selon impact metier.',
          '<br><strong>Prochaine etape</strong>: cliquer sur "Creer un ticket" et reprendre ces informations.'
       ].join('');
    }
