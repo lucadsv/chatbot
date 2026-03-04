@@ -1020,7 +1020,7 @@ $(function() {
                   <div class="grid-item col-xl-6" style="position: absolute; left: 0%; top: 0px;">
             
 
-<div class="card">
+<div id="home-chatbot-card" class="card">
    <div class="card-body">
       <div class="card-title d-flex justify-content-between">
                   <a class="" href="https://glpi.fontenay-aux-roses.fr/front/ticket.php?criteria%5B0%5D%5Bfield%5D=12&amp;criteria%5B0%5D%5Bsearchtype%5D=equals&amp;criteria%5B0%5D%5Bvalue%5D=process&amp;criteria%5B0%5D%5Blink%5D=AND&amp;reset=reset">
@@ -1117,11 +1117,11 @@ $(function() {
       </div>
       <p class="text-muted mb-3">Décrivez votre problème. Nous tentons de le résoudre avant la création d’un ticket.</p>
 
-      <div id="home-chatbot-chat" class="border rounded p-3 bg-light mb-2" style="height: 330px; overflow-y: auto;"></div>
-      <div id="home-chatbot-quick" class="d-flex flex-wrap gap-2 mb-2"></div>
+      <div id="home-chatbot-chat" class="border rounded p-3 bg-light mb-2" style="overflow-y: auto;"></div>
+      <div id="home-chatbot-quick"></div>
 
       <div class="input-group">
-         <input id="home-chatbot-input" type="text" class="form-control" placeholder="Ecris ton probleme comme tu veux...">
+         <input id="home-chatbot-input" type="text" class="form-control" placeholder="Poser une question...">
          <button id="home-chatbot-send" class="btn btn-outline-secondary" type="button">Envoyer</button>
       </div>
    </div>
@@ -1148,14 +1148,23 @@ $(function() {
 
 <style>
 #home-chatbot-chat { color: #1f2937; }
-#home-chatbot-chat .home-chatbot-msg { max-width: 90%; border: 1px solid #d7deec; border-radius: 12px; padding: 10px 12px; line-height: 1.45; white-space: pre-line; margin-bottom: 8px; color: #1f2937; }
-#home-chatbot-chat .home-chatbot-msg.bot { background: #fff; color: #1f2937; }
+#home-chatbot-chat .home-chatbot-row { margin-bottom: 10px; }
+#home-chatbot-chat .home-chatbot-row.bot { margin-right: auto; }
+#home-chatbot-chat .home-chatbot-row.user { margin-left: auto; text-align: right; }
+#home-chatbot-chat .home-chatbot-label { display: block; font-size: 0.72rem; letter-spacing: 0.02em; color: #6b7280; margin: 0 2px 4px; }
+#home-chatbot-chat .home-chatbot-msg { width: fit-content; max-width: 90%; border: 1px solid #d7deec; border-radius: 14px; padding: 10px 12px; line-height: 1.45; white-space: pre-line; color: #1f2937; box-shadow: 0 1px 2px rgba(17, 24, 39, 0.05); }
+#home-chatbot-chat .home-chatbot-msg.bot { background: #fff; color: #1f2937; margin-right: auto; }
 #home-chatbot-chat .home-chatbot-msg.user { margin-left: auto; background: #eaf0ff; border-color: #adc1ef; color: #111827; }
 #home-chatbot-chat .home-chatbot-draft { margin-top: 8px; background: #f4f7ff; border: 1px solid #b8c7ea; border-radius: 10px; padding: 10px; position: relative; color: #1f2937; }
 #home-chatbot-chat .home-chatbot-draft pre { margin: 8px 0 0; white-space: pre-wrap; font-family: "Segoe UI", Tahoma, Arial, sans-serif; font-size: 0.9rem; line-height: 1.5; color: #111827; }
 #home-chatbot-chat .home-chatbot-draft-copy { position: absolute; top: 8px; right: 8px; width: 30px; height: 30px; border-radius: 8px; border: 1px solid #b7c6e7; background: #fff; display: inline-flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.15s ease; cursor: pointer; }
 #home-chatbot-chat .home-chatbot-draft:hover .home-chatbot-draft-copy { opacity: 1; }
 #home-chatbot-chat .home-chatbot-draft-copy:hover { background: #edf3ff; border-color: #8ca4dc; }
+#home-chatbot-card .card-body { display: flex; flex-direction: column; }
+#home-chatbot-chat { height: 520px !important; min-height: 520px; max-height: 520px; }
+#home-chatbot-quick { display: none; align-items: center; flex-wrap: wrap; }
+#home-chatbot-quick.has-actions { display: flex; gap: 10px; margin: 4px 0 8px; }
+#home-chatbot-quick .btn { margin: 2px 0; padding: 0.45rem 0.82rem; }
 </style>
 
 <script type="text/javascript">
@@ -1247,8 +1256,15 @@ $(function() {
    // Tokenisation pour le scoring flou.
    function tokenize(text) { return normalize(text).split(" ").filter(function (w) { return w.length >= 3; }).map(stem); }
 
-   // Ajoute une bulle de message dans l'UI du chat.
+   // Ajoute une bulle de message dans l'UI du chat avec un libellé "assistant"/"vous".
    function addMessage(role, text, extraHtml) {
+      var row = document.createElement("div");
+      row.className = "home-chatbot-row " + role;
+
+      var label = document.createElement("span");
+      label.className = "home-chatbot-label";
+      label.textContent = role === "bot" ? "Assistant" : "Vous";
+
       var node = document.createElement("div");
       node.className = "home-chatbot-msg " + role;
       node.innerHTML = escapeHtml(text).replace(/\n/g, "<br>");
@@ -1257,19 +1273,29 @@ $(function() {
          extra.innerHTML = extraHtml;
          node.appendChild(extra);
       }
-      dom.chat.appendChild(node);
+
+      row.appendChild(label);
+      row.appendChild(node);
+      dom.chat.appendChild(row);
       dom.chat.scrollTop = dom.chat.scrollHeight;
    }
 
    // Affiche les boutons d'action rapide sous la conversation (résolu / non résolu).
+   // La zone est masquée quand il n'y a pas d'actions pour éviter un espace vide.
    function setQuickActions(actions) {
       dom.quick.innerHTML = "";
+      var hasActions = Array.isArray(actions) && actions.length > 0;
+      dom.quick.classList.toggle("has-actions", hasActions);
+      if (!hasActions) { return; }
       actions.forEach(function (action) {
          var btn = document.createElement("button");
          btn.type = "button";
          btn.className = "btn btn-sm " + (action.variant || "btn-outline-secondary");
          btn.textContent = action.label;
-         btn.addEventListener("click", action.onClick);
+         btn.addEventListener("click", function () {
+            addMessage("user", action.label);
+            action.onClick();
+         });
          dom.quick.appendChild(btn);
       });
    }
@@ -1309,7 +1335,7 @@ $(function() {
    // Construit une réponse de dépannage lisible côté utilisateur.
    function buildSolutionText(match) {
       var steps = match.issue.solution.map(function (s, i) { return (i + 1) + ". " + s; }).join("\n");
-      return "Je pense que ca ressemble a: " + match.issue.label + ".\n\nVoici quoi faire:\n" + steps + "\n\nDis-moi si ca corrige le probleme.";
+      return "Voici quelques étapes qui peuvent vous aider :\n\n" + steps + "\n\nN'hésitez pas à me dire si tout fonctionne à nouveau ou si le problème persiste ou via les deux boutons juste ici 👇";
    }
 
    // Construit le brouillon d'incident si le problème persiste.
@@ -1317,7 +1343,7 @@ $(function() {
       var now = new Date().toLocaleString("fr-FR");
       var userInputs = state.history.filter(function (h) { return h.role === "user"; }).map(function (h) { return "- " + h.text; });
       var actions = match.issue.solution.map(function (s) { return "- " + s; });
-      return ["Type: Incident", "Titre: " + match.issue.label + " - non resolu", "", "Description detaillee:", "- Categorie: " + match.issue.category, "- Probleme detecte: " + match.issue.label, "- Horodatage: " + now, "- Contexte utilisateur:", userInputs.join("\n"), "", "Actions deja tentees:", actions.join("\n"), "", "Resultat: probleme persistant apres procedure."].join("\n");
+      return ["Type: Incident", "Titre: " + match.issue.label + " - non resolu", "", "Description detaillee:", "- Categorie: " + match.issue.category, "- Probleme detecte: " + match.issue.label, "- Horodatage: " + now, "- Contexte utilisateur: " + userInputs, "", "Actions deja tentees:", actions.join("\n"), "", "Resultat: probleme persistant apres procedure."].join("\n");
    }
 
    // Affiche la carte brouillon + icône de copie (copie silencieuse par design).
@@ -1328,12 +1354,12 @@ $(function() {
          '  <button class="home-chatbot-draft-copy" type="button" title="Copier le brouillon" aria-label="Copier le brouillon">',
          '    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 9h10v12H9z" stroke="#2f467f" stroke-width="1.8"/><path d="M5 15H4V5h10v1" stroke="#2f467f" stroke-width="1.8"/></svg>',
          "  </button>",
-         "  <strong>Brouillon ticket incident</strong>",
+         "  <strong>Brouillon de ticket : incident</strong>",
          "  <pre>" + escapeHtml(draft) + "</pre>",
          "</div>"
       ].join("");
 
-      addMessage("bot", "Le probleme persiste. Je t'ai prepare un brouillon pret a coller dans GLPI.", html);
+      addMessage("bot", "Le probleme persiste. Je t'ai prepare un brouillon de ticket pret a coller.", html);
       var copyButtons = dom.chat.querySelectorAll(".home-chatbot-draft-copy");
       var copyBtn = copyButtons.length ? copyButtons[copyButtons.length - 1] : null;
       if (copyBtn) {
