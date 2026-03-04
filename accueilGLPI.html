@@ -1346,7 +1346,23 @@ $(function() {
       return ["Type: Incident", "Titre: " + match.issue.label + " - non resolu", "", "Description detaillee:", "- Categorie: " + match.issue.category, "- Probleme detecte: " + match.issue.label, "- Horodatage: " + now, "- Contexte utilisateur: " + userInputs, "", "Actions deja tentees:", actions.join("\n"), "", "Resultat: probleme persistant apres procedure."].join("\n");
    }
 
-   // Affiche la carte brouillon + icône de copie (copie silencieuse par design).
+   // Tente d'afficher une notification système après la copie (si le navigateur l'autorise).
+   function notifyCopySuccess() {
+      if (!("Notification" in window)) { return; }
+      var title = "Copie reussie";
+      var body = "Brouillon copie dans le presse-papiers.";
+      if (Notification.permission === "granted") {
+         new Notification(title, { body: body });
+         return;
+      }
+      if (Notification.permission === "default") {
+         Notification.requestPermission().then(function (permission) {
+            if (permission === "granted") { new Notification(title, { body: body }); }
+         }).catch(function () {});
+      }
+   }
+
+   // Affiche la carte brouillon + icône de copie.
    function showDraft(match) {
       var draft = buildDraft(match);
       var html = [
@@ -1364,7 +1380,11 @@ $(function() {
       var copyBtn = copyButtons.length ? copyButtons[copyButtons.length - 1] : null;
       if (copyBtn) {
          copyBtn.addEventListener("click", function () {
-            if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(draft).catch(function () {}); }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+               navigator.clipboard.writeText(draft).then(function () {
+                  notifyCopySuccess();
+               }).catch(function () {});
+            }
          });
       }
       setQuickActions([]);
