@@ -1177,29 +1177,51 @@ $(function() {
    window.__HOME_CHATBOT_INIT__ = true;
 
    // =======================================
-   // BASE DE CONNAISSANCES SOURCE (MODIFIER CE TABLEAU)
+   // BASE DE CONNAISSANCES MAINTENABLE
    // =======================================
-   // Pour ajouter une procédure, ajouter un objet avec :
-   // - category : famille logique (wifi, network, account, etc.)
-   // - label : titre du problème détecté (affiché à l'utilisateur)
-   // - keywords : termes/phrases utilisés pour la détection
-   // - solution : étapes de résolution ordonnées
-   var KNOWLEDGE_CASES = [
-      { category: "wifi", label: "Connexion Wi-Fi impossible", keywords: ["wifi", "wi-fi", "pas de wifi", "connexion impossible", "ssid", "sans fil", "internet coupe"], solution: ["Verifier que le Wi-Fi est active et que le mode avion est desactive.", "Oublier le reseau puis se reconnecter.", "Redemarrer la carte reseau du poste.", "Renouveler l'adresse IP puis tester passerelle et internet."] },
-      { category: "wifi", label: "Wi-Fi instable / deconnexions", keywords: ["wifi instable", "deconnexion", "latence", "coupure", "reseau instable"], solution: ["Mesurer le signal a l'emplacement utilisateur.", "Tester sur un autre SSID si possible.", "Redemarrer poste et verifier pilotes Wi-Fi.", "Signaler zone, heure et frequence des coupures."] },
-      { category: "network", label: "Reseau filaire indisponible", keywords: ["ethernet", "cable reseau", "prise reseau", "lan", "pas de reseau", "pas d'ip"], solution: ["Verifier cable RJ45, prise murale et port switch.", "Desactiver/reactiver carte ethernet.", "Renouveler IP et verifier DHCP.", "Tester passerelle, DNS, puis internet."] },
-      { category: "network", label: "Partage reseau inaccessible", keywords: ["partage", "lecteur reseau", "z:", "nas", "dossier partage", "\\\\", "unc"], solution: ["Tester acces UNC direct au partage.", "Verifier credentials sauvegardes et droits d'acces.", "Remapper le lecteur reseau.", "Verifier serveur de fichiers joignable en DNS/ping."] },
-      { category: "messaging", label: "Outlook envoi/reception KO", keywords: ["outlook", "mail", "messagerie", "envoi", "reception", "exchange", "ndr"], solution: ["Verifier internet et mode hors connexion Outlook.", "Tester Outlook Web pour isoler client/serveur.", "Vider boite d'envoi et messages volumineux.", "Verifier quota boite et redemarrer Outlook."] },
-      { category: "messaging", label: "Teams micro/camera/son en panne", keywords: ["teams", "micro", "camera", "audio", "visio", "zoom", "meet"], solution: ["Verifier permissions micro/camera au niveau systeme.", "Choisir le bon peripherique dans Teams.", "Fermer applis concurrentes utilisant micro/camera.", "Mettre a jour pilotes audio/video."] },
-      { category: "account", label: "Mot de passe refuse / compte verrouille", keywords: ["mot de passe", "mdp", "compte verrouille", "login", "authentification", "identifiant"], solution: ["Verifier clavier (majuscule / disposition).", "Tester sur un autre service pour valider le scope.", "Reinitialiser mot de passe via procedure interne.", "Patienter la replication annuaire puis retester."] },
-      { category: "account", label: "MFA / OTP invalide", keywords: ["mfa", "otp", "double facteur", "authenticator", "code", "push"], solution: ["Verifier date/heure smartphone et poste.", "Verifier connectivite du smartphone.", "Regenerer code OTP ou methode secondaire.", "Reassocier application Authenticator si besoin."] },
-      { category: "hardware", label: "Imprimante en panne", keywords: ["imprimante", "impression", "papier", "toner", "spooler", "bourrage"], solution: ["Verifier alimentation et connexion USB/reseau.", "Verifier papier/toner et absence de bourrage.", "Vider file d'impression et relancer spooler.", "Tester impression de page de test."] },
-      { category: "hardware", label: "Ecran secondaire non detecte", keywords: ["ecran", "double ecran", "hdmi", "displayport", "no signal", "dock"], solution: ["Verifier cable, port et alimentation ecran.", "Tester Win+P et detection ecran.", "Redemarrer dock/station puis reconnecter.", "Mettre a jour pilote graphique."] },
-      { category: "performance", label: "Poste lent / gele", keywords: ["lent", "lenteur", "freeze", "bloque", "sature", "cpu", "ram"], solution: ["Redemarrer le poste puis retester.", "Verifier espace disque disponible.", "Identifier processus gourmands.", "Lancer scan antivirus rapide."] },
-      { category: "performance", label: "Disque plein", keywords: ["disque plein", "espace disque", "stockage plein", "c: plein", "temp plein"], solution: ["Nettoyer fichiers temporaires et cache.", "Purger telechargements et corbeille.", "Deplacer gros fichiers utilisateurs.", "Verifier croissance anormale OST/PST/logs."] },
-      { category: "remote_access", label: "VPN ne se connecte pas", keywords: ["vpn", "tunnel", "acces distant", "client vpn", "connexion vpn"], solution: ["Verifier internet hors VPN.", "Verifier identifiants + MFA.", "Relancer client VPN en mode admin.", "Reimporter profil VPN officiel."] },
-      { category: "remote_access", label: "RDP indisponible", keywords: ["rdp", "bureau a distance", "mstsc", "remote desktop", "prise en main"], solution: ["Verifier machine cible joignable (ping/DNS).", "Verifier activation RDP et droits user.", "Verifier port 3389 / pare-feu.", "Tester connexion par IP puis hostname."] }
+   // 1) Les categories officielles sont declarees ici.
+   // 2) Les cas de depannage sont ensuite ranges dans une base unique (triable/maintenable).
+   // 3) Le moteur consomme toujours un tableau final au format historique pour ne pas changer le comportement.
+   var OFFICIAL_CATEGORIES = [
+      { key: "pc", label: "PC" },
+      { key: "ecran", label: "Ecran" },
+      { key: "imprimantes_scanner", label: "Imprimantes/Scanner" },
+      { key: "telephones", label: "Telephones" },
+      { key: "petits_materiels", label: "Petits Materiels (souris, clavier, casque ...)" },
+      { key: "internet", label: "Internet" },
+      { key: "wifi", label: "Wifi" },
+      { key: "cablage", label: "Cablage" },
+      { key: "applications", label: "Applications" }
    ];
+
+   // Pour ajouter une procedure, ajouter un objet avec :
+   // - categoryKey : cle d'une categorie officielle (voir OFFICIAL_CATEGORIES)
+   // - label : titre du probleme detecte (affiche a l'utilisateur)
+   // - keywords : termes/phrases utilises pour la detection
+   // - solution : etapes de resolution ordonnees
+   var KNOWLEDGE_ENTRIES = [
+     { categoryKey: "ecran", label: "Ecran secondaire non detecte", keywords: ["ecran", "double ecran", "hdmi", "displayport", "no signal", "dock"], solution: ["Verifier cable, port et alimentation ecran.", "Tester Win+P et detection ecran.", "Redemarrer dock/station puis reconnecter.", "Mettre a jour pilote graphique."] },
+   ];
+
+   function mapCategoryLabels(categories) {
+      return categories.reduce(function (acc, item) {
+         acc[item.key] = item.label;
+         return acc;
+      }, {});
+   }
+
+   var CATEGORY_LABELS = mapCategoryLabels(OFFICIAL_CATEGORIES);
+
+   function buildKnowledgeCases(entries) {
+      return entries.map(function (entry) {
+         return {
+            category: CATEGORY_LABELS[entry.categoryKey] || "general",
+            label: entry.label,
+            keywords: entry.keywords,
+            solution: entry.solution
+         };
+      });
+   }
 
    // Normalise les entrées de la base de connaissances en objets internes avec clés stables.
    function createKnowledgeBase(cases) {
@@ -1221,7 +1243,7 @@ $(function() {
    }
 
    // Base finale en mémoire utilisée par le chatbot.
-   var knowledgeBase = createKnowledgeBase(KNOWLEDGE_CASES);
+   var knowledgeBase = createKnowledgeBase(buildKnowledgeCases(KNOWLEDGE_ENTRIES));
    // Exposée pour enrichissement futur / debug depuis la console.
    window.HomeChatbotKB = { knowledgeBase: knowledgeBase, addKnowledgeCase: addKnowledgeCase };
 
@@ -1335,7 +1357,7 @@ $(function() {
    // Construit une réponse de dépannage lisible côté utilisateur.
    function buildSolutionText(match) {
       var steps = match.issue.solution.map(function (s, i) { return (i + 1) + ". " + s; }).join("\n");
-      return "Voici quelques étapes qui peuvent vous aider :\n\n" + steps + "\n\nN'hésitez pas à me dire si tout fonctionne à nouveau ou si le problème persiste ou via les deux boutons juste ici 👇";
+      return "Voici quelques étapes qui peuvent vous aider :\n\n" + steps + "\n\nN’hésitez pas à me confirmer si tout fonctionne de nouveau ou si le problème persiste en utilisant les deux boutons ci-dessous 👇";
    }
 
    // Construit le brouillon d'incident si le problème persiste.
@@ -1392,7 +1414,7 @@ $(function() {
 
    // Message de fallback quand aucun problème n'est détecté avec assez de confiance.
    function suggestHelp() {
-      addMessage("bot", "Je n'ai pas encore trouve un cas precis, mais continue avec tes mots. Tu peux ajouter: erreur affichee, moment du blocage, impact.");
+      addMessage("bot", "Je n’ai pas compris. Pouvez-vous résumer en quelques mots ?");
    }
 
    // Orchestrateur appelé à chaque message utilisateur.
@@ -1408,7 +1430,7 @@ $(function() {
       state.history.push({ role: "bot", text: response });
       addMessage("bot", response);
       setQuickActions([
-         { label: "Oui, c'est regle", variant: "btn-outline-success", onClick: function () { addMessage("bot", "Super, content que ce soit regle."); setQuickActions([]); } },
+         { label: "Oui, c'est regle", variant: "btn-outline-success", onClick: function () { addMessage("bot", "Parfait ! Heureux d’avoir pu vous aider."); setQuickActions([]); } },
          { label: "Non, toujours en panne", variant: "btn-outline-danger", onClick: function () { showDraft(match); } }
       ]);
    }
