@@ -1199,8 +1199,45 @@ $(function() {
    // - label : titre du probleme detecte (affiche a l'utilisateur)
    // - keywords : termes/phrases utilises pour la detection
    // - solution : etapes de resolution ordonnees
+   // - referenceUrl : lien vers la procedure interne
    var KNOWLEDGE_ENTRIES = [
-     { categoryKey: "ecran", label: "Ecran secondaire non detecte", keywords: ["ecran", "double ecran", "hdmi", "displayport", "no signal", "dock"], solution: ["Verifier cable, port et alimentation ecran.", "Tester Win+P et detection ecran.", "Redemarrer dock/station puis reconnecter.", "Mettre a jour pilote graphique."] },
+    { categoryKey: "ecran", label: "Ecran secondaire non detecte", keywords: ["ecran", "double ecran", "hdmi", "displayport", "no signal", "dock"], solution: ["Verifier cable, port et alimentation ecran.", "Tester Win+P et detection ecran.", "Redemarrer dock/station puis reconnecter.", "Mettre a jour pilote graphique."] },
+    { categoryKey: "applications", label: "Proteger un fichier Excel", keywords: ["proteger un fichier excel", "mot de passe excel", "securiser excel", "protege excel"], solution: ["Ouvrir la procedure interne associee.", "Suivre les etapes indiquees dans le guide."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/proteger-un-fichier" },
+    { categoryKey: "applications", label: "Acces OneDrive", keywords: ["acces onedrive", "connexion onedrive", "onedrive inaccessible", "ouvrir onedrive"], solution: ["Ouvrir la procedure interne associee.", "Suivre les etapes indiquees dans le guide."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/acces-onedrive" },
+    { categoryKey: "applications", label: "Synchronisation et sauvegarde OneDrive", keywords: ["synchronisation onedrive", "sauvegarde onedrive", "onedrive ne synchronise pas", "synchro onedrive"], solution: ["Verifier la synchronisation selon la procedure interne.", "Appliquer les controles recommandes dans le guide."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/synchronisation-et-sauvegarde" },
+    { categoryKey: "applications", label: "Envoyer des reponses automatiques", keywords: ["reponses automatiques", "absence outlook", "message absence", "hors bureau"], solution: ["Configurer la reponse automatique via le guide interne.", "Tester l'envoi apres configuration."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/envoyer-des-reponses-automatiques" },
+    { categoryKey: "applications", label: "Partager un calendrier", keywords: ["partager calendrier", "partage calendrier outlook", "donner acces calendrier"], solution: ["Suivre la procedure de partage du calendrier.", "Verifier les droits donnes au destinataire."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/partager-un-calendrier" },
+    { categoryKey: "applications", label: "Connexion a Office Web", keywords: ["connexion office web", "office web", "ouvrir outlook web", "se connecter office"], solution: ["Suivre la procedure de connexion a Office Web.", "Verifier les identifiants et l'acces."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/connexion-a-office-web" },
+    { categoryKey: "applications", label: "Changer le theme couleur", keywords: ["changer theme couleur", "theme outlook", "couleur outlook", "apparence outlook"], solution: ["Appliquer la procedure de changement de theme.", "Verifier le rendu apres modification."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/changer-le-theme-couleur" },
+    { categoryKey: "applications", label: "Creation d'une regle - Deplacer mails vers un dossier", keywords: ["regle deplacer mails dossier", "filtre mail dossier", "trier mails outlook", "regle outlook dossier"], solution: ["Creer la regle depuis la procedure interne.", "Valider son fonctionnement sur de nouveaux messages."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/creation-dune-regle-deplacer-mails-vers-un-dossier" },
+    { categoryKey: "applications", label: "Creation d'une regle - Bloquer un expediteur", keywords: ["bloquer expediteur", "regle bloquer expediteur", "mail indesirable expediteur", "liste blocage outlook"], solution: ["Configurer le blocage selon la procedure.", "Verifier que les nouveaux messages sont bien filtres."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/creation-dune-regle-bloquer-un-expediteur" },
+    { categoryKey: "applications", label: "Creation d'une regle - Deplacer un mail suppose indesirable", keywords: ["deplacer mail indesirable", "mail suppose indesirable", "regle anti spam outlook", "deplacer spam dossier"], solution: ["Mettre en place la regle de deplacement selon le guide.", "Controler le dossier cible apres test."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/creation-dune-regle-deplacer-un-mail-suppose-indesirable" },
+    { categoryKey: "applications", label: "Ajouter un contact", keywords: ["ajouter contact", "creer contact outlook", "nouveau contact"], solution: ["Suivre la procedure d'ajout d'un contact.", "Verifier la presence du contact dans le carnet d'adresses."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/ajouter-un-contact" },
+    { categoryKey: "applications", label: "Creer un groupe de contacts", keywords: ["creer groupe contacts", "liste diffusion outlook", "groupe de contacts"], solution: ["Creer le groupe via la procedure interne.", "Verifier les membres du groupe."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/creer-un-groupe-de-contacts" },
+    { categoryKey: "applications", label: "Partager un groupe de contacts", keywords: ["partager groupe contacts", "partage liste diffusion", "envoyer groupe de contacts"], solution: ["Suivre la procedure de partage du groupe.", "Verifier que le destinataire peut l'utiliser."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/partager-un-groupe-de-contacts" },
+    { categoryKey: "applications", label: "Envoyer un mail a partir d'une boite partagee", keywords: ["boite partagee", "envoyer depuis boite partagee", "adresse partagee outlook"], solution: ["Configurer l'envoi depuis la boite partagee selon le guide.", "Verifier l'adresse d'expedition avant envoi."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/envoyer-un-mail-a-partir-dune-boite-partagee" },
+    { categoryKey: "applications", label: "Envoyer un mail en copie cachee (Cci)", keywords: ["copie cachee", "cci", "envoyer mail cci", "bcc"], solution: ["Utiliser le champ Cci selon la procedure interne.", "Verifier les destinataires avant envoi."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/envoyer-un-mail-en-copie-cachee-cci" },
+    { categoryKey: "applications", label: "Invitation de reunion aux personnes exterieures a la Mairie", keywords: ["invitation reunion exterieur", "inviter externe teams", "inviter externe outlook", "participants externes"], solution: ["Suivre la procedure d'invitation externe.", "Verifier l'adresse et les droits de participation."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/invitation-de-reunion-aux-personnes-exterieurs-a-la-mairie" },
+    { categoryKey: "applications", label: "Statut teletravail sur Outlook et Teams", keywords: ["statut teletravail", "presence teams teletravail", "outlook teletravail", "statut teams"], solution: ["Appliquer la configuration du statut teletravail via le guide.", "Verifier la mise a jour du statut sur Outlook et Teams."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/statut-teletravail-sur-outlook-et-teams" },
+    { categoryKey: "applications", label: "Exporter au format PDF", keywords: ["exporter pdf", "enregistrer en pdf", "convertir en pdf"], solution: ["Suivre la procedure d'export en PDF.", "Verifier le fichier genere."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/exporter-au-format-pdf" },
+    { categoryKey: "applications", label: "Gestion des signatures Outlook", keywords: ["signature outlook", "gerer signature", "modifier signature mail", "signature outlook web"], solution: ["Configurer la signature selon la procedure interne.", "Verifier le rendu sur un mail de test."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/signature-sur-outlook-new-et-web" },
+    { categoryKey: "imprimantes_scanner", label: "Gestion des copieurs - Changement de toner", keywords: ["changement toner", "toner copieur", "remplacer toner"], solution: ["Suivre la procedure de changement de toner.", "Verifier le retour a l'etat pret du copieur."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/gestion-des-copieurs-changement-de-toner" },
+    { categoryKey: "imprimantes_scanner", label: "Impressions", keywords: ["impression", "imprimer", "imprimante n'imprime pas", "erreur impression"], solution: ["Appliquer la procedure Impression du guide interne.", "Verifier la file d'impression et le copieur cible."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/impressions" },
+    { categoryKey: "imprimantes_scanner", label: "Copies", keywords: ["copies", "copie copieur", "faire une copie"], solution: ["Suivre la procedure Copies du guide interne.", "Verifier le resultat en sortie."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/copies" },
+    { categoryKey: "imprimantes_scanner", label: "Scan et deconnexion", keywords: ["scan", "scanner", "scan copieur", "deconnexion copieur"], solution: ["Appliquer la procedure Scan et deconnexion.", "Verifier la reception du document scanne."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/scan-et-deconnexion" },
+    { categoryKey: "imprimantes_scanner", label: "Perte/Oublie du badge des copieurs", keywords: ["badge copieur perdu", "oubli badge copieur", "badge copieur"], solution: ["Suivre la procedure prevue en cas de badge perdu/oublie.", "Contacter le support si necessaire."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/badge-oubliperte" },
+    { categoryKey: "internet", label: "Connexion au VPN", keywords: ["connexion vpn", "vpn", "se connecter vpn", "teletravail vpn"], solution: ["Suivre la procedure de connexion VPN.", "Verifier les prerequis postes et identifiants."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/teletravail-connexion-avec-un-ordinateur-fourni-par-la-mairie" },
+    { categoryKey: "internet", label: "Connexion au VPN en cas de changement de mot de passe", keywords: ["vpn changement mot de passe", "mot de passe change vpn", "vpn ne marche plus apres changement mdp"], solution: ["Appliquer la procedure dediee au changement de mot de passe.", "Retester la connexion VPN."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/vpn-changement-de-mot-de-passe" },
+    { categoryKey: "internet", label: "SOPHOS CONNECT : Reconfiguration", keywords: ["sophos connect", "reconfiguration sophos", "sophos vpn"], solution: ["Suivre la procedure de reconfiguration Sophos Connect.", "Verifier la connexion apres reconfiguration."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/sophos-connect-reconfiguration" },
+    { categoryKey: "applications", label: "CIRIL CONNEXION DEPUIS L'EXTERIEUR", keywords: ["ciril connexion exterieur", "ciril externe", "acces ciril domicile"], solution: ["Suivre la procedure de connexion Ciril depuis l'exterieur.", "Verifier les etapes d'authentification."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/ciril-connexion-depuis-lexterieur" },
+    { categoryKey: "applications", label: "Acceder aux interfaces - FileZilla", keywords: ["filezilla", "acceder interfaces filezilla", "connexion filezilla"], solution: ["Suivre la procedure d'acces via FileZilla.", "Verifier les parametres de connexion."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/acceder-aux-interfaces-filezilla" },
+    { categoryKey: "applications", label: "PDF - Remplir et signer un document", keywords: ["remplir signer pdf", "signer pdf", "formulaire pdf"], solution: ["Suivre la procedure PDF de remplissage/signature.", "Verifier la signature dans le document final."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/pdf-remplir-et-signer-un-document" },
+    { categoryKey: "applications", label: "Utilisation videoprojecteur salle du conseil", keywords: ["videoprojecteur salle du conseil", "projecteur salle du conseil", "utilisation videoprojecteur conseil"], solution: ["Suivre la procedure d'utilisation du videoprojecteur de la salle du conseil.", "Verifier les branchements et la source video selon le guide."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/utilisation-videoprojecteur-salle-du-conseil" },
+    { categoryKey: "applications", label: "Utilisation videoprojecteur Vie Associative", keywords: ["videoprojecteur vie associative", "projecteur vie associative", "utilisation videoprojecteur associative"], solution: ["Suivre la procedure d'utilisation du videoprojecteur Vie Associative.", "Verifier les branchements et la source video selon le guide."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/utilisation-videoprojecteur-vie-associative" },
+    { categoryKey: "applications", label: "Extraire des fichiers compresses", keywords: ["extraire fichiers compresses", "dezipper", "ouvrir zip", "fichier compresse"], solution: ["Suivre la procedure d'extraction de fichiers compresses.", "Verifier les fichiers extraits."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/extraire-des-fichiers-compresses" },
+    { categoryKey: "applications", label: "Partager des fichiers", keywords: ["partager fichiers", "partage fichier", "envoyer lien fichier"], solution: ["Suivre la procedure de partage de fichiers.", "Verifier les droits d'acces accordes."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/partager-des-fichiers" },
+    { categoryKey: "pc", label: "Rechercher une application et ajouter un raccourci sur le Bureau", keywords: ["raccourci bureau", "ajouter raccourci", "rechercher application windows"], solution: ["Suivre la procedure pour creer un raccourci Bureau.", "Verifier l'ouverture depuis le raccourci cree."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/rechercher-une-application-et-ajouter-un-raccourci-sur-le-bureau" },
+    { categoryKey: "pc", label: "Activer la biometrie (empreinte digitale) sur votre ordinateur portable", keywords: ["activer biometrie", "empreinte digitale", "windows hello", "configurer empreinte"], solution: ["Suivre la procedure d'activation de la biometrie.", "Verifier la connexion par empreinte digitale."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/activer-la-biometrie-empreinte-digitale-sur-votre-ordinateur-portable" }
    ];
 
    function mapCategoryLabels(categories) {
@@ -1218,7 +1255,8 @@ $(function() {
             category: CATEGORY_LABELS[entry.categoryKey] || "general",
             label: entry.label,
             keywords: entry.keywords,
-            solution: entry.solution
+            solution: entry.solution,
+            referenceUrl: entry.referenceUrl || ""
          };
       });
    }
@@ -1226,7 +1264,7 @@ $(function() {
    // Normalise les entrées de la base de connaissances en objets internes avec clés stables.
    function createKnowledgeBase(cases) {
       return cases.map(function (item, index) {
-         return { key: "case_" + String(index + 1), category: item.category || "general", label: item.label, keywords: Array.isArray(item.keywords) ? item.keywords : [], solution: Array.isArray(item.solution) ? item.solution : [] };
+        return { key: "case_" + String(index + 1), category: item.category || "general", label: item.label, keywords: Array.isArray(item.keywords) ? item.keywords : [], solution: Array.isArray(item.solution) ? item.solution : [], referenceUrl: item.referenceUrl || "" };
       });
    }
 
@@ -1239,7 +1277,7 @@ $(function() {
    //   solution: ["Verifier prerequis", "Executer en admin", "Verifier logs"]
    // });
    function addKnowledgeCase(base, newCase) {
-      base.push({ key: "case_" + String(base.length + 1), category: newCase.category || "general", label: newCase.label, keywords: Array.isArray(newCase.keywords) ? newCase.keywords : [], solution: Array.isArray(newCase.solution) ? newCase.solution : [] });
+     base.push({ key: "case_" + String(base.length + 1), category: newCase.category || "general", label: newCase.label, keywords: Array.isArray(newCase.keywords) ? newCase.keywords : [], solution: Array.isArray(newCase.solution) ? newCase.solution : [], referenceUrl: newCase.referenceUrl || "" });
    }
 
    // Base finale en mémoire utilisée par le chatbot.
@@ -1355,10 +1393,16 @@ $(function() {
    }
 
    // Construit une réponse de dépannage lisible côté utilisateur.
-   function buildSolutionText(match) {
-      var steps = match.issue.solution.map(function (s, i) { return (i + 1) + ". " + s; }).join("\n");
-      return "Voici quelques étapes qui peuvent vous aider :\n\n" + steps + "\n\nN’hésitez pas à me confirmer si tout fonctionne de nouveau ou si le problème persiste en utilisant les deux boutons ci-dessous 👇";
-   }
+  function buildSolutionText(match) {
+     var steps = match.issue.solution.map(function (s, i) { return (i + 1) + ". " + s; }).join("\n");
+     return "Voici quelques étapes qui peuvent vous aider :\n\n" + steps + "\n\nN’hésitez pas à me confirmer si tout fonctionne de nouveau ou si le problème persiste en utilisant les deux boutons ci-dessous 👇";
+  }
+
+  function buildReferenceHtml(match) {
+     if (!match || !match.issue || !match.issue.referenceUrl) { return ""; }
+     var safeUrl = escapeHtml(match.issue.referenceUrl);
+     return '<div class="mt-2"><strong>Procedure interne :</strong> <a href="' + safeUrl + '" target="_blank" rel="noopener noreferrer">' + safeUrl + "</a></div>";
+  }
 
    // Construit le brouillon d'incident si le problème persiste.
    function buildDraft(match) {
@@ -1428,7 +1472,7 @@ $(function() {
       if (!match) { suggestHelp(); setQuickActions([]); return; }
       var response = buildSolutionText(match);
       state.history.push({ role: "bot", text: response });
-      addMessage("bot", response);
+      addMessage("bot", response, buildReferenceHtml(match));
       setQuickActions([
          { label: "Oui, c'est regle", variant: "btn-outline-success", onClick: function () { addMessage("bot", "Parfait ! Heureux d’avoir pu vous aider."); setQuickActions([]); } },
          { label: "Non, toujours en panne", variant: "btn-outline-danger", onClick: function () { showDraft(match); } }
