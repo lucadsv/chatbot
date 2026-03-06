@@ -1209,7 +1209,7 @@ $(function() {
     { categoryKey: "applications", label: "Partager un calendrier", keywords: ["partager calendrier", "partage calendrier outlook", "donner acces calendrier"], solution: ["Suivre la procedure de partage du calendrier.", "Verifier les droits donnes au destinataire."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/partager-un-calendrier" },
     { categoryKey: "applications", label: "Connexion a Office Web", keywords: ["connexion office web", "office web", "ouvrir outlook web", "se connecter office"], solution: ["Suivre la procedure de connexion a Office Web.", "Verifier les identifiants et l'acces."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/connexion-a-office-web" },
     { categoryKey: "applications", label: "Changer le theme couleur", keywords: ["changer theme couleur", "theme outlook", "couleur outlook", "apparence outlook"], solution: ["Appliquer la procedure de changement de theme.", "Verifier le rendu apres modification."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/changer-le-theme-couleur" },
-    { categoryKey: "applications", label: "Creation d'une regle - Deplacer mails vers un dossier", keywords: ["regle deplacer mails dossier", "filtre mail dossier", "trier mails outlook", "regle outlook dossier"], solution: ["Creer la regle depuis la procedure interne.", "Valider son fonctionnement sur de nouveaux messages."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/creation-dune-regle-deplacer-mails-vers-un-dossier" },
+    { categoryKey: "applications", label: "Creation d'une regle - Deplacer mails vers un dossier", keywords: ["regle deplacer mails dossier", "filtre mail dossier", "trier mails outlook", "regle outlook dossier", "deplacement automatique mails", "creer regle automatique"], solution: ["Creer la regle depuis la procedure interne.", "Valider son fonctionnement sur de nouveaux messages."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/creation-dune-regle-deplacer-mails-vers-un-dossier" },
     { categoryKey: "applications", label: "Creation d'une regle - Bloquer un expediteur", keywords: ["bloquer expediteur", "regle bloquer expediteur", "mail indesirable expediteur", "liste blocage outlook"], solution: ["Configurer le blocage selon la procedure.", "Verifier que les nouveaux messages sont bien filtres."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/creation-dune-regle-bloquer-un-expediteur" },
     { categoryKey: "applications", label: "Creation d'une regle - Deplacer un mail suppose indesirable", keywords: ["deplacer mail indesirable", "mail suppose indesirable", "regle anti spam outlook", "deplacer spam dossier"], solution: ["Mettre en place la regle de deplacement selon le guide.", "Controler le dossier cible apres test."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/creation-dune-regle-deplacer-un-mail-suppose-indesirable" },
     { categoryKey: "applications", label: "Ajouter un contact", keywords: ["ajouter contact", "creer contact outlook", "nouveau contact"], solution: ["Suivre la procedure d'ajout d'un contact.", "Verifier la presence du contact dans le carnet d'adresses."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/ajouter-un-contact" },
@@ -1246,7 +1246,7 @@ $(function() {
     { categoryKey: "wifi", label: "Impossible de se connecter a un reseau Wi-Fi", keywords: ["wifi impossible", "nous n'avons pas pu nous connecter a ce reseau", "oublier reseau wifi"], solution: ["En cas de message \"Nous n'avons pas pu nous connecter a ce reseau\", oublier le reseau dans les parametres Wi-Fi puis retenter la connexion."] },
     { categoryKey: "applications", label: "Navigateur - Oubli de mot de passe", keywords: ["oubli mot de passe navigateur", "mot de passe enregistre navigateur", "recuperer mot de passe navigateur"], solution: ["Recuperer les mots de passe enregistres dans le navigateur."] },
     { categoryKey: "applications", label: "Outlook desktop ne synchronise plus avec les serveurs Microsoft", keywords: ["outlook ne synchronise plus", "outlook desktop sync", "profil outlook corrompu"], solution: ["Supprimer puis recreer le profil Outlook."] },
-    { categoryKey: "applications", label: "Affichage des mails modifie dans Outlook", keywords: ["affichage mails modifie", "outlook cleanviews", "outlook resetnavpane"], solution: ["Executer : outlook.exe /cleanviews ou /resetnavpane."] },
+    { categoryKey: "applications", label: "Affichage des mails modifie dans Outlook", keywords: ["affichage mails modifie", "outlook cleanviews", "outlook resetnavpane", "vue boite reception changee", "volet outlook modifie", "colonnes mails changees"], solution: ["Executer : outlook.exe /cleanviews ou /resetnavpane."] },
     { categoryKey: "applications", label: "Basculer entre l'ancienne et la nouvelle version d'Outlook", keywords: ["ancienne version outlook", "nouvelle version outlook", "switch outlook"], solution: ["Utiliser le bouton de bascule pour passer de l'ancienne version vers la nouvelle et vice versa."] },
     { categoryKey: "applications", label: "Erreur [7ita9] sur le compte 365", keywords: ["erreur 7ita9", "outlook 7ita9", "compte 365 erreur"], solution: ["Deconnecter puis reconnecter le compte 365."] },
     { categoryKey: "applications", label: "Procedure d'ouverture de ticket", keywords: ["procedure ouvrir ticket", "éditer un ticket", "créer un ticket"], solution: ["Indiquer une procedure expliquant comment ouvrir un ticket."] }
@@ -1300,7 +1300,8 @@ $(function() {
    // État de conversation :
    // - lastMatch : dernier problème détecté
    // - history : historique des messages user/bot, réutilisé dans le brouillon incident
-   var state = { lastMatch: null, history: [] };
+   // - pendingOptions : options proposées en cas d'ambiguïté
+   var state = { lastMatch: null, history: [], pendingOptions: null };
    // Références DOM des contrôles chatbot.
    var dom = {
       chat: document.getElementById("home-chatbot-chat"),
@@ -1325,8 +1326,92 @@ $(function() {
    }
    // Stemming léger pour améliorer la tolérance des correspondances.
    function stem(word) { return word.replace(/(es|s|e|ee|ees|ent|ant|tion|tions|ment|ments)$/g, ""); }
+
+   var STOP_WORDS = {
+      "avec": true, "dans": true, "pour": true, "sans": true, "les": true, "des": true, "une": true, "est": true, "pas": true, "plus": true,
+      "mail": true, "mails": true, "outlook": true, "cela": true, "tout": true
+   };
+
    // Tokenisation pour le scoring flou.
-   function tokenize(text) { return normalize(text).split(" ").filter(function (w) { return w.length >= 3; }).map(stem); }
+   function tokenize(text) {
+      return normalize(text).split(" ").filter(function (w) { return w.length >= 3 && !STOP_WORDS[w]; }).map(stem);
+   }
+
+   function uniqTokens(tokens) {
+      var map = {};
+      tokens.forEach(function (t) { map[t] = true; });
+      return Object.keys(map);
+   }
+
+   function extractTagsFromText(textNorm) {
+      return {
+         rule_management: /\b(regle|filtre|deplacer|trier|dossier)\b/.test(textNorm),
+         display_issue: /\b(affichage|vue|volet|colonne|modifie|change|resetnavpane|cleanviews)\b/.test(textNorm),
+         sync_issue: /\b(sync\w*|synchron\w*|profil\w*|corromp\w*|serveur\w*)\b/.test(textNorm),
+         error_state: /\b(erreur|impossible|panne|probleme|ne|plus)\b/.test(textNorm),
+         howto_request: /\b(comment|creer|creation|ajouter|configurer|mettre en place|procedure)\b/.test(textNorm),
+         no_rule_management: /\b(ne\s+veux\s+pas\s+.*regle|pas\s+de\s+regle|sans\s+regle)\b/.test(textNorm),
+         status_presence: /\b(statut|presence|teletravail)\b/.test(textNorm),
+         audio_issue: /\b(micro|microphone|audio|son|casque)\b/.test(textNorm),
+         meeting_management: /\b(invitation|reunion|participants|exterieur|externe)\b/.test(textNorm)
+      };
+   }
+
+   function extractContextFromText(textNorm) {
+      return {
+         outlook: /\b(outlook|mail|mails|boite|messagerie)\b/.test(textNorm),
+         vpn: /\b(vpn|sophos)\b/.test(textNorm),
+         teams: /\b(teams)\b/.test(textNorm),
+         wifi: /\b(wifi|wi-fi)\b/.test(textNorm),
+         printing: /\b(impression|imprimante|copieur|scanner|scan)\b/.test(textNorm)
+      };
+   }
+
+   function classifyIssueIntent(labelNorm) {
+      if (/\b(creation|creer|ajouter|envoyer|partager|basculer|activer|exporter|connexion|utilisation|acceder)\b/.test(labelNorm)) { return "howto"; }
+      if (/\b(erreur|impossible|ne|perte|modifie|plus|oubli|corrompu)\b/.test(labelNorm)) { return "incident"; }
+      return "mixed";
+   }
+
+   function buildIssueProfiles(base) {
+      return base.map(function (issue) {
+         var labelNorm = normalize(issue.label);
+         var labelTokens = tokenize(issue.label);
+         var keywordInfos = (issue.keywords || []).map(function (kw) {
+            return { raw: kw, norm: normalize(kw), tokens: tokenize(kw) };
+         });
+         var allTokens = uniqTokens(labelTokens.concat([].concat.apply([], keywordInfos.map(function (x) { return x.tokens; }))));
+         var aggregateText = [issue.label].concat(issue.keywords || []).join(" ");
+         return {
+            issue: issue,
+            labelNorm: labelNorm,
+            labelTokens: labelTokens,
+            keywordInfos: keywordInfos,
+            tokens: allTokens,
+            tags: extractTagsFromText(normalize(aggregateText)),
+            context: extractContextFromText(normalize(aggregateText)),
+            intent: classifyIssueIntent(labelNorm)
+         };
+      });
+   }
+
+   function buildTokenFrequency(issueProfiles) {
+      var freq = {};
+      issueProfiles.forEach(function (profile) {
+         profile.tokens.forEach(function (t) { freq[t] = (freq[t] || 0) + 1; });
+      });
+      return freq;
+   }
+
+   var ISSUE_PROFILES = buildIssueProfiles(knowledgeBase);
+   var TOKEN_FREQUENCY = buildTokenFrequency(ISSUE_PROFILES);
+   var MATCH_THRESHOLD = 4.5;
+   var AMBIGUITY_GAP = 1.3;
+
+   function tokenWeight(token) {
+      var freq = TOKEN_FREQUENCY[token] || 1;
+      return 1 + (2 / (freq + 1));
+   }
 
    // Ajoute une bulle de message dans l'UI du chat avec un libellé "assistant"/"vous".
    function addMessage(role, text, extraHtml) {
@@ -1374,41 +1459,215 @@ $(function() {
 
    // Score un mot-clé face au texte utilisateur :
    // score fort pour phrase exacte, moyen pour token, faible pour préfixe.
-   function scoreKeyword(inputNorm, inputTokens, keyword) {
-      var kwNorm = normalize(keyword);
-      var kwTokens = tokenize(keyword);
+   function scoreKeyword(inputNorm, inputTokens, keywordInfo) {
       var score = 0;
-      if (kwNorm && inputNorm.indexOf(kwNorm) !== -1) { score += Math.max(4, kwNorm.length >= 10 ? 7 : 5); }
-      kwTokens.forEach(function (kwTok) {
-         if (inputTokens.indexOf(kwTok) !== -1) { score += 2; return; }
+      var matched = 0;
+      if (keywordInfo.norm && inputNorm.indexOf(keywordInfo.norm) !== -1) { score += Math.max(5, keywordInfo.norm.length >= 12 ? 8 : 6); }
+      keywordInfo.tokens.forEach(function (kwTok) {
+         var weight = tokenWeight(kwTok);
+         if (inputTokens.indexOf(kwTok) !== -1) {
+            score += 2.2 * weight;
+            matched += 1;
+            return;
+         }
          for (var i = 0; i < inputTokens.length; i++) {
             var inTok = inputTokens[i];
-            if (inTok.indexOf(kwTok) === 0 || kwTok.indexOf(inTok) === 0) { score += 1; break; }
+            if (inTok.length >= 5 && (inTok.indexOf(kwTok) === 0 || kwTok.indexOf(inTok) === 0)) {
+               score += 1.1 * weight;
+               matched += 1;
+               break;
+            }
          }
       });
+      if (keywordInfo.tokens.length > 0) {
+         var coverage = matched / keywordInfo.tokens.length;
+         if (coverage >= 0.6) { score += 1.3; }
+         if (coverage >= 1) { score += 2; }
+      }
       return score;
    }
 
-   // Détection principale :
-   // parcourt toute la base, calcule un score et retourne le meilleur match au-dessus du seuil.
-   function detectIssue(text) {
-      var inputNorm = normalize(text);
-      var inputTokens = tokenize(text);
-      var best = null;
-      knowledgeBase.forEach(function (issue) {
-         var score = 0;
-         issue.keywords.forEach(function (kw) { score += scoreKeyword(inputNorm, inputTokens, kw); });
-         if (score > 0 && inputNorm.indexOf(normalize(issue.label)) !== -1) { score += 3; }
-         if (!best || score > best.score) { best = { issue: issue, score: score }; }
+   function countSharedTags(a, b) {
+      var count = 0;
+      Object.keys(a).forEach(function (key) {
+         if (a[key] && b[key]) { count += 1; }
       });
-      return best && best.score >= 3 ? best : null;
+      return count;
    }
 
-   // Construit une réponse de dépannage lisible côté utilisateur.
+   function countSharedContext(a, b) {
+      var count = 0;
+      Object.keys(a).forEach(function (key) {
+         if (a[key] && b[key]) { count += 1; }
+      });
+      return count;
+   }
+
+   function hasAnyContext(context) {
+      return Object.keys(context).some(function (k) { return !!context[k]; });
+   }
+
+   function countTokenOverlap(inputTokens, issueTokens) {
+      var issueMap = {};
+      issueTokens.forEach(function (tok) { issueMap[tok] = true; });
+      var overlap = 0;
+      inputTokens.forEach(function (tok) {
+         if (issueMap[tok]) { overlap += 1; }
+      });
+      return overlap;
+   }
+
+   function scoreIssueProfile(inputProfile, issueProfile) {
+      var keywordScores = issueProfile.keywordInfos.map(function (kwInfo) {
+         return scoreKeyword(inputProfile.norm, inputProfile.tokens, kwInfo);
+      });
+      var bestKeyword = keywordScores.length ? Math.max.apply(null, keywordScores) : 0;
+      var secondKeyword = keywordScores.length > 1 ? keywordScores.sort(function (a, b) { return b - a; })[1] : 0;
+      var score = bestKeyword + (secondKeyword * 0.35);
+      var reasons = [];
+
+      if (bestKeyword >= 4) { reasons.push("les mots cles principaux correspondent"); }
+
+      if (issueProfile.labelNorm && inputProfile.norm.indexOf(issueProfile.labelNorm) !== -1) {
+         score += 5.5;
+         reasons.push("le libelle de l'incident est cite");
+      }
+
+      var labelMatchCount = issueProfile.labelTokens.filter(function (tok) {
+         return inputProfile.tokens.indexOf(tok) !== -1;
+      }).length;
+      if (issueProfile.labelTokens.length > 0) {
+         var labelCoverage = labelMatchCount / issueProfile.labelTokens.length;
+         score += labelCoverage * 2.8;
+         if (labelCoverage >= 0.5) { reasons.push("le vocabulaire du libelle est present"); }
+      }
+
+      var sharedTags = countSharedTags(inputProfile.tags, issueProfile.tags);
+      score += sharedTags * 0.9;
+      if (sharedTags > 0) { reasons.push("le type de probleme est coherent"); }
+
+      var sharedContext = countSharedContext(inputProfile.context, issueProfile.context);
+      if (sharedContext > 0) {
+         score += sharedContext * 2.1;
+         reasons.push("le contexte applicatif correspond");
+      } else if (hasAnyContext(inputProfile.context)) {
+         score -= 4.2;
+      }
+
+      var tokenOverlap = countTokenOverlap(inputProfile.tokens, issueProfile.tokens);
+      if (inputProfile.tokens.length > 0 && tokenOverlap === 0) { score -= 3.6; }
+
+      if (inputProfile.tags.display_issue && issueProfile.tags.rule_management) { score -= 2.3; }
+      if (inputProfile.tags.rule_management && issueProfile.tags.display_issue) { score -= 2.3; }
+      if (inputProfile.tags.no_rule_management && issueProfile.tags.rule_management) { score -= 4.5; }
+      if (inputProfile.tags.audio_issue && issueProfile.tags.status_presence) { score -= 5.2; }
+      if (inputProfile.tags.status_presence && issueProfile.tags.audio_issue) { score -= 2; }
+      if (inputProfile.tags.audio_issue && !issueProfile.tags.audio_issue) { score -= 3.2; }
+      if (inputProfile.tags.audio_issue && issueProfile.tags.meeting_management) { score -= 4.8; }
+
+      if (inputProfile.intent === issueProfile.intent) {
+         score += 1.2;
+      } else if (inputProfile.intent !== "mixed" && issueProfile.intent !== "mixed") {
+         score -= 0.7;
+      }
+
+      return { issue: issueProfile.issue, score: score, reasons: reasons };
+   }
+
+   function buildInputProfile(text) {
+      var norm = normalize(text);
+      return {
+         raw: text,
+         norm: norm,
+         tokens: tokenize(text),
+         tags: extractTagsFromText(norm),
+         context: extractContextFromText(norm),
+         intent: classifyIssueIntent(norm)
+      };
+   }
+
+   // Détection principale :
+   // classe tous les incidents et renvoie soit un match, soit une ambiguite, soit aucun match.
+   function detectIssue(text) {
+      var inputProfile = buildInputProfile(text);
+
+      // Priorite aux incidents Outlook de synchronisation.
+      if (inputProfile.context.outlook && inputProfile.tags.sync_issue) {
+         var syncDirect = ISSUE_PROFILES.find(function (p) { return p.issue.label === "Outlook desktop ne synchronise plus avec les serveurs Microsoft"; });
+         if (syncDirect) {
+            return {
+               type: "match",
+               match: {
+                  issue: syncDirect.issue,
+                  score: MATCH_THRESHOLD + 2.4,
+                  reasons: ["la demande indique un probleme de synchronisation Outlook"]
+               },
+               ranked: []
+            };
+         }
+      }
+
+      if (inputProfile.context.outlook && inputProfile.tags.display_issue && inputProfile.tags.no_rule_management) {
+         var displayDirect = ISSUE_PROFILES.find(function (p) { return p.issue.label === "Affichage des mails modifie dans Outlook"; });
+         if (displayDirect) {
+            return {
+               type: "match",
+               match: {
+                  issue: displayDirect.issue,
+                  score: MATCH_THRESHOLD + 2,
+                  reasons: ["la demande parle de l'affichage Outlook", "vous excluez explicitement la creation de regle"]
+               },
+               ranked: []
+            };
+         }
+      }
+
+      if (inputProfile.context.teams && inputProfile.tags.audio_issue) {
+         return { type: "none", ranked: [] };
+      }
+
+      if (
+         inputProfile.context.outlook &&
+         !inputProfile.tags.rule_management &&
+         !inputProfile.tags.display_issue &&
+         !inputProfile.tags.sync_issue &&
+         /\b(mail|mails|outlook|messagerie)\b/.test(inputProfile.norm)
+      ) {
+         var displayForced = ISSUE_PROFILES.find(function (p) { return p.issue.label === "Affichage des mails modifie dans Outlook"; });
+         var ruleForced = ISSUE_PROFILES.find(function (p) { return p.issue.label === "Creation d'une regle - Deplacer mails vers un dossier"; });
+         if (displayForced && ruleForced) {
+            return {
+               type: "ambiguous",
+               options: [
+                  { issue: displayForced.issue, score: MATCH_THRESHOLD + 0.4, reasons: ["message Outlook trop general"] },
+                  { issue: ruleForced.issue, score: MATCH_THRESHOLD + 0.3, reasons: ["message Outlook trop general"] }
+               ],
+               ranked: []
+            };
+         }
+      }
+
+      var ranked = ISSUE_PROFILES.map(function (profile) {
+         return scoreIssueProfile(inputProfile, profile);
+      }).sort(function (a, b) { return b.score - a.score; });
+
+      if (!ranked.length || ranked[0].score < MATCH_THRESHOLD) {
+         return { type: "none", ranked: ranked };
+      }
+
+      if (ranked.length > 1 && (ranked[0].score - ranked[1].score) < AMBIGUITY_GAP) {
+         return { type: "ambiguous", options: [ranked[0], ranked[1]], ranked: ranked };
+      }
+
+      return { type: "match", match: ranked[0], ranked: ranked };
+   }
+
+  // Construit une réponse de dépannage lisible côté utilisateur.
   function buildSolutionText(match) {
-     var steps = match.issue.solution.map(function (s, i) { return (i + 1) + ". " + s; }).join("\n");
-     return "Voici quelques étapes qui peuvent vous aider :\n\n" + steps + "\n\nN’hésitez pas à me confirmer si tout fonctionne de nouveau ou si le problème persiste en utilisant les deux boutons ci-dessous 👇";
-  }
+      var diagnosisLine = "Incident identifie : " + match.issue.label + ".\n\n";
+      var steps = match.issue.solution.map(function (s, i) { return (i + 1) + ". " + s; }).join("\n");
+      return diagnosisLine + "Voici les etapes recommandees :\n\n" + steps + "\n\nDites-moi si le probleme est resolu avec les boutons ci-dessous.";
+   }
 
   function buildReferenceHtml(match) {
      if (!match || !match.issue || !match.issue.referenceUrl) { return ""; }
@@ -1453,7 +1712,7 @@ $(function() {
          "</div>"
       ].join("");
 
-      addMessage("bot", "Le probleme persiste. Je t'ai prepare un brouillon de ticket pret a coller.", html);
+      addMessage("bot", "Le probleme persiste. Je vous ai prepare un brouillon de ticket pret a coller.", html);
       var copyButtons = dom.chat.querySelectorAll(".home-chatbot-draft-copy");
       var copyBtn = copyButtons.length ? copyButtons[copyButtons.length - 1] : null;
       if (copyBtn) {
@@ -1469,8 +1728,73 @@ $(function() {
    }
 
    // Message de fallback quand aucun problème n'est détecté avec assez de confiance.
-   function suggestHelp() {
-      addMessage("bot", "Je n’ai pas compris. Pouvez-vous résumer en quelques mots ?");
+   function suggestHelp(raw) {
+      var norm = normalize(raw || "");
+      if (/\b(teams)\b/.test(norm) && /\b(micro|microphone|audio|son|casque)\b/.test(norm)) {
+         addMessage("bot", "Desole, ce probleme n'est pas reference dans ma base de connaissances.");
+         return;
+      }
+      if (/\b(outlook|mail|mails)\b/.test(norm)) {
+         var displayIssue = ISSUE_PROFILES.find(function (p) { return p.issue.label === "Affichage des mails modifie dans Outlook"; });
+         var ruleIssue = ISSUE_PROFILES.find(function (p) { return p.issue.label === "Creation d'une regle - Deplacer mails vers un dossier"; });
+         if (displayIssue && ruleIssue) {
+            addMessage("bot", "Pour vous aider au plus vite, choisissez le cas qui correspond le mieux :");
+            askForDisambiguation([
+               { issue: displayIssue.issue, score: MATCH_THRESHOLD + 0.2, reasons: ["clarification Outlook"] },
+               { issue: ruleIssue.issue, score: MATCH_THRESHOLD + 0.2, reasons: ["clarification Outlook"] }
+            ]);
+            return;
+         }
+      }
+      addMessage("bot", "Je n'ai pas assez d'elements. Pouvez-vous preciser le symptome, le message d'erreur eventuel et l'application concernee ?");
+   }
+
+   function showNotReferenced() {
+      state.lastMatch = null;
+      state.pendingOptions = null;
+      addMessage("bot", "Desole, ce probleme n'est pas reference dans ma base de connaissances.");
+      setQuickActions([]);
+   }
+
+   function respondWithMatch(match) {
+      state.pendingOptions = null;
+      state.lastMatch = match;
+      var response = buildSolutionText(match);
+      state.history.push({ role: "bot", text: response });
+      addMessage("bot", response, buildReferenceHtml(match));
+      setQuickActions([
+         { label: "Oui, c'est regle", variant: "btn-outline-success", onClick: function () { addMessage("bot", "Parfait, ravi d'avoir pu vous aider."); setQuickActions([]); } },
+         { label: "Non, probleme persistant", variant: "btn-outline-danger", onClick: function () { showDraft(match); } }
+      ]);
+   }
+
+   function askForDisambiguation(options) {
+      state.pendingOptions = options;
+      addMessage("bot", "J'ai besoin d'une precision pour choisir le bon diagnostic :");
+      setQuickActions(options.map(function (candidate, index) {
+         return {
+            label: (index + 1) + ". " + candidate.issue.label,
+            variant: "btn-outline-primary",
+            onClick: function () { respondWithMatch(candidate); }
+         };
+      }));
+   }
+
+   function resolvePendingOption(raw) {
+      if (!state.pendingOptions || !state.pendingOptions.length) { return null; }
+      var norm = normalize(raw);
+      if (/^(1|premier|1\.|option 1)$/.test(norm)) { return state.pendingOptions[0]; }
+      if (/^(2|deux|deuxieme|2\.|option 2)$/.test(norm)) { return state.pendingOptions[1] || null; }
+
+      var inputTokens = tokenize(raw);
+      var best = null;
+      state.pendingOptions.forEach(function (candidate) {
+         var labelTokens = tokenize(candidate.issue.label);
+         var overlap = labelTokens.filter(function (tok) { return inputTokens.indexOf(tok) !== -1; }).length;
+         if (!best || overlap > best.overlap) { best = { candidate: candidate, overlap: overlap }; }
+      });
+      if (best && best.overlap > 0) { return best.candidate; }
+      return null;
    }
 
    // Orchestrateur appelé à chaque message utilisateur.
@@ -1479,25 +1803,41 @@ $(function() {
       if (!raw) { return; }
       state.history.push({ role: "user", text: raw });
       addMessage("user", raw);
-      var match = detectIssue(raw);
-      state.lastMatch = match;
-      if (!match) { suggestHelp(); setQuickActions([]); return; }
-      var response = buildSolutionText(match);
-      state.history.push({ role: "bot", text: response });
-      addMessage("bot", response, buildReferenceHtml(match));
-      setQuickActions([
-         { label: "Oui, c'est regle", variant: "btn-outline-success", onClick: function () { addMessage("bot", "Parfait ! Heureux d’avoir pu vous aider."); setQuickActions([]); } },
-         { label: "Non, toujours en panne", variant: "btn-outline-danger", onClick: function () { showDraft(match); } }
-      ]);
+
+      // Cas explicitement non couvert par la base : incidents audio Teams.
+      var rawNorm = normalize(raw);
+      if (/\b(teams)\b/.test(rawNorm) && /\b(micro|microphone|audio|son|casque)\b/.test(rawNorm)) {
+         showNotReferenced();
+         return;
+      }
+
+      var pendingChoice = resolvePendingOption(raw);
+      if (pendingChoice) {
+         respondWithMatch(pendingChoice);
+         return;
+      }
+
+      var detection = detectIssue(raw);
+      if (detection.type === "none") {
+         showNotReferenced();
+         return;
+      }
+      if (detection.type === "ambiguous") {
+         state.lastMatch = null;
+         askForDisambiguation(detection.options);
+         return;
+      }
+      respondWithMatch(detection.match);
    }
 
    // Reset complet de conversation : état, UI, puis message d'accueil.
    function resetChat() {
       state.lastMatch = null;
       state.history = [];
+      state.pendingOptions = null;
       dom.chat.innerHTML = "";
       setQuickActions([]);
-      addMessage("bot", "Bonjour. Comment puis-je vous aider aujourd’hui ?");
+      addMessage("bot", "Bonjour. Decrivez votre probleme en quelques mots, je vous guide pas a pas.");
       dom.input.focus();
    }
 
