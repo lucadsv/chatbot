@@ -1201,7 +1201,6 @@ $(function() {
    // - solution : etapes de resolution ordonnees
    // - referenceUrl : lien vers la procedure interne
    var KNOWLEDGE_ENTRIES = [
-    { categoryKey: "ecran", label: "Ecran secondaire non detecte", keywords: ["ecran", "double ecran", "hdmi", "displayport", "no signal", "dock"], solution: ["Verifier cable, port et alimentation ecran.", "Tester Win+P et detection ecran.", "Redemarrer dock/station puis reconnecter.", "Mettre a jour pilote graphique."] },
     { categoryKey: "applications", label: "Proteger un fichier Excel", keywords: ["proteger un fichier excel", "mot de passe excel", "securiser excel", "protege excel"], solution: ["Ouvrir la procedure interne associee.", "Suivre les etapes indiquees dans le guide."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/proteger-un-fichier" },
     { categoryKey: "applications", label: "Acces OneDrive", keywords: ["acces onedrive", "connexion onedrive", "onedrive inaccessible", "ouvrir onedrive"], solution: ["Ouvrir la procedure interne associee.", "Suivre les etapes indiquees dans le guide."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/acces-onedrive" },
     { categoryKey: "applications", label: "Synchronisation et sauvegarde OneDrive", keywords: ["synchronisation onedrive", "sauvegarde onedrive", "onedrive ne synchronise pas", "synchro onedrive"], solution: ["Verifier la synchronisation selon la procedure interne.", "Appliquer les controles recommandes dans le guide."], referenceUrl: "https://bookstack.fontenay-aux-roses.fr/books/informatique/page/synchronisation-et-sauvegarde" },
@@ -1408,6 +1407,10 @@ $(function() {
    var MATCH_THRESHOLD = 4.5;
    var AMBIGUITY_GAP = 1.3;
 
+   function findIssueProfileByLabel(label) {
+      return ISSUE_PROFILES.find(function (p) { return p.issue.label === label; }) || null;
+   }
+
    function tokenWeight(token) {
       var freq = TOKEN_FREQUENCY[token] || 1;
       return 1 + (2 / (freq + 1));
@@ -1593,7 +1596,7 @@ $(function() {
 
       // Priorite aux incidents Outlook de synchronisation.
       if (inputProfile.context.outlook && inputProfile.tags.sync_issue) {
-         var syncDirect = ISSUE_PROFILES.find(function (p) { return p.issue.label === "Outlook desktop ne synchronise plus avec les serveurs Microsoft"; });
+         var syncDirect = findIssueProfileByLabel("Outlook desktop ne synchronise plus avec les serveurs Microsoft");
          if (syncDirect) {
             return {
                type: "match",
@@ -1608,7 +1611,7 @@ $(function() {
       }
 
       if (inputProfile.context.outlook && inputProfile.tags.display_issue && inputProfile.tags.no_rule_management) {
-         var displayDirect = ISSUE_PROFILES.find(function (p) { return p.issue.label === "Affichage des mails modifie dans Outlook"; });
+         var displayDirect = findIssueProfileByLabel("Affichage des mails modifie dans Outlook");
          if (displayDirect) {
             return {
                type: "match",
@@ -1626,22 +1629,20 @@ $(function() {
          return { type: "none", ranked: [] };
       }
 
+      // Priorite aux incidents de perte reseau (hors wifi explicite).
       if (
-         inputProfile.context.outlook &&
-         !inputProfile.tags.rule_management &&
-         !inputProfile.tags.display_issue &&
-         !inputProfile.tags.sync_issue &&
-         /\b(mail|mails|outlook|messagerie)\b/.test(inputProfile.norm)
+         /\b(plus de reseau|perte de connectivite|reseau filaire|rj45)\b/.test(inputProfile.norm) &&
+         !inputProfile.context.wifi
       ) {
-         var displayForced = ISSUE_PROFILES.find(function (p) { return p.issue.label === "Affichage des mails modifie dans Outlook"; });
-         var ruleForced = ISSUE_PROFILES.find(function (p) { return p.issue.label === "Creation d'une regle - Deplacer mails vers un dossier"; });
-         if (displayForced && ruleForced) {
+         var networkDirect = findIssueProfileByLabel("Perte de connectivite");
+         if (networkDirect) {
             return {
-               type: "ambiguous",
-               options: [
-                  { issue: displayForced.issue, score: MATCH_THRESHOLD + 0.4, reasons: ["message Outlook trop general"] },
-                  { issue: ruleForced.issue, score: MATCH_THRESHOLD + 0.3, reasons: ["message Outlook trop general"] }
-               ],
+               type: "match",
+               match: {
+                  issue: networkDirect.issue,
+                  score: MATCH_THRESHOLD + 1.8,
+                  reasons: ["la demande indique une perte de reseau"]
+               },
                ranked: []
             };
          }
@@ -1650,6 +1651,34 @@ $(function() {
       var ranked = ISSUE_PROFILES.map(function (profile) {
          return scoreIssueProfile(inputProfile, profile);
       }).sort(function (a, b) { return b.score - a.score; });
+
+      // Clarification Outlook seulement pour une demande trop generale
+      // et non orientee "comment faire".
+      if (
+         ranked.length &&
+         ranked[0].score < MATCH_THRESHOLD &&
+         inputProfile.context.outlook &&
+         !inputProfile.tags.rule_management &&
+         !inputProfile.tags.display_issue &&
+         !inputProfile.tags.sync_issue &&
+         !inputProfile.tags.howto_request &&
+         inputProfile.intent !== "howto" &&
+         inputProfile.tokens.length <= 4 &&
+         /\b(mail|mails|outlook|messagerie)\b/.test(inputProfile.norm)
+      ) {
+         var displayForced = findIssueProfileByLabel("Affichage des mails modifie dans Outlook");
+         var ruleForced = findIssueProfileByLabel("Creation d'une regle - Deplacer mails vers un dossier");
+         if (displayForced && ruleForced) {
+            return {
+               type: "ambiguous",
+               options: [
+                  { issue: displayForced.issue, score: MATCH_THRESHOLD + 0.4, reasons: ["message Outlook trop general"] },
+                  { issue: ruleForced.issue, score: MATCH_THRESHOLD + 0.3, reasons: ["message Outlook trop general"] }
+               ],
+               ranked: ranked
+            };
+         }
+      }
 
       if (!ranked.length || ranked[0].score < MATCH_THRESHOLD) {
          return { type: "none", ranked: ranked };
