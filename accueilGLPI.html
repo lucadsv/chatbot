@@ -1121,6 +1121,7 @@ $(function() {
       <div id="home-chatbot-quick"></div>
 
       <div class="input-group">
+         <label for="home-chatbot-input" class="visually-hidden">Question pour l'assistant incident</label>
          <input id="home-chatbot-input" type="text" class="form-control" placeholder="Poser une question...">
          <button id="home-chatbot-send" class="btn btn-outline-secondary" type="button">Envoyer</button>
       </div>
@@ -1301,6 +1302,11 @@ $(function() {
    // - history : historique des messages user/bot, réutilisé dans le brouillon incident
    // - pendingOptions : options proposées en cas d'ambiguïté
    var state = { lastMatch: null, history: [], pendingOptions: null };
+   var DEFAULT_SUGGESTIONS = [
+      "Comment partager un calendrier sur Outlook ?",
+      "Je n'ai plus de reseau",
+      "Mon Outlook n'est plus synchronise"
+   ];
    // Références DOM des contrôles chatbot.
    var dom = {
       chat: document.getElementById("home-chatbot-chat"),
@@ -1453,11 +1459,24 @@ $(function() {
          btn.className = "btn btn-sm " + (action.variant || "btn-outline-secondary");
          btn.textContent = action.label;
          btn.addEventListener("click", function () {
-            addMessage("user", action.label);
+            if (!action.skipUserEcho) {
+               addMessage("user", action.label);
+            }
             action.onClick();
          });
          dom.quick.appendChild(btn);
       });
+   }
+
+   function setDefaultSuggestions() {
+      setQuickActions(DEFAULT_SUGGESTIONS.map(function (suggestion) {
+         return {
+            label: suggestion,
+            variant: "btn-outline-secondary",
+            skipUserEcho: true,
+            onClick: function () { processInput(suggestion); }
+         };
+      }));
    }
 
    // Score un mot-clé face au texte utilisateur :
@@ -1867,6 +1886,7 @@ $(function() {
       dom.chat.innerHTML = "";
       setQuickActions([]);
       addMessage("bot", "Bonjour. Decrivez votre probleme en quelques mots, je vous guide pas a pas.");
+      setDefaultSuggestions();
       dom.input.focus();
    }
 
